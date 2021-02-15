@@ -1,2 +1,8 @@
-# lab-queue
-team development project to form a queue for delivery of laboratory work 
+# lab-queue 
+### Веб-приложение по созданию очередей для сдачи ЛР
+
+Команда разработчиков:
+* Кондрашова Ольга Павловна
+* Шестовских Николай Александрович
+* Коротков Андрей Владимирович
+
