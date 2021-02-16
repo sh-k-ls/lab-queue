@@ -17,7 +17,7 @@
 <img src="https://github.com/sh-k-ls/lab-queue/blob/master/team-images/kuso4egdobra.JPG" width="100">
 
 ### Технологический стек
-* Front-end: HTML5, CSS3, TypeScript, Angular версии 11.2.1
+* Front-end: HTML5, CSS3, TypeScript, Angular
 * Back-end: TypeScript, NestJS + PostgreSQL
 * CodeStyle: TSLint
 * Инструмент для разработки: WebStorm, DataGrip
