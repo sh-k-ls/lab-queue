@@ -1,4 +1,2 @@
-### Веб-приложение по созданию очередей для сдачи ЛР
-
-#### Wiki documentation [RU] : [wiki](https://github.com/sh-k-ls/lab-queue/wiki/Documentation)
-
+# lab-queue 
+#### Watch here [RU] : [wiki](https://github.com/sh-k-ls/lab-queue/wiki/Documentation)
