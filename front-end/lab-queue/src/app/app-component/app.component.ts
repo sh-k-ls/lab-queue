@@ -7,4 +7,11 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'lab-queue';
+
+  cards = [];
+
+  public createQueue(): void {
+    console.log('btn create queue clicked');
+    this.cards.push('card');
+  }
 }
