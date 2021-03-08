@@ -1,5 +1,11 @@
-<p>list-queue works!</p>
-<mat-card *ngFor="let item of cards">
-  {{item}}
-  <button mat-button>+</button>
-</mat-card>
+<div class="list-queue-container">
+  <mat-card *ngFor="let item of listQueue">
+    <div class="info-queue">
+      {{item}}
+    </div>
+    <button mat-button *ngIf="enableToSignIn">Записаться в очередь</button>
+  </mat-card>
+  <div class="empty-queue" *ngIf="!listQueue.length">
+    <h2>Список пуст</h2>
+  </div>
+</div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-list-queue',
@@ -6,7 +6,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./list-queue.component.scss']
 })
 export class ListQueueComponent implements OnInit {
-  cards = ['123'];
+  @Input()
+  listQueue = [];
+
+  @Input()
+  enableToSignIn = true;
 
   constructor() { }
 
