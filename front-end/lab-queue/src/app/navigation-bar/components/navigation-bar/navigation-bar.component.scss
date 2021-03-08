@@ -1,5 +1,27 @@
+$icon-size: 32px;
+
 .main-container
 {
   height: 100px;
   background-color: lightseagreen;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1em;
+
+  mat-icon {
+    font-size: $icon-size;
+  }
+
+  .main-logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+
+    img {
+      height: 80%;
+    }
+
+  }
 }
