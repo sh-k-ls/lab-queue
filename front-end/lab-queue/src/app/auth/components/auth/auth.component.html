@@ -1,1 +1,26 @@
-<p>auth works!</p>
+<div class="main-container">
+  <mat-card>
+    <div class="content">
+      <p>
+        <mat-form-field appearance="legacy">
+          <mat-label>Username</mat-label>
+          <input matInput #username placeholder="john">
+    <!--      <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>-->
+    <!--      <mat-hint>Hint</mat-hint>-->
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="legacy">
+          <mat-label>Password</mat-label>
+          <input matInput #password placeholder="changeme">
+          <!--      <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>-->
+          <!--      <mat-hint>Hint</mat-hint>-->
+        </mat-form-field>
+      </p>
+      <button mat-button (click)="login({username: username.value, password: password.value})">
+        Enter
+      </button>
+      <div class="error-message" *ngIf="!dataCorrect">Invalid username or password</div>
+    </div>
+  </mat-card>
+</div>

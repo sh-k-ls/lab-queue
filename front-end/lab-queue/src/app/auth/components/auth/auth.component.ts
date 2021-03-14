@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import {AuthService} from '../../services/auth.service';
+import {User} from '../../../../shared/interfaces/user.interface';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-auth',
@@ -7,9 +10,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AuthComponent implements OnInit {
 
-  constructor() { }
+  dataCorrect = true;
+  constructor(private auth: AuthService,
+              private route: Router)
+  { }
 
   ngOnInit(): void {
   }
 
+  login(user: User): void
+  {
+    this.auth.signIn(user).subscribe( (res) => {
+      this.dataCorrect = res;
+    });
+  }
 }
