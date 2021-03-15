@@ -13,6 +13,12 @@ import {MatChipInputEvent} from '@angular/material/chips';
 })
 
 export class CreateQueueComponent implements OnInit {
+
+  constructor() {
+    this.filteredTeachers = this.myControlTeacher.valueChanges.pipe(
+      startWith(null),
+      map((teacher: string | null) => teacher ? this._filter1(teacher) : this.allTeachers.slice()));
+  }
   visible = true;
   selectable = true;
   removable = true;
@@ -30,11 +36,8 @@ export class CreateQueueComponent implements OnInit {
   @ViewChild('teacherInput') teacherInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
-  constructor() {
-    this.filteredTeachers = this.myControlTeacher.valueChanges.pipe(
-      startWith(null),
-      map((teacher: string | null) => teacher ? this._filter1(teacher) : this.allTeachers.slice()));
-  }
+  minDate = new Date();
+  maxDate = new Date(2030, 1, 25);
 
   ngOnInit(): void {
     this.filteredCourses = this.myControlCourse.valueChanges
@@ -42,6 +45,11 @@ export class CreateQueueComponent implements OnInit {
         startWith(''),
         map(value => this._filter(value))
       );
+  }
+
+  dateFilter = (date) => {
+    const day = date.getDay();
+    return day !== 0;
   }
 
   add(event: MatChipInputEvent): void {
