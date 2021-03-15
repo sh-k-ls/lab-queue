@@ -10,9 +10,13 @@ import {QueueInterface} from '../../../../shared/queue.interface';
 export class InfoQueueComponent implements OnInit {
 
   queue: QueueInterface = {name: 'имя очереди', description: 'очередь', nameTeacher: 'преподаватель'};
+
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  toSignUp(): void {
+
+  }
 }

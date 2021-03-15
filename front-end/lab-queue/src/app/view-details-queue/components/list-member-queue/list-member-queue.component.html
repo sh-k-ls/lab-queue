@@ -1,1 +1,6 @@
-<p>list-member-queue works!</p>
+<mat-card *ngFor="let item of listMemberQueue">
+  <div class="info-queue">
+    {{item}}
+  </div>
+  <button mat-button *ngIf="enableToSignIn">Записаться в очередь</button>
+</mat-card>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-view-details-queue',
@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ViewDetailsQueueComponent implements OnInit {
 
+  public memberList = [];
   constructor() { }
 
   ngOnInit(): void {
