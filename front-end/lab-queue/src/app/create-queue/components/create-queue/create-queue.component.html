@@ -1,1 +1,17 @@
-<p>create-queue works!</p>
+<div class="create-queue-container">
+  <h1>Создать очередь</h1>
+    <mat-form-field class="full-width">
+      <mat-label>Название предмета</mat-label>
+      <input type="text"
+             placeholder="Выберите предмет"
+             aria-label="Предмет"
+             matInput
+             [formControl]="myControlCourse"
+             [matAutocomplete]="autoCourse">
+      <mat-autocomplete #autoCourse="matAutocomplete">
+        <mat-option *ngFor="let course of filteredCourses | async" [value]="course">
+          {{course}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+</div>

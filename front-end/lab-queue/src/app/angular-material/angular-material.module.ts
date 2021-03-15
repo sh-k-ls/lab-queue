@@ -6,6 +6,10 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatOptionModule } from '@angular/material/core';
+import { ReactiveFormsModule} from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatChipsModule } from '@angular/material/chips';
 
 const modules = [
   MatIconModule,
@@ -14,7 +18,11 @@ const modules = [
   MatButtonToggleModule,
   MatMenuModule,
   MatFormFieldModule,
-  MatInputModule
+  MatInputModule,
+  MatOptionModule,
+  ReactiveFormsModule,
+  MatAutocompleteModule,
+  MatChipsModule,
 ];
 
 @NgModule({
