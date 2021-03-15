@@ -14,4 +14,30 @@
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
+  <mat-form-field class="full-width">
+    <mat-label>Преподаватели</mat-label>
+    <mat-chip-list #chipList aria-label="Teacher selection">
+      <mat-chip
+        *ngFor="let teacher of teachers"
+        [selectable]="selectable"
+        [removable]="removable"
+        (removed)="remove(teacher)">
+        {{teacher}}
+        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+      </mat-chip>
+      <input
+        placeholder="Добавить преподавателя..."
+        #teacherInput
+        [formControl]="myControlTeacher"
+        [matAutocomplete]="autoTeacher"
+        [matChipInputFor]="chipList"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        (matChipInputTokenEnd)="add($event)">
+    </mat-chip-list>
+    <mat-autocomplete #autoTeacher="matAutocomplete" (optionSelected)="selected($event)">
+      <mat-option *ngFor="let teacher of filteredTeachers | async" [value]="teacher">
+        {{teacher}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
 </div>
