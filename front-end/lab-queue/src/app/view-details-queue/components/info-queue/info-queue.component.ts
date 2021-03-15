@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {QueueInterface} from '../../../../shared/queue.interface';
+import {QueueInterface} from '../../../../shared/interfaces/queue.interface';
 
 
 @Component({
