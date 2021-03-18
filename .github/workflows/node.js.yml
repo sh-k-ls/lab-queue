@@ -35,6 +35,6 @@ jobs:
     - name: Build NestJS Server
       run: |
           cd back-end/lab-queue
-          npm intstall -g @nestjs/cli
-          npm intstall
+          npm install -g @nestjs/cli
+          npm install
           npm run build
