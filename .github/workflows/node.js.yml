@@ -24,7 +24,8 @@ jobs:
 #     - run: npm ci
 #     - run: npm run build --if-present
 #     - run: npm test
-    - run: cd front-end/lab-queue
-    - run: npm install -g @angular/cli
-    - run: npm install
-    - run: npm run build
+    - run: |
+           cd front-end/lab-queue
+           npm install -g @angular/cli
+           npm install
+           npm run build
