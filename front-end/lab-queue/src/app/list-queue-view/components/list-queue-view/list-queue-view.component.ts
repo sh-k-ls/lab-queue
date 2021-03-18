@@ -26,9 +26,7 @@ export class ListQueueViewComponent implements OnInit {
   }
 
   async addQueueBtnPush(): Promise<void> {
-    this.api.createQueue({name: 'новая очередь', description: 'описание', nameTeacher: 'Тассов'}).subscribe(
-      queue => console.log(queue)
-    );
+    this.api.createQueue({name: 'новая очередь', description: 'описание', nameTeacher: 'Тассов'}).subscribe();
     await this.updateList().then(list => this.enableQueueList = list);
     this.showList = this.enableQueueList;
   }
