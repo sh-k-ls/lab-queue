@@ -24,7 +24,8 @@ jobs:
 #     - run: npm ci
 #     - run: npm run build --if-present
 #     - run: npm test
-    - run: |
+    - name: Build Angular SPA
+      run: |
            cd front-end/lab-queue
            npm install -g @angular/cli
            npm install
