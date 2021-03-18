@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../api-service/api.service';
+import { QueueInterface } from '../../../../shared/interfaces/queue.interface';
 
 @Component({
   selector: 'app-list-queue-view',
@@ -7,19 +9,28 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListQueueViewComponent implements OnInit {
 
-  public showList = [];
-  private enableQueueList = ['Очередь 1'];
-  private signQueueList = ['Очередь 2'];
-  private authorQueueList = [];
+  public showList: QueueInterface[] = [];
+  private enableQueueList: QueueInterface[] = [];
+  private signQueueList: QueueInterface[] = [];
+  private authorQueueList: QueueInterface[] = [];
 
-  constructor() { }
+  constructor(private api: ApiService) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    await this.updateList().then(list => this.enableQueueList = list);
     this.showList = this.enableQueueList;
   }
 
-  addQueueBtnPush(): void {
-    this.authorQueueList.push('Новая очередь');
+  async updateList(): Promise<QueueInterface[]> {
+    return this.api.getQueue().toPromise();
+  }
+
+  async addQueueBtnPush(): Promise<void> {
+    this.api.createQueue({name: 'новая очередь', description: 'описание', nameTeacher: 'Тассов'}).subscribe(
+      queue => console.log(queue)
+    );
+    await this.updateList().then(list => this.enableQueueList = list);
+    this.showList = this.enableQueueList;
   }
 
   typeQueueChange(value): void {
