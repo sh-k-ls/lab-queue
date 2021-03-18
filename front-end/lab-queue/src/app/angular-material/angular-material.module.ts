@@ -11,6 +11,7 @@ import { ReactiveFormsModule} from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 
 const modules = [
   MatIconModule,
@@ -26,6 +27,7 @@ const modules = [
   MatChipsModule,
   MatDatepickerModule,
   MatNativeDateModule,
+  NgxMaterialTimepickerModule,
 ];
 
 @NgModule({

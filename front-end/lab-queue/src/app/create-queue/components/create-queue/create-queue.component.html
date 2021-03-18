@@ -1,6 +1,6 @@
 <div class="create-queue-container">
-  <mat-card>
   <h1>Создать очередь</h1>
+  <mat-card>
     <mat-form-field class="full-width">
       <mat-label>Название предмета</mat-label>
       <input type="text"
@@ -41,12 +41,26 @@
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
-    <mat-form-field>
+    <mat-form-field class="part-width">
       <mat-label>Дата</mat-label>
       <input matInput [min]="minDate" [max]="maxDate" [matDatepickerFilter]="dateFilter" [matDatepicker]="myDatepicker">
       <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
       <mat-datepicker #myDatepicker></mat-datepicker>
     </mat-form-field>
+    <div>
+      <mat-form-field class="part-width">
+        <input
+          matInput
+          [ngxTimepicker]="fulltime"
+          [format]="24"
+          placeholder="Время"
+        />
+        <ngx-material-timepicker
+          #fulltime
+          [enableKeyboardInput]=true>
+        ></ngx-material-timepicker>
+      </mat-form-field>
+    </div>
     <mat-form-field class="full-width">
       <mat-label>Примечания</mat-label>
       <textarea matInput></textarea>

@@ -3,7 +3,44 @@
     text-align: center;
   }
 
+  div {
+    display:flex
+  }
+
   .full-width {
     width: 100%;
   }
+
+  .part-width {
+    width: 35%;
+  }
+
+  mat-card {
+    margin-top: 10px;
+    border-style: solid;
+    border-width: 1px;
+    }
+}
+
+::ng-deep ngx-material-timepicker-content{
+  --button-color: lightseagreen !important;
+  --dial-background-color: lightseagreen !important;
+  --dial-editable-active-color: lightseagreen !important;
+  --clock-hand-color: lightseagreen !important;
+}
+
+::ng-deep .mat-focused .mat-form-field-label {
+  color: lightseagreen !important;
+}
+
+::ng-deep.mat-form-field-ripple {
+  background-color: lightseagreen !important;;
+}
+
+::ng-deep.mat-datepicker-toggle {
+  color: lightseagreen !important;
+}
+
+::ng-deep.mat-calendar-body-selected {
+  background: lightseagreen !important;
 }
