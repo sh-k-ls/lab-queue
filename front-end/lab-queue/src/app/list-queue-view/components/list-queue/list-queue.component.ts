@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import { QueueInterface } from '../../../../shared/interfaces/queue.interface';
 
 @Component({
   selector: 'app-list-queue',
@@ -7,7 +8,7 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class ListQueueComponent implements OnInit {
   @Input()
-  listQueue = [];
+  listQueue: QueueInterface[] = [];
 
   @Input()
   enableToSignIn = true;
