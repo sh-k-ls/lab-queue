@@ -96,11 +96,15 @@ jobs:
 #           npm install -g @nestjs/cli
 #           npm install
 #           npm run build
+
+    - run: 'echo "$SERVER_KEY" > key'
+      shell: bash
+      env:
+        SSH_KEY: ${{secrets.SERVER_KEY}}
     
     - name: Deploy NestJS Server
       run: |
-          echo "${{secrets.SERVER_KEY}}" > my-nest-server.pem
-          ssh -v -i my-nest-server.pem ec2-user@ec2-3-16-22-180.us-east-2.compute.amazonaws.com
+          ssh -v -i key ec2-user@ec2-3-16-22-180.us-east-2.compute.amazonaws.com
           cd lab-queue
           git pull
           git checkout develop
