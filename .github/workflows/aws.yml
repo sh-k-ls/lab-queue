@@ -74,21 +74,21 @@ jobs:
             aws s3 cp ./lab-queue s3://${{ env.EB_PACKAGE_S3_BUCKET_NAME }}/ --recursive --acl public-read-write
     
           
-  deploy-server:
-    name: Deploy NestJS Server
-    runs-on: ubuntu-latest
-    environment: production
+#   deploy-server:
+#     name: Deploy NestJS Server
+#     runs-on: ubuntu-latest
+#     environment: production
     
-    strategy:
-      matrix:
-        node-version: [12.x]
+#     strategy:
+#       matrix:
+#         node-version: [12.x]
 
-    steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
+#     steps:
+#     - uses: actions/checkout@v2
+#     - name: Use Node.js ${{ matrix.node-version }}
+#       uses: actions/setup-node@v1
+#       with:
+#         node-version: ${{ matrix.node-version }}
   
 #     - name: Build NestJS Server
 #       run: |
@@ -97,16 +97,16 @@ jobs:
 #           npm install
 #           npm run build
     
-    - name: Deploy NestJS Server
-      run: |
-          ls -la
-          ssh -v -i .github/workflows/my-nest-server.pem ec2-user@ec2-3-16-22-180.us-east-2.compute.amazonaws.com
-          cd lab-queue
-          git pull
-          git checkout develop
-          cd back-end/lab-queue
-          npm i
-          npm run start
+#     - name: Deploy NestJS Server
+#       run: |
+#           ls -la
+#           ssh -v -i .github/workflows/my-nest-server.pem ec2-user@ec2-3-16-22-180.us-east-2.compute.amazonaws.com
+#           cd lab-queue
+#           git pull
+#           git checkout develop
+#           cd back-end/lab-queue
+#           npm i
+#           npm run start
     
         
     
