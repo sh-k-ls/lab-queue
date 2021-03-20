@@ -1,7 +1,7 @@
 <div class="list-queue-container">
   <mat-card *ngFor="let item of listQueue">
     <div class="info-queue">
-      {{item}}
+      {{item.name}}
     </div>
     <button mat-button *ngIf="enableToSignIn">Записаться в очередь</button>
   </mat-card>

@@ -1,0 +1,119 @@
+# This workflow will build and push a new container image to Amazon ECR,
+# and then will deploy a new task definition to Amazon ECS, when a release is created
+#
+# To use this workflow, you will need to complete the following set-up steps:
+#
+# 1. Create an ECR repository to store your images.
+#    For example: `aws ecr create-repository --repository-name my-ecr-repo --region us-east-2`.
+#    Replace the value of `ECR_REPOSITORY` in the workflow below with your repository's name.
+#    Replace the value of `aws-region` in the workflow below with your repository's region.
+#
+# 2. Create an ECS task definition, an ECS cluster, and an ECS service.
+#    For example, follow the Getting Started guide on the ECS console:
+#      https://us-east-2.console.aws.amazon.com/ecs/home?region=us-east-2#/firstRun
+#    Replace the values for `service` and `cluster` in the workflow below with your service and cluster names.
+#
+# 3. Store your ECS task definition as a JSON file in your repository.
+#    The format should follow the output of `aws ecs register-task-definition --generate-cli-skeleton`.
+#    Replace the value of `task-definition` in the workflow below with your JSON file's name.
+#    Replace the value of `container-name` in the workflow below with the name of the container
+#    in the `containerDefinitions` section of the task definition.
+#
+# 4. Store an IAM user access key in GitHub Actions secrets named `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
+#    See the documentation for each action used below for the recommended IAM policies for this IAM user,
+#    and best practices on handling the access key credentials.
+env:
+  EB_PACKAGE_S3_BUCKET_NAME : "angular-lab-queue-v3"
+  EB_APPLICATION_NAME       : "AngularSPA"
+  EB_ENVIRONMENT_NAME       : "AngularSPA-env"
+  DEPLOY_PACKAGE_NAME       : "angular_app_${{ github.sha }}"
+  AWS_REGION_NAME           : "us-east-2"
+
+on:
+  push:
+    branches: [develop]
+
+name: Deploy to Amazon ECS
+
+jobs:
+  deploy-client:
+    name: Deploy Angular Client
+    runs-on: ubuntu-latest
+    environment: production
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+        
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION_NAME }}
+        
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    
+    - name: Build Angular Production
+      run: |
+          cd front-end/lab-queue
+          npm install -g @angular/cli
+          npm install
+          ng build --prod
+          
+    - name: Copy Deployment package to S3 bucket
+      run : |
+            cd front-end/lab-queue/dist
+            aws s3 cp ./lab-queue s3://${{ env.EB_PACKAGE_S3_BUCKET_NAME }}/ --recursive --acl public-read-write
+    
+          
+#   deploy-server:
+#     name: Deploy NestJS Server
+#     runs-on: ubuntu-latest
+#     environment: production
+    
+#     strategy:
+#       matrix:
+#         node-version: [12.x]
+
+#     steps:
+#     - uses: actions/checkout@v2
+#     - name: Use Node.js ${{ matrix.node-version }}
+#       uses: actions/setup-node@v1
+#       with:
+#         node-version: ${{ matrix.node-version }}
+  
+#     - name: Build NestJS Server
+#       run: |
+#           cd back-end/lab-queue
+#           npm install -g @nestjs/cli
+#           npm install
+#           npm run build
+    
+#     - name: Deploy NestJS Server
+#       run: |
+#           ls -la
+#           ssh -v -i .github/workflows/my-nest-server.pem ec2-user@ec2-3-16-22-180.us-east-2.compute.amazonaws.com
+#           cd lab-queue
+#           git pull
+#           git checkout develop
+#           cd back-end/lab-queue
+#           npm i
+#           npm run start
+    
+        
+    
+#     - name: Create new ElasticBeanstalk Application Version
+#       run : |
+#         aws elasticbeanstalk create-application-version \
+#         --application-name ${{ env.EB_APPLICATION_NAME }} \
+#         --source-bundle S3Bucket="${{ env.EB_PACKAGE_S3_BUCKET_NAME }}",S3Key="${{ env.DEPLOY_PACKAGE_NAME }}" \
+#         --version-label "Ver-${{ github.sha }}" \
+#         --description "CoimmitSHA-${{ github.sha }}"
