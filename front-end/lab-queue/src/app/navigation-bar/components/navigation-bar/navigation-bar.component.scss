@@ -1,9 +1,13 @@
+@import "src/theme";
+
 $icon-size: 32px;
+
+
 
 .main-container
 {
   height: 100px;
-  background-color: lightseagreen;
+  background-color: mat-color($candy-app-primary);
   display: flex;
   justify-content: space-between;
   align-items: center;
