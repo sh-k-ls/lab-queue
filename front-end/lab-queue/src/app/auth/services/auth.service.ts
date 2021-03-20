@@ -4,26 +4,27 @@ import {Router} from '@angular/router';
 import {User} from '../../../shared/interfaces/user.interface';
 import {Observable, of} from 'rxjs';
 import {catchError, mapTo, tap} from 'rxjs/operators';
+import { ApiService } from '../../api-service/api.service';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  headers = new HttpHeaders().set('Content-Type', 'application/json');
-  res: any;
   private token: string;
 
   constructor(
     private http: HttpClient,
-    public router: Router
+    public router: Router,
+    private api: ApiService
   ) { }
 
   signIn(user: User): Observable<boolean> {
-    return this.http.post<{token: string}>(`/api/auth/login`, user)
+    return this.api.signIn(user)
       .pipe(
         tap(
           ({token}) => {
-            localStorage.setItem('access-token', token);
+            localStorage.setItem(environment.localStorageToken, token);
             this.setToken(token);
             this.router.navigate(['/queue']);
           }
@@ -42,13 +43,13 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    const token = localStorage.getItem('access-token');
+    const token = localStorage.getItem(environment.localStorageToken);
     return !!token;
   }
 
   logout(): void {
     this.setToken(null);
-    const removeToken = localStorage.removeItem('access-token');
+    const removeToken = localStorage.removeItem(environment.localStorageToken);
     if (removeToken == null) {
       this.router.navigate(['/auth']);
     }
