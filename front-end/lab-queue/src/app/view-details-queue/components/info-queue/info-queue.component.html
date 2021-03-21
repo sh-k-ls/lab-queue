@@ -1,4 +1,4 @@
-<p>info-queue works!</p>
+
 <!-- {{queue.}} -->
 
 <div class="info-queue-container">
@@ -14,7 +14,11 @@
       </div>
       <div>Описание: {{queue.description}}</div>
       <div class="queue-button">
-        <button mat-button (click)="toSignUp()">Записаться в очередь</button>
+        <p>opa {{isSigned}}</p>
+        <button mat-raised-button [color]="isSigned ? 'warn' : 'primary'" (click)="toSignUp()">
+          <p *ngIf="isSigned">Выйти из очереди</p>
+          <p *ngIf="!isSigned">Записаться в очередь</p>
+        </button>
       </div>
     </div>
   </mat-card>

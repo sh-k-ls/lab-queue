@@ -7,10 +7,7 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class ListMemberQueueComponent implements OnInit {
   @Input()
-  listMemberQueue = [];
-
-  @Input()
-  enableToSignIn = true;
+  listMemberQueue: string[];
 
   constructor() { }
 
