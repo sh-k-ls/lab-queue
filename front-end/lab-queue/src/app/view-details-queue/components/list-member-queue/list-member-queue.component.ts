@@ -7,7 +7,7 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class ListMemberQueueComponent implements OnInit {
   @Input()
-  listMemberQueue: string[];
+  listMemberQueue: string[] = [];
 
   constructor() { }
 

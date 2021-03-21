@@ -11,14 +11,14 @@ export class InfoQueueComponent implements OnInit {
 
   queue: QueueInterface = {name: 'имя очереди', description: 'очередь', nameTeacher: 'преподаватель'};
 
-  @Output() newItemEvent = new EventEmitter<boolean>();
+  @Output()
+  public newItemEvent = new EventEmitter<boolean>();
 
-  isSigned: boolean;
+  public isSigned = false;
 
   constructor() { }
 
   ngOnInit(): void {
-    this.isSigned = false;
   }
 
   toSignUp(): void {

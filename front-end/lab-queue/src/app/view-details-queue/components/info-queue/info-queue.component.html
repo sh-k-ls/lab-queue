@@ -14,7 +14,6 @@
       </div>
       <div>Описание: {{queue.description}}</div>
       <div class="queue-button">
-        <p>opa {{isSigned}}</p>
         <button mat-raised-button [color]="isSigned ? 'warn' : 'primary'" (click)="toSignUp()">
           <p *ngIf="isSigned">Выйти из очереди</p>
           <p *ngIf="!isSigned">Записаться в очередь</p>
