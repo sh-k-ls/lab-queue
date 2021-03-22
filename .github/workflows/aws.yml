@@ -82,6 +82,7 @@ jobs:
           heroku_app_name: "lab-queue-server"
           heroku_email: "akorotkov1234@yandex.ru"
           branch: "25-setting-deploy-aws"
+          appdir: "back-end/lab-queue"
           
 #   deploy-server:
 #     name: Deploy NestJS Server
