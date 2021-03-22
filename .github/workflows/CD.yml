@@ -50,6 +50,7 @@ jobs:
 
 
   deploy-server:
+    name: Deploy NestJS Server
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
