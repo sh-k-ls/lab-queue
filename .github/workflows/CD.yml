@@ -4,8 +4,8 @@ env:
 
 on:
   push:
-    branch:
-      develop
+    branches:
+      - develop
 
 name: Deploy Client and Server
 
