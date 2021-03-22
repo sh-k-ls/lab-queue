@@ -1,13 +1,14 @@
 env:
   EB_PACKAGE_S3_BUCKET_NAME : "angular-lab-queue-v3"
   AWS_REGION_NAME           : "us-east-2"
+  BRANCH_DEPLOY             : "develop"
 
 name: CD
 
 on:
   push:
     branches:
-      - develop
+      - env.BRANCH_DEPLOY
 
 jobs:
   deploy-client:
@@ -57,5 +58,5 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "lab-queue-server"
           heroku_email: "akorotkov1234@yandex.ru"
-          branch: "25-setting-deploy-aws"
+          branch: "env.BRANCH_DEPLOY"
           appdir: "back-end/lab-queue"
