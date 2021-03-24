@@ -28,11 +28,11 @@ export class InfoQueueComponent implements OnInit {
 
   toSignUp(): void {
     if (this.isSigned) {
-      this.api.changeQueueRequest(String(this.id), '1');
+      this.api.changeQueueRequest(String(this.id), '1').subscribe();
     }
     else {
       const request: RequestInterface = {userId: 1, isSigned: true, queueId: this.id};
-      this.api.createQueueRequests(String(this.id), request);
+      this.api.createQueueRequests(String(this.id), request).subscribe();
     }
     this.isSigned = !this.isSigned;
     this.newItemEvent.emit(this.isSigned);
