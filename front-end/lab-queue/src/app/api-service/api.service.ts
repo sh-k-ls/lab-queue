@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { QueueInterface } from '../../shared/interfaces/queue.interface';
 import { User } from '../../shared/interfaces/user.interface';
+import {RequestInterface} from '../../shared/interfaces/request.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +32,28 @@ export class ApiService {
   public getQueueById(idQueue: string): Observable<QueueInterface> {
     const url = `/api/v1/queue/${idQueue}`;
     return this.http.get<QueueInterface>(url);
+  }
+
+  // GET /api/v1/queue/:id/request
+  public getQueueRequests(idQueue: string): Observable<RequestInterface[]>{
+    const url = `/api/v1/queue/${idQueue}/request`;
+    return this.http.get<RequestInterface[]>(url);
+  }
+
+  // POST /api/v1/queue/:id/request
+  public createQueueRequests(idQueue: string, request: RequestInterface): Observable<RequestInterface>{
+    const url = `/api/v1/queue/${idQueue}/request`;
+    return this.http.post<RequestInterface>(url, request);
+  }
+
+
+  // PATCH /api/v1/request/:id
+  public changeQueueRequest(idRequest: string, userId: string): Observable<RequestInterface>{
+    const url = '/api/v1/request/${idRequest}';
+    const params = new HttpParams()
+      .set('userId', userId);
+
+    return this.http.patch<RequestInterface>(url, {params});
   }
 
   // PATCH /api/v1/queue/:id
