@@ -20,7 +20,7 @@ export class ViewDetailsQueueComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap.pipe(
-      switchMap(params => params.getAll('id'))
+      switchMap(params => params.getAll('idQueue'))
     )
       .subscribe(data => this.id = +data);
   }
