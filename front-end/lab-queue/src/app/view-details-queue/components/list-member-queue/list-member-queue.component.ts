@@ -1,4 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {ApiService} from '../../../api-service/api.service';
+import {RequestInterface} from '../../../../shared/interfaces/request.interface';
 
 @Component({
   selector: 'app-list-member-queue',
@@ -7,11 +9,18 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class ListMemberQueueComponent implements OnInit {
   @Input()
-  listMemberQueue: string[] = [];
+  listMemberQueue: RequestInterface[] = [];
 
-  constructor() { }
+  @Input()
+  id: number;
+
+  constructor(private readonly api: ApiService) {
+  }
 
   ngOnInit(): void {
+    this.api.getQueueById('1').subscribe(queue => console.log(queue));
+    this.api.getQueueRequests(String(this.id)).subscribe(requests => this.listMemberQueue = requests);
+
   }
 
 }
