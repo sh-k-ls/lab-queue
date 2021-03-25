@@ -15,7 +15,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'details',
+    path: 'details/:idQueue',
     loadChildren: () => import('./view-details-queue/view-details-queue.module').then(m => m.ViewDetailsQueueModule),
     canActivate: [AuthGuard]
   },
