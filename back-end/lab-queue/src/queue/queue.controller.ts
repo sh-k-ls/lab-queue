@@ -38,7 +38,6 @@ export class QueueController {
 	@UseGuards(JwtAuthGuard)
 	@Get('creator')
 	getAllQueuesCreator(@Request() req): QueueDto[] {
-		console.log(req.user);
 		return this.queue.getByUserCreatorId(req.user);
 	}
 

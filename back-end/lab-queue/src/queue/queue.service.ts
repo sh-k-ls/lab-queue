@@ -41,8 +41,6 @@ export class QueueService {
 	public getByUserAvailableId(user: UserDto): QueueDto[] {
 		const creatorQueues: QueueDto[] = this.getByUserCreatorId(user);
 		const signedQueues: QueueDto[] = this.getByUserSignedId(user);
-		console.log(creatorQueues);
-		console.log(signedQueues);
 
 		return this.queues.filter(
 			(queue) =>

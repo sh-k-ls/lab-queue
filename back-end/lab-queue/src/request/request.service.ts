@@ -25,9 +25,7 @@ export class RequestService {
 	}
 
 	public pushRequest(request: RequestDto): number {
-		this.requests.push(request);
-		console.log(this.requests);
-		return 1;
+		return this.requests.push(request);
 	}
 
 	public delRequest(request: RequestDto): number {
