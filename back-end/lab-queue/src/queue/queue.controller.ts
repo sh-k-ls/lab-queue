@@ -14,6 +14,7 @@ import { QueueService } from './queue.service';
 import { QueueDto } from '../shared/classes/queue.dto';
 import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
 import { RequestService } from '../request/request.service';
+import { RequestDto } from '../shared/classes/request.dto';
 
 @Controller('api/v1/queue')
 export class QueueController {
@@ -54,6 +55,12 @@ export class QueueController {
 	}
 
 	@UseGuards(JwtAuthGuard)
+	@Get(':id/request')
+	getRequestsByQueueId(@Param('id') idQueue: number): RequestDto[] {
+		return this.request.getByQueueId(idQueue);
+	}
+
+	@UseGuards(JwtAuthGuard)
 	@Patch(':id')
 	editQueueById(@Param('id') id: number, @Body() queue: QueueDto): QueueDto {
 		return queue;
@@ -70,7 +77,7 @@ export class QueueController {
 	}
 
 	@UseGuards(JwtAuthGuard)
-	@Patch(':id/sighOut')
+	@Patch(':id/signOut')
 	sighOutQueue(@Param('id') queueId: string, @Request() req): number {
 		return this.request.delRequest({
 			queueId: +queueId,
