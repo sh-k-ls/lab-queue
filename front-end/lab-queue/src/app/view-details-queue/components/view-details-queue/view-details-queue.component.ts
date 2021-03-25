@@ -1,4 +1,8 @@
 import {Component,  OnInit} from '@angular/core';
+import {ApiService} from '../../../api-service/api.service';
+import {  ActivatedRoute } from '@angular/router';
+import { switchMap } from 'rxjs/operators';
+import {RequestInterface} from '../../../../shared/interfaces/request.interface';
 
 @Component({
   selector: 'app-view-details-queue',
@@ -8,21 +12,21 @@ import {Component,  OnInit} from '@angular/core';
 
 export class ViewDetailsQueueComponent implements OnInit {
 
-  public memberList: string[] = [];
-
-  constructor() { }
+  public memberList: RequestInterface[] = [];
+  id: number;
+  constructor(private readonly api: ApiService,
+              private route: ActivatedRoute, ) { }
 
 
   ngOnInit(): void {
+    this.route.paramMap.pipe(
+      switchMap(params => params.getAll('idQueue'))
+    )
+      .subscribe(data => this.id = +data);
   }
 
   toSignup($event: boolean): void {
-    if ($event) {
-      this.memberList.push('hi');
-    }
-    else {
-      this.memberList.pop();
-    }
+
     console.log($event);
   }
 }
