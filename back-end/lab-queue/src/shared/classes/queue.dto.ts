@@ -1,7 +1,9 @@
 export class QueueDto {
-  name: string;
-  nameTeacher: string;
-  dateCreate: string;
-  creatorName: string;
-  description: string;
+	id: number;
+	name: string;
+	nameTeacher: string;
+	dateCreate: string;
+	creatorID: number;
+	description: string;
+	group: string;
 }
