@@ -28,7 +28,7 @@ export class InfoQueueComponent implements OnInit {
 
   toSignUp(): void {
     if (this.isSigned) {
-      this.api.changeQueueRequest(String(this.id), '1').subscribe();
+      this.api.changeQueueRequest(String(this.id)).subscribe();
     }
     else {
       const request: RequestInterface = {userId: 1, isSigned: true, queueId: this.id};
