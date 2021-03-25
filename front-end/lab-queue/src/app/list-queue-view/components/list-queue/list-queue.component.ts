@@ -20,6 +20,6 @@ export class ListQueueComponent implements OnInit {
   }
 
   public openDetails(idQueue: number): void {
-    this.router.navigate(['/details/' + idQueue]);
+    this.router.navigate(['/details/', idQueue]);
   }
 }
