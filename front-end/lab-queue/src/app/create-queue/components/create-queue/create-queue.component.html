@@ -3,7 +3,8 @@
   <mat-card>
     <mat-form-field class="full-width">
       <mat-label>Название предмета</mat-label>
-      <input type="text"
+      <input #nameSubject
+             type="text"
              placeholder="Выберите предмет"
              aria-label="Предмет"
              matInput
@@ -22,25 +23,58 @@
           *ngFor="let teacher of teachers"
           [selectable]="selectable"
           [removable]="removable"
-          (removed)="remove(teacher)">
+          (removed)="removeTeacher(teacher)">
           {{teacher}}
           <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
         </mat-chip>
-        <input
+        <input #nameTeacherInput
           placeholder="Добавить преподавателя..."
           #teacherInput
           [formControl]="myControlTeacher"
           [matAutocomplete]="autoTeacher"
           [matChipInputFor]="chipList"
           [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-          (matChipInputTokenEnd)="add($event)">
+          (matChipInputTokenEnd)="addTeacher($event)">
       </mat-chip-list>
-      <mat-autocomplete #autoTeacher="matAutocomplete" (optionSelected)="selected($event)">
+      <mat-autocomplete #autoTeacher="matAutocomplete" (optionSelected)="selectedTeacher($event)">
         <mat-option *ngFor="let teacher of filteredTeachers | async" [value]="teacher">
           {{teacher}}
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
+    <div class="participants-container">
+    <mat-form-field class="part-width">
+      <mat-label>Тип участников</mat-label>
+      <mat-select #typeParticipant (valueChange)="chooseParticipants(typeParticipant.value)">
+        <mat-option value="course">Поток</mat-option>
+        <mat-option value="group" >Группа</mat-option>
+      </mat-select>
+    </mat-form-field>
+      <mat-form-field class="group-dep-container">
+        <mat-chip-list #chipListParticipants aria-label="Participant selection">
+          <mat-chip
+            *ngFor="let participant of participants"
+            [selectable]="selectable"
+            [removable]="removable"
+            (removed)="removeParticipant(participant)">
+            {{participant}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+          <input placeholder="Добавить" [disabled]="!typeParticipant.value"
+                 #participantInput
+                 [formControl]="myControlParticipant"
+                 [matAutocomplete]="autoParticipant"
+                 [matChipInputFor]="chipListParticipants"
+                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                 (matChipInputTokenEnd)="addParticipant($event)">
+        </mat-chip-list>
+        <mat-autocomplete #autoParticipant="matAutocomplete" (optionSelected)="selectedParticipant($event)">
+          <mat-option *ngFor="let participant of filteredParticipants| async" [value]="participant">
+            {{participant}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
     <mat-form-field class="part-width">
       <mat-label>Дата</mat-label>
       <input matInput [min]="minDate" [max]="maxDate" [matDatepickerFilter]="dateFilter" [matDatepicker]="myDatepicker">
@@ -63,7 +97,10 @@
     </div>
     <mat-form-field class="full-width">
       <mat-label>Примечания</mat-label>
-      <textarea matInput></textarea>
+      <textarea #descriptionInput matInput></textarea>
     </mat-form-field>
+    <div class="create-queue">
+      <button mat-raised-button color="primary">Создать очередь</button>
+    </div>
   </mat-card>
 </div>

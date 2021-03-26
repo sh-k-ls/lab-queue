@@ -1,3 +1,5 @@
+@import "src/theme";
+
 .create-queue-container {
   h1 {
     text-align: center;
@@ -15,6 +17,10 @@
     width: 35%;
   }
 
+  .choose-participants {
+    width: 35%;
+  }
+
   mat-card {
     margin-top: 10px;
     border-style: solid;
@@ -22,25 +28,23 @@
     }
 }
 
+.participants-container {
+  display: flex;
+}
+
+.group-dep-container {
+  margin: 0 10px;
+  width: fit-content;
+}
+
 ::ng-deep ngx-material-timepicker-content{
-  --button-color: lightseagreen !important;
-  --dial-background-color: lightseagreen !important;
-  --dial-editable-active-color: lightseagreen !important;
-  --clock-hand-color: lightseagreen !important;
+  --button-color: #009688 !important;
+  --dial-background-color: #009688 !important;
+  --dial-editable-active-color: #009688 !important;
+  --clock-hand-color: #009688 !important;
 }
 
-::ng-deep .mat-focused .mat-form-field-label {
-  color: lightseagreen !important;
-}
-
-::ng-deep.mat-form-field-ripple {
-  background-color: lightseagreen !important;;
-}
-
-::ng-deep.mat-datepicker-toggle {
-  color: lightseagreen !important;
-}
-
-::ng-deep.mat-calendar-body-selected {
-  background: lightseagreen !important;
+.create-queue {
+  display: flex;
+  justify-content: flex-end;
 }
