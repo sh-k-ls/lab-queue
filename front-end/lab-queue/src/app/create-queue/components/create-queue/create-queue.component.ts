@@ -199,4 +199,11 @@ export class CreateQueueComponent implements OnInit {
       this.allParticipants = this.groupListStr;
     }
   }
+
+  public addQueueBtnPush(queue: QueueInterface): void {
+    this.api.createQueue(queue).subscribe();
+    // TODO сообщение об успешной отправке и переход на queue-list-view с помошью router navigate
+  }
 }
+
+

@@ -100,7 +100,8 @@
       <textarea #descriptionInput matInput></textarea>
     </mat-form-field>
     <div class="create-queue">
-      <button mat-raised-button color="primary">Создать очередь</button>
+      <button mat-raised-button color="primary" (click)="addQueueBtnPush({name: nameSubject.value,
+      nameTeacher: nameTeacherInput.value, description: descriptionInput.value})">Создать очередь</button>
     </div>
   </mat-card>
 </div>
