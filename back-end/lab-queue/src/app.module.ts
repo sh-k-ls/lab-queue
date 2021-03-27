@@ -5,10 +5,11 @@ import { QueueController } from './queue/queue.controller';
 import { QueueService } from './queue/queue.service';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { RequestService } from './request/request.service';
 
 @Module({
   imports: [UsersModule, AuthModule],
   controllers: [AppController, QueueController],
-  providers: [AppService, QueueService],
+  providers: [AppService, QueueService, RequestService],
 })
 export class AppModule {}

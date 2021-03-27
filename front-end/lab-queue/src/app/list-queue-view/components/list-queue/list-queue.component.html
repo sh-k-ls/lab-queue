@@ -1,9 +1,12 @@
 <div class="list-queue-container">
-  <mat-card *ngFor="let item of listQueue">
+  <mat-card matRipple *ngFor="let item of listQueue"
+            (click)="openDetails(item.id)"
+            [matRippleRadius]="10000"
+            [matRippleCentered]="true">
     <div class="info-queue">
       {{item.name}}
     </div>
-    <button mat-button *ngIf="enableToSignIn">Записаться в очередь</button>
+<!--    <button mat-button *ngIf="enableToSignIn">Записаться в очередь</button>-->
   </mat-card>
   <div class="empty-queue" *ngIf="!listQueue.length">
     <h2>Список пуст</h2>

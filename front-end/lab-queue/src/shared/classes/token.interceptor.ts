@@ -17,10 +17,9 @@ export class TokenInterceptor implements HttpInterceptor {
       `${environment.urlApiServer}${req.url}`;
 
     if (this.auth.isAuthenticated()) {
-
       req = req.clone({
         setHeaders: {
-          Authorization: this.auth.getToken()
+          Authorization: 'Bearer ' + this.auth.getToken()
         },
         url: apiUrl
       });
