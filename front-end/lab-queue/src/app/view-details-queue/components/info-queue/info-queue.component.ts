@@ -11,10 +11,12 @@ import {ApiService} from '../../../api-service/api.service';
 })
 export class InfoQueueComponent implements OnInit {
 
-  queue: QueueInterface = {name: 'имя очереди', description: 'очередь', nameTeacher: 'преподаватель'};
 
   @Input()
   id: number;
+
+  @Input()
+  queue: QueueInterface;
 
   @Output()
   public newItemEvent = new EventEmitter<boolean>();
