@@ -14,7 +14,7 @@ export class ListQueueComponent implements OnInit {
   @Input()
   enableToSignIn = true;
 
-  constructor(private router: Router) { }
+  constructor(private readonly router: Router) { }
 
   ngOnInit(): void {
   }
