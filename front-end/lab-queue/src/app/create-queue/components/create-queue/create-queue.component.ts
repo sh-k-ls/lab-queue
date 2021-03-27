@@ -181,6 +181,8 @@ export class CreateQueueComponent implements OnInit {
     this.participants.push(event.option.viewValue);
     this.participantInput.nativeElement.value = '';
     this.myControlParticipant.setValue(null);
+
+    this.participantInput.nativeElement.blur();
   }
 
   private _filterSubjects(value: string): string[] {
