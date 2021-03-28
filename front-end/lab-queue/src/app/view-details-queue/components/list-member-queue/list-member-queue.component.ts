@@ -18,10 +18,13 @@ export class ListMemberQueueComponent implements OnInit {
   constructor(private readonly api: ApiService) {
   }
 
+
+
   ngOnInit(): void {
     this.api.getQueueById('1').subscribe(queue => console.log(queue));
-    this.api.getQueueRequestsProfiles(String(this.id)).subscribe(requests => this.listMemberQueue = requests);
-
   }
 
+  Passed(): void {
+    console.log('hi');
+  }
 }

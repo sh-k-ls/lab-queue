@@ -34,9 +34,14 @@ export class ViewDetailsQueueComponent implements OnInit {
     )
       .subscribe(data => this.id = +data);
     this.api.getQueueById(String(this.id)).subscribe(queue => this.queue = queue);
+    this.updateMembers();
   }
 
-  toSignup($event: boolean): void {
-    console.log($event);
+  public updateMembers(): void{
+    this.api.getQueueRequestsProfiles(String(this.id)).subscribe(requests => this.memberList = requests);
+  }
+
+  toSignup(): void {
+    this.updateMembers();
   }
 }
