@@ -15,12 +15,15 @@ import { QueueDto } from '../shared/classes/queue.dto';
 import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
 import { RequestService } from '../request/request.service';
 import { RequestDto } from '../shared/classes/request.dto';
+import {ProfileDto} from '../shared/classes/profile.dto';
+import {ProfileService} from '../profile/profile.service';
 
 @Controller('api/v1/queue')
 export class QueueController {
 	constructor(
 		private readonly queue: QueueService,
 		private readonly request: RequestService,
+		private readonly profile: ProfileService,
 	) {}
 
 	@UseGuards(JwtAuthGuard)
@@ -58,6 +61,26 @@ export class QueueController {
 	@Get(':id/request')
 	getRequestsByQueueId(@Param('id') idQueue: string): RequestDto[] {
 		return this.request.getByQueueId(+idQueue);
+	}
+
+	@UseGuards(JwtAuthGuard)
+	@Post(':id/request')
+	@HttpCode(HttpStatus.CREATED)
+	addRequestsByQueueId(@Param('id') idQueue: string, @Body() queueReq: RequestDto, @Request() req): number {
+		queueReq.userId = req.user.id;
+		return this.request.pushRequest(queueReq);
+	}
+
+	@UseGuards(JwtAuthGuard)
+	@Get(':id/request/profile')
+	getProfilesByQueueId(@Param('id') idQueue: string): ProfileDto[] {
+		return this.profile.getProfilesByQueueId(+idQueue);
+	}
+
+	@UseGuards(JwtAuthGuard)
+	@Patch(':id/request')
+	editRequestByQueueId(@Param('id') idQueue: string, @Body() queueReq: RequestDto, @Request() req): RequestDto {
+		return this.request.changeSigned(req.user.id, +idQueue);
 	}
 
 	@UseGuards(JwtAuthGuard)
