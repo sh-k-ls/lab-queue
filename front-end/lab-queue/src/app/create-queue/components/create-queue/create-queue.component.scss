@@ -14,7 +14,7 @@
   }
 
   .part-width {
-    width: 35%;
+    flex-grow: 0;
   }
 
   .choose-participants {
@@ -34,7 +34,7 @@
 
 .group-dep-container {
   margin: 0 10px;
-  width: fit-content;
+  flex-grow: 1;
 }
 
 ::ng-deep ngx-material-timepicker-content{

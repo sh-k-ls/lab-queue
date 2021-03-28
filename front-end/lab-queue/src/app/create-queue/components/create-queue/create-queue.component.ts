@@ -20,14 +20,7 @@ export class CreateQueueComponent implements OnInit {
 
   constructor(
     private readonly api: ApiService,
-  ) {
-    this.filteredTeachers = this.myControlTeacher.valueChanges.pipe(
-      startWith(null),
-      map((teacher: string | null) => teacher ? this._filterTeachers(teacher) : this.allTeachers.slice()));
-    this.filteredParticipants = this.myControlParticipant.valueChanges.pipe(
-      startWith(null),
-      map((participant: string | null) => participant ? this._filterParticipants(participant) : this.allParticipants.slice()));
-  }
+  ) { }
   visible = true;
   selectable = true;
   removable = true;
@@ -76,13 +69,29 @@ export class CreateQueueComponent implements OnInit {
   maxDate = new Date(this.minDate.getFullYear(), this.minDate.getMonth() + 1, this.minDate.getMonth());
 
   ngOnInit(): void {
+    this.parserCourse(this.courseList);
+
     this.filteredCourses = this.myControlCourse.valueChanges
       .pipe(
         startWith(''),
         map(value => this._filterSubjects(value))
       );
 
-    this.parserCourse(this.courseList);
+    this.filteredTeachers = this.myControlTeacher.valueChanges
+      .pipe(
+        startWith(''),
+        map((teacher: string | null) => teacher ? this._filterTeachers(teacher) : this.allTeachers.slice())
+      );
+
+    this.updateParticipants();
+  }
+
+  private updateParticipants(): void {
+    this.filteredParticipants = this.myControlParticipant.valueChanges
+      .pipe(
+        startWith(''),
+        map((participant: string | null) => participant ? this._filterParticipants(participant) : this.allParticipants.slice())
+      );
   }
 
   public parserCourse(courses: Course[]): void {
@@ -172,6 +181,8 @@ export class CreateQueueComponent implements OnInit {
     this.participants.push(event.option.viewValue);
     this.participantInput.nativeElement.value = '';
     this.myControlParticipant.setValue(null);
+
+    this.participantInput.nativeElement.blur();
   }
 
   private _filterSubjects(value: string): string[] {
@@ -195,8 +206,10 @@ export class CreateQueueComponent implements OnInit {
   public chooseParticipants(participantType: string): void {
     if (participantType === 'course') {
       this.allParticipants = this.courseListStr;
+      this.updateParticipants();
     } else {
       this.allParticipants = this.groupListStr;
+      this.updateParticipants();
     }
   }
 
