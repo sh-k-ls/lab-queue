@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../api-service/api.service';
 import { QueueInterface } from '../../../../shared/interfaces/queue.interface';
+import { Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-list-queue-view',
@@ -8,39 +10,42 @@ import { QueueInterface } from '../../../../shared/interfaces/queue.interface';
   styleUrls: ['./list-queue-view.component.scss']
 })
 export class ListQueueViewComponent implements OnInit {
-
   public showList: QueueInterface[] = [];
-  private enableQueueList: QueueInterface[] = [];
+  private availableQueueList: QueueInterface[] = [];
   private signQueueList: QueueInterface[] = [];
-  private authorQueueList: QueueInterface[] = [];
+  private creatorQueueList: QueueInterface[] = [];
 
-  constructor(private api: ApiService) { }
+  constructor(private api: ApiService,
+              private readonly router: Router)
+  { }
 
-  async ngOnInit(): Promise<void> {
-    await this.updateList().then(list => this.enableQueueList = list);
-    this.showList = this.enableQueueList;
+  ngOnInit(): void {
+    forkJoin({
+      availableQueues: this.api.getQueueAvailable(),
+      signedQueues: this.api.getQueueSigned(),
+      creatorQueues: this.api.getQueueCreator()})
+      .subscribe(({availableQueues, signedQueues, creatorQueues}) => {
+        this.availableQueueList = availableQueues;
+        this.signQueueList = signedQueues;
+        this.creatorQueueList = creatorQueues;
+        this.showList = this.availableQueueList;
+      });
   }
 
-  async updateList(): Promise<QueueInterface[]> {
-    return this.api.getQueue().toPromise();
-  }
-
-  async addQueueBtnPush(): Promise<void> {
-    this.api.createQueue({name: 'новая очередь', description: 'описание', nameTeacher: 'Тассов'}).subscribe();
-    await this.updateList().then(list => this.enableQueueList = list);
-    this.showList = this.enableQueueList;
+  addQueueBtnPush(): void {
+    this.router.navigate(['/create']);
   }
 
   typeQueueChange(value): void {
     switch (value) {
       case 'enabledQueue':
-        this.showList = this.enableQueueList;
+        this.showList = this.availableQueueList;
         break;
       case 'signQueue':
         this.showList = this.signQueueList;
         break;
       case 'authorQueue':
-        this.showList = this.authorQueueList;
+        this.showList = this.creatorQueueList;
         break;
       default:
         console.log('Error in choosing queue');

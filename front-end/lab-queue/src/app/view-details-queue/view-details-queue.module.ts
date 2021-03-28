@@ -5,6 +5,8 @@ import { ViewDetailsQueueRoutingModule } from './view-details-queue-routing.modu
 import { ViewDetailsQueueComponent } from './components/view-details-queue/view-details-queue.component';
 import { InfoQueueComponent } from './components/info-queue/info-queue.component';
 import { ListMemberQueueComponent } from './components/list-member-queue/list-member-queue.component';
+import {AngularMaterialModule} from '../angular-material/angular-material.module';
+
 
 
 @NgModule({
@@ -13,7 +15,8 @@ import { ListMemberQueueComponent } from './components/list-member-queue/list-me
     ListMemberQueueComponent],
   imports: [
     CommonModule,
-    ViewDetailsQueueRoutingModule
+    ViewDetailsQueueRoutingModule,
+    AngularMaterialModule
   ]
 })
 export class ViewDetailsQueueModule { }
