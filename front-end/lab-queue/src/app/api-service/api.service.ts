@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { QueueInterface } from '../../shared/interfaces/queue.interface';
 import { User } from '../../shared/interfaces/user.interface';
 import {RequestInterface} from '../../shared/interfaces/request.interface';
+import {ProfileInterface} from '../../shared/interfaces/profile.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -50,6 +51,13 @@ export class ApiService {
   public getQueueRequests(idQueue: string): Observable<RequestInterface[]> {
     const url = `/api/v1/queue/${idQueue}/request`;
     return this.http.get<RequestInterface[]>(url);
+  }
+
+  // GET /api/v1/queue/:id/request/profile
+  // TODO описать на бэкенде
+  public getQueueRequestsProfiles(idQueue: string): Observable<ProfileInterface[]> {
+    const url = `/api/v1/queue/${idQueue}/request/profile`;
+    return this.http.get<ProfileInterface[]>(url);
   }
 
   // POST /api/v1/queue/:id/request
