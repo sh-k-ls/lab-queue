@@ -67,10 +67,10 @@ export class ApiService {
     return this.http.post<RequestInterface>(url, request);
   }
 
-  // PATCH /api/v1/request/:id
+  // PATCH /api/v1/queue/:id/request
   // TODO controller для request на бэке
-  public changeQueueRequest(idRequest: string): Observable<RequestInterface>{
-    const url = `/api/v1/request/${idRequest}`;
+  public deleteQueueRequest(idQueue: string): Observable<RequestInterface>{
+    const url = `/api/v1/queue/${idQueue}/request`;
     return this.http.patch<RequestInterface>(url, {});
   }
 
