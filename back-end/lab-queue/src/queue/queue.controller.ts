@@ -50,19 +50,19 @@ export class QueueController {
 
 	@UseGuards(JwtAuthGuard)
 	@Get(':id')
-	getQueueById(@Param('id') idQueue: number): QueueDto {
-		return this.queue.getByQueueId(idQueue);
+	getQueueById(@Param('id') idQueue: string): QueueDto {
+		return this.queue.getByQueueId(+idQueue);
 	}
 
 	@UseGuards(JwtAuthGuard)
 	@Get(':id/request')
-	getRequestsByQueueId(@Param('id') idQueue: number): RequestDto[] {
-		return this.request.getByQueueId(idQueue);
+	getRequestsByQueueId(@Param('id') idQueue: string): RequestDto[] {
+		return this.request.getByQueueId(+idQueue);
 	}
 
 	@UseGuards(JwtAuthGuard)
 	@Patch(':id')
-	editQueueById(@Param('id') id: number, @Body() queue: QueueDto): QueueDto {
+	editQueueById(@Param('id') id: string, @Body() queue: QueueDto): QueueDto {
 		return queue;
 	}
 
