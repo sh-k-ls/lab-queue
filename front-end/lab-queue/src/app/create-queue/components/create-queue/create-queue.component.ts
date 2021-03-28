@@ -66,7 +66,7 @@ export class CreateQueueComponent implements OnInit {
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
   minDate = new Date();
-  maxDate = new Date(this.minDate.getFullYear(), this.minDate.getMonth() + 1, this.minDate.getMonth());
+  maxDate = new Date(this.minDate.getFullYear(), this.minDate.getMonth() + 1, 31);
 
   ngOnInit(): void {
     this.parserCourse(this.courseList);
