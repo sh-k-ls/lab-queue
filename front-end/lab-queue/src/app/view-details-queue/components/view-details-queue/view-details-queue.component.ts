@@ -2,8 +2,8 @@ import {Component,  OnInit} from '@angular/core';
 import {ApiService} from '../../../api-service/api.service';
 import {  ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
-import {RequestInterface} from '../../../../shared/interfaces/request.interface';
 import {QueueInterface} from '../../../../shared/interfaces/queue.interface';
+import {ProfileInterface} from '../../../../shared/interfaces/profile.interface';
 
 @Component({
   selector: 'app-view-details-queue',
@@ -13,12 +13,20 @@ import {QueueInterface} from '../../../../shared/interfaces/queue.interface';
 
 export class ViewDetailsQueueComponent implements OnInit {
 
-  public memberList: RequestInterface[] = [];
+  public memberList: ProfileInterface[] = [];
   id: number;
-  queue: QueueInterface;
+
+  queue: QueueInterface = {
+    id: 0,
+    creatorName: 'Загрузка...',
+    dateCreate: 'Загрузка...',
+    nameTeacher: 'Загрузка...',
+    name: 'Загрузка...',
+    description: 'Загрузка...',
+  };
+
   constructor(private readonly api: ApiService,
               private route: ActivatedRoute, ) { }
-
 
   ngOnInit(): void {
     this.route.paramMap.pipe(
@@ -29,7 +37,6 @@ export class ViewDetailsQueueComponent implements OnInit {
   }
 
   toSignup($event: boolean): void {
-
     console.log($event);
   }
 }
