@@ -6,25 +6,25 @@ import { AuthService } from './auth/auth.service';
 
 @Controller()
 export class AppController {
-  constructor(
-    private readonly appService: AppService,
-    private readonly authService: AuthService,
-  ) {}
+	constructor(
+		private readonly appService: AppService,
+		private readonly authService: AuthService,
+	) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
-  }
+	@Get()
+	getHello(): string {
+		return this.appService.getHello();
+	}
 
-  @UseGuards(LocalAuthGuard)
-  @Post('api/auth/login')
-  async login(@Request() req) {
-    return this.authService.login(req.user);
-  }
+	@UseGuards(LocalAuthGuard)
+	@Post('api/auth/login')
+	async login(@Request() req) {
+		return this.authService.login(req.user);
+	}
 
-  @UseGuards(JwtAuthGuard)
-  @Get('api/profile')
-  getProfile(@Request() req) {
-    return req.user;
-  }
+	@UseGuards(JwtAuthGuard)
+	@Get('api/v1/profile')
+	getProfile(@Request() req) {
+		return req.user;
+	}
 }
