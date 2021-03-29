@@ -19,11 +19,13 @@ export class ViewDetailsQueueComponent implements OnInit {
 
   queue: QueueInterface = {
     id: 0,
-    creatorName: 'Загрузка...',
+    creatorId: 0,
     dateCreate: 'Загрузка...',
-    nameTeacher: 'Загрузка...',
-    name: 'Загрузка...',
+    nameTeacher: ['Загрузка...'],
+    nameSubject: 'Загрузка...',
     description: 'Загрузка...',
+    timeCreate: 'Загрузка',
+    groups: ['Загрузка...'],
   };
 
   constructor(private readonly api: ApiService,
