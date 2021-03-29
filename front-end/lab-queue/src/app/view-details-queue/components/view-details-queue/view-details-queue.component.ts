@@ -24,12 +24,14 @@ export class ViewDetailsQueueComponent implements OnInit {
     nameTeacher: ['Загрузка...'],
     nameSubject: 'Загрузка...',
     description: 'Загрузка...',
-    timeCreate: 'Загрузка',
+    timeCreate: 'Загрузка...',
     groups: ['Загрузка...'],
   };
 
-  constructor(private readonly api: ApiService,
-              private route: ActivatedRoute, ) { }
+  constructor(
+    private readonly api: ApiService,
+    private route: ActivatedRoute,
+  ) { }
 
   ngOnInit(): void {
     this.route.paramMap.pipe(

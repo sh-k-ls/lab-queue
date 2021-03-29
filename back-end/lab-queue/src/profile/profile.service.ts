@@ -27,6 +27,7 @@ export class ProfileService {
 		for (const request of requests) {
 			profiles.push(this.getProfileByUserId(request.userId));
 		}
-		return profiles;
+		// return null if profiles == [null]
+		return profiles[0] ? profiles : null;
 	}
 }
