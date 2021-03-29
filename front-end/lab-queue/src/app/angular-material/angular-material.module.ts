@@ -13,6 +13,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { MatSelectModule } from '@angular/material/select';
+import { MatRippleModule } from '@angular/material/core';
 
 const modules = [
   MatIconModule,
@@ -30,6 +31,8 @@ const modules = [
   MatNativeDateModule,
   NgxMaterialTimepickerModule,
   MatSelectModule,
+  MatInputModule,
+  MatRippleModule,
 ];
 
 @NgModule({
