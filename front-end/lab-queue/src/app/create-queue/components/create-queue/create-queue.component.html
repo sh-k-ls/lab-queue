@@ -1,1 +1,106 @@
-<p>create-queue works!</p>
+<div class="create-queue-container">
+  <h1>Создать очередь</h1>
+  <mat-card>
+    <mat-form-field class="full-width">
+      <mat-label>Название предмета</mat-label>
+      <input #nameSubject
+             type="text"
+             placeholder="Выберите предмет"
+             aria-label="Предмет"
+             matInput
+             [formControl]="myControlCourse"
+             [matAutocomplete]="autoCourse">
+      <mat-autocomplete #autoCourse="matAutocomplete">
+        <mat-option *ngFor="let course of filteredCourses | async" [value]="course">
+          {{course}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <mat-label>Преподаватели</mat-label>
+      <mat-chip-list #chipList aria-label="Teacher selection">
+        <mat-chip
+          *ngFor="let teacher of teachers"
+          [selectable]="selectable"
+          [removable]="removable"
+          (removed)="removeTeacher(teacher)">
+          {{teacher}}
+          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+        </mat-chip>
+        <input #nameTeacherInput
+          placeholder="Добавить преподавателя..."
+          #teacherInput
+          [formControl]="myControlTeacher"
+          [matAutocomplete]="autoTeacher"
+          [matChipInputFor]="chipList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          (matChipInputTokenEnd)="addTeacher($event)">
+      </mat-chip-list>
+      <mat-autocomplete #autoTeacher="matAutocomplete" (optionSelected)="selectedTeacher($event)">
+        <mat-option *ngFor="let teacher of filteredTeachers | async" [value]="teacher">
+          {{teacher}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <div class="participants-container">
+    <mat-form-field class="part-width">
+      <mat-label>Тип участников</mat-label>
+      <mat-select #typeParticipant (valueChange)="chooseParticipants(typeParticipant.value)">
+        <mat-option value="course">Поток</mat-option>
+        <mat-option value="group" >Группа</mat-option>
+      </mat-select>
+    </mat-form-field>
+      <mat-form-field class="group-dep-container">
+        <mat-chip-list #chipListParticipants aria-label="Participant selection">
+          <mat-chip
+            *ngFor="let participant of participants"
+            [selectable]="selectable"
+            [removable]="removable"
+            (removed)="removeParticipant(participant)">
+            {{participant}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+          <input placeholder="Добавить" [disabled]="!typeParticipant.value"
+                 #participantInput
+                 [formControl]="myControlParticipant"
+                 [matAutocomplete]="autoParticipant"
+                 [matChipInputFor]="chipListParticipants"
+                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                 (matChipInputTokenEnd)="addParticipant($event)">
+        </mat-chip-list>
+        <mat-autocomplete #autoParticipant="matAutocomplete" (optionSelected)="selectedParticipant($event)">
+          <mat-option *ngFor="let participant of filteredParticipants| async" [value]="participant">
+            {{participant}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+    <mat-form-field class="part-width">
+      <mat-label>Дата</mat-label>
+      <input matInput [min]="minDate" [max]="maxDate" [matDatepickerFilter]="dateFilter" [matDatepicker]="myDatepicker">
+      <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+      <mat-datepicker #myDatepicker></mat-datepicker>
+    </mat-form-field>
+    <div>
+      <mat-form-field class="part-width">
+        <input
+          matInput
+          [ngxTimepicker]="fulltime"
+          [format]="24"
+          placeholder="Время"
+        />
+        <ngx-material-timepicker
+          #fulltime
+          [enableKeyboardInput]=true>
+        ></ngx-material-timepicker>
+      </mat-form-field>
+    </div>
+    <mat-form-field class="full-width">
+      <mat-label>Примечания</mat-label>
+      <textarea #descriptionInput matInput></textarea>
+    </mat-form-field>
+    <div class="create-queue">
+      <button mat-raised-button color="primary">Создать очередь</button>
+    </div>
+  </mat-card>
+</div>
