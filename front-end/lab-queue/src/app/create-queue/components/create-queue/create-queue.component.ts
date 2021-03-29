@@ -8,6 +8,7 @@ import {MatChipInputEvent} from '@angular/material/chips';
 import {ApiService} from '../../../api-service/api.service';
 import {QueueInterface} from '../../../../shared/interfaces/queue.interface';
 import {Course} from '../../../../shared/interfaces/course.interface';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-create-queue',
@@ -19,6 +20,7 @@ export class CreateQueueComponent implements OnInit {
 
   constructor(
     private readonly api: ApiService,
+    private readonly router: Router
   ) { }
   selectable = true;
   removable = true;
@@ -242,6 +244,7 @@ export class CreateQueueComponent implements OnInit {
     }
 
     this.api.createQueue(queue).subscribe();
-    // TODO сообщение об успешной отправке и переход на queue-list-view с помощью router navigate
+    this.router.navigate(['/queue']);
+    // TODO сообщение об успешной отправке
   }
 }
