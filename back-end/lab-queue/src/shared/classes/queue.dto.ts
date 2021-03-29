@@ -1,9 +1,10 @@
 export class QueueDto {
 	id: number;
-	name: string;
-	nameTeacher: string;
+	nameSubject: string;
+	nameTeacher: string[];
 	dateCreate: string;
-	creatorID: number;
+	timeCreate: string;
+	groups: string[];
+	creatorId: number;
 	description: string;
-	group: string;
 }

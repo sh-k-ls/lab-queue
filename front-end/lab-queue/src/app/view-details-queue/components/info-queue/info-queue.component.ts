@@ -16,7 +16,9 @@ export class InfoQueueComponent implements OnInit {
     dateCreate: '',
     groups: [],
     timeCreate: '',
-    id: 1, nameSubject: 'имя очереди', description: 'очередь', nameTeacher: []};
+    id: 1, nameSubject: 'имя очереди', description: 'очередь', nameTeacher: [],
+    creatorId: 1,
+  };
 
   @Input()
   id: number;

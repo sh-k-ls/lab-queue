@@ -5,6 +5,6 @@ export interface QueueInterface {
   dateCreate: string;
   timeCreate: string;
   groups: string[];
-  creatorName?: string;
+  creatorId: number;
   description: string;
 }
