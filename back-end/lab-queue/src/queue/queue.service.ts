@@ -12,7 +12,7 @@ export class QueueService {
 		{
 			id: 1,
 			nameSubject: 'Планирование Эксперимента',
-			nameTeacher: ['Kurov'],
+			nameTeacher: ['Куров'],
 			dateCreate: '11.02.1873',
 			creatorId: 1,
 			description: 'Description1',
@@ -22,7 +22,7 @@ export class QueueService {
 		{
 			id: 2,
 			nameSubject: 'Программирование на Си',
-			nameTeacher: ['Lomovskoy'],
+			nameTeacher: ['Ломовской'],
 			dateCreate: '11.02.2010',
 			creatorId: 2,
 			description: 'Description2',
@@ -32,7 +32,7 @@ export class QueueService {
 		{
 			id: 3,
 			nameSubject: 'ТИСД',
-			nameTeacher: ['Silantieva'],
+			nameTeacher: ['Силантьева', 'Барышникова'],
 			dateCreate: '11.02.2017',
 			creatorId: 2,
 			description: 'Description3',
