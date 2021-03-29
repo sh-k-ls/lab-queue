@@ -12,6 +12,7 @@ import { environment } from '../../../environments/environment';
 })
 export class AuthService {
   private token: string;
+  private userId: number;
 
   constructor(
     private http: HttpClient,
@@ -27,11 +28,29 @@ export class AuthService {
             localStorage.setItem(environment.localStorageToken, token);
             this.setToken(token);
             this.router.navigate(['/queue']);
+
+            this.addUserInfoToLocalStorage();
           }
         ),
         mapTo(true),
         catchError(error => of(false)),
       );
+  }
+
+  private addUserInfoToLocalStorage(): void {
+    this.api.getProfile().subscribe(
+      user => {
+        localStorage.setItem(environment.localStorageUser, user.id.toString());
+        this.setUserId(user.id);
+      });
+  }
+
+  getUserId(): number {
+    return this.userId;
+  }
+
+  setUserId(userId: number): void {
+    this.userId = userId;
   }
 
   setToken(token: string): void {
@@ -50,7 +69,8 @@ export class AuthService {
   logout(): void {
     this.setToken(null);
     const removeToken = localStorage.removeItem(environment.localStorageToken);
-    if (removeToken == null) {
+    const removeUser = localStorage.removeItem(environment.localStorageUser);
+    if (removeToken == null && removeUser == null) {
       this.router.navigate(['/auth']);
     }
   }

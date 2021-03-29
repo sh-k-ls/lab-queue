@@ -23,6 +23,12 @@ export class ApiService {
     return this.http.post<QueueInterface>(url, queue);
   }
 
+  // GET /api/v1/profile
+  public getProfile(): Observable<User> {
+    const url = '/api/v1/profile';
+    return this.http.get<User>(url);
+  }
+
   // GET /api/v1/queue/available
   public getQueueAvailable(): Observable<QueueInterface[]> {
     const url = '/api/v1/queue/available';

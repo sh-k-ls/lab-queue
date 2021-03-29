@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   localStorageToken: 'access-token',
-  urlApiServer: 'http://localhost:3000'
+  urlApiServer: 'http://localhost:3000',
+  localStorageUser: 'user-info',
 };
 
 /*
