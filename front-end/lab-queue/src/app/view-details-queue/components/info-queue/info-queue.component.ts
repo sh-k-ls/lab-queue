@@ -11,21 +11,16 @@ import {ApiService} from '../../../api-service/api.service';
 })
 export class InfoQueueComponent implements OnInit {
 
-  // queue: QueueInterface = {id: 1, nameSubject: 'имя очереди', description: 'очередь', nameTeacher: 'преподаватель'};
-  queue: QueueInterface = {
-    dateCreate: '',
-    groups: [],
-    timeCreate: '',
-    id: 1, nameSubject: 'имя очереди', description: 'очередь', nameTeacher: [],
-    creatorId: 1,
-  };
-
   @Input()
   id: number;
+
+  @Input()
+  queue: QueueInterface;
 
   @Output()
   public newItemEvent = new EventEmitter<boolean>();
 
+  @Input()
   public isSigned = false;
 
   constructor(private readonly api: ApiService) { }
@@ -33,9 +28,10 @@ export class InfoQueueComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  // TODO userId
   toSignUp(): void {
     if (this.isSigned) {
-      this.api.changeQueueRequest(String(this.id)).subscribe();
+      this.api.deleteQueueRequest(String(this.id)).subscribe();
     }
     else {
       const request: RequestInterface = {userId: 1, isSigned: true, queueId: this.id};

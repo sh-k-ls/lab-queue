@@ -17,7 +17,7 @@ export class RequestService {
 	];
 
 	public getByQueueId(queueId: number): RequestDto[] {
-		return this.requests.filter((request) => request.queueId === queueId);
+		return this.requests.filter((request) => request.queueId === queueId && request.isSigned === true);
 	}
 
 	public getByUserId(userId: number): RequestDto[] {
@@ -26,6 +26,17 @@ export class RequestService {
 
 	public pushRequest(request: RequestDto): number {
 		return this.requests.push(request);
+	}
+
+	public changeSigned(userId: number, queueId: number): RequestDto{
+		let resRequest: RequestDto;
+		for(const request of this.requests) {
+			if(request.userId === userId && request.queueId === queueId && request.isSigned === true) {
+				request.isSigned = !(request.isSigned);
+				resRequest = request;
+			}
+		}
+		return resRequest;
 	}
 
 	public delRequest(request: RequestDto): number {

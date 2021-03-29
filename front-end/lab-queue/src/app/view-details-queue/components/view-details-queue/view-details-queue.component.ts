@@ -2,7 +2,8 @@ import {Component,  OnInit} from '@angular/core';
 import {ApiService} from '../../../api-service/api.service';
 import {  ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
-import {RequestInterface} from '../../../../shared/interfaces/request.interface';
+import {QueueInterface} from '../../../../shared/interfaces/queue.interface';
+import {ProfileInterface} from '../../../../shared/interfaces/profile.interface';
 
 @Component({
   selector: 'app-view-details-queue',
@@ -12,21 +13,42 @@ import {RequestInterface} from '../../../../shared/interfaces/request.interface'
 
 export class ViewDetailsQueueComponent implements OnInit {
 
-  public memberList: RequestInterface[] = [];
+  public memberList: ProfileInterface[] = [];
   id: number;
+  isSigned = false;
+
+  queue: QueueInterface = {
+    id: 0,
+    creatorId: 0,
+    dateCreate: 'Загрузка...',
+    nameTeacher: ['Загрузка...'],
+    nameSubject: 'Загрузка...',
+    description: 'Загрузка...',
+    timeCreate: 'Загрузка',
+    groups: ['Загрузка...'],
+  };
+
   constructor(private readonly api: ApiService,
               private route: ActivatedRoute, ) { }
-
 
   ngOnInit(): void {
     this.route.paramMap.pipe(
       switchMap(params => params.getAll('idQueue'))
     )
-      .subscribe(data => this.id = +data);
+      .subscribe(idQueue => this.id = +idQueue);
+    this.api.getQueueById(String(this.id)).subscribe(queue => {
+      this.queue = queue;
+    });
+    this.updateMembers();
   }
 
-  toSignup($event: boolean): void {
+  public updateMembers(): void {
+    this.api.getQueueRequestsProfiles(String(this.id)).subscribe(requests => {
+      this.memberList = requests;
+    });
+  }
 
-    console.log($event);
+  toSignup(): void {
+    this.updateMembers();
   }
 }

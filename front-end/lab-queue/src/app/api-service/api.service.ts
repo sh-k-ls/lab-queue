@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { QueueInterface } from '../../shared/interfaces/queue.interface';
 import { User } from '../../shared/interfaces/user.interface';
 import {RequestInterface} from '../../shared/interfaces/request.interface';
+import {ProfileInterface} from '../../shared/interfaces/profile.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -52,6 +53,13 @@ export class ApiService {
     return this.http.get<RequestInterface[]>(url);
   }
 
+  // GET /api/v1/queue/:id/request/profile
+  // TODO описать на бэкенде
+  public getQueueRequestsProfiles(idQueue: string): Observable<ProfileInterface[]> {
+    const url = `/api/v1/queue/${idQueue}/request/profile`;
+    return this.http.get<ProfileInterface[]>(url);
+  }
+
   // POST /api/v1/queue/:id/request
   // TODO описать на бэкенде
   public createQueueRequests(idQueue: string, request: RequestInterface): Observable<RequestInterface>{
@@ -59,10 +67,10 @@ export class ApiService {
     return this.http.post<RequestInterface>(url, request);
   }
 
-  // PATCH /api/v1/request/:id
+  // PATCH /api/v1/queue/:id/request
   // TODO controller для request на бэке
-  public changeQueueRequest(idRequest: string): Observable<RequestInterface>{
-    const url = `/api/v1/request/${idRequest}`;
+  public deleteQueueRequest(idQueue: string): Observable<RequestInterface>{
+    const url = `/api/v1/queue/${idQueue}/request`;
     return this.http.patch<RequestInterface>(url, {});
   }
 

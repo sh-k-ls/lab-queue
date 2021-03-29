@@ -1,5 +1,12 @@
-<mat-card *ngFor="let item of listMemberQueue">
-  <div class="info-queue">
-    {{item}}
-  </div>
-</mat-card>
+<div class='list-member-container'>
+  <mat-card *ngFor="let item of listMemberQueue">
+    <div class="info-member">
+      <div>
+        Имя: {{item.name}} Фамилия: {{item.surname}} Группа: {{item.group}}
+      </div>
+      <button mat-raised-button [color]="'primary'" (click)="Passed()">
+        Сдал(а)
+      </button>
+    </div>
+  </mat-card>
+</div>
