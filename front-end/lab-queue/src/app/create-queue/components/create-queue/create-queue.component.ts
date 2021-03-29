@@ -8,7 +8,6 @@ import {MatChipInputEvent} from '@angular/material/chips';
 import {ApiService} from '../../../api-service/api.service';
 import {QueueInterface} from '../../../../shared/interfaces/queue.interface';
 import {Course} from '../../../../shared/interfaces/course.interface';
-import {isWebpackFiveOrHigher} from '@angular-devkit/build-angular/src/utils/webpack-version';
 
 @Component({
   selector: 'app-create-queue',
@@ -21,7 +20,6 @@ export class CreateQueueComponent implements OnInit {
   constructor(
     private readonly api: ApiService,
   ) { }
-  visible = true;
   selectable = true;
   removable = true;
   separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -48,8 +46,10 @@ export class CreateQueueComponent implements OnInit {
       groups: 3,
     }
   ];
+
   courseListStr: string[] = [];
   groupListStr: string[] = [];
+
   subjects: string[] = ['Технология командной разработки ПО', 'Цифровая обработка сигналов', 'Экология'];
   filteredCourses: Observable<string[]>;
 
@@ -175,6 +175,8 @@ export class CreateQueueComponent implements OnInit {
     this.teachers.push(event.option.viewValue);
     this.teacherInput.nativeElement.value = '';
     this.myControlTeacher.setValue(null);
+
+    this.teacherInput.nativeElement.blur();
   }
 
   selectedParticipant(event: MatAutocompleteSelectedEvent): void {
@@ -213,10 +215,33 @@ export class CreateQueueComponent implements OnInit {
     }
   }
 
-  public addQueueBtnPush(queue: QueueInterface): void {
+  public addQueueBtnPush(participantType: string, queue: QueueInterface): void {
+    if (participantType === 'course'){
+      const allGroups: string[] = [];
+      for (const courseName of queue.groups) {
+        queue.groups = [];
+        const splitted = courseName.split(' ', 3);
+        const degree = splitted[1] === 'Бакалавры' ? 'Bachelor'
+          : (splitted[1] === 'Магистры' ? 'Master' : 'Specialist');
+        const today = new Date();
+        let admissionYear = today.getFullYear() - +splitted[2];
+        if (today.getMonth() >= 9) {
+          admissionYear += 1;
+        }
+        const currSemester = (today.getMonth() < 9 && today.getMonth() > 1) ? +splitted[2] * 2 : +splitted[2] * 2 - 1;
+        for (const course of this.courseList) {
+          if (course.department === splitted[0] && course.degree === degree && course.year === admissionYear) {
+            for (let i = 1; i <= course.groups; i++) {
+              const groupName = this.parseGroup(i, course.department, currSemester, course.degree);
+              allGroups.push(groupName);
+            }
+          }
+        }
+      }
+      queue.groups = allGroups;
+    }
+
     this.api.createQueue(queue).subscribe();
-    // TODO сообщение об успешной отправке и переход на queue-list-view с помошью router navigate
+    // TODO сообщение об успешной отправке и переход на queue-list-view с помощью router navigate
   }
 }
-
-
