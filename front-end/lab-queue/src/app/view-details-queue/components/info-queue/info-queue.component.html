@@ -1,12 +1,13 @@
-
-<!-- {{queue.}} -->
-
 <div class="info-queue-container">
   <mat-card>
     <div class="info-queue">
       <div class="queue-name">
         <div class="mat-h1">{{queue.nameSubject}}</div>
-        <div class="mat-h1">{{queue.nameTeacher}}</div>
+        <div>
+          <div *ngFor="let teacher of queue.nameTeacher" class="mat-h1">
+            {{teacher}}
+          </div>
+        </div>
       </div>
       <div class="queue-detail-info">
         <div class="mat-h4">Дата создания очереди: {{queue.dateCreate}}</div>

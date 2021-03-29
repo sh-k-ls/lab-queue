@@ -15,8 +15,8 @@ import { QueueDto } from '../shared/classes/queue.dto';
 import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
 import { RequestService } from '../request/request.service';
 import { RequestDto } from '../shared/classes/request.dto';
-import {ProfileDto} from '../shared/classes/profile.dto';
-import {ProfileService} from '../profile/profile.service';
+import { ProfileDto } from '../shared/classes/profile.dto';
+import { ProfileService } from '../profile/profile.service';
 
 @Controller('api/v1/queue')
 export class QueueController {
@@ -66,7 +66,11 @@ export class QueueController {
 	@UseGuards(JwtAuthGuard)
 	@Post(':id/request')
 	@HttpCode(HttpStatus.CREATED)
-	addRequestsByQueueId(@Param('id') idQueue: string, @Body() queueReq: RequestDto, @Request() req): number {
+	addRequestsByQueueId(
+		@Param('id') idQueue: string,
+		@Body() queueReq: RequestDto,
+		@Request() req,
+	): number {
 		queueReq.userId = req.user.id;
 		return this.request.pushRequest(queueReq);
 	}
@@ -79,7 +83,11 @@ export class QueueController {
 
 	@UseGuards(JwtAuthGuard)
 	@Patch(':id/request')
-	editRequestByQueueId(@Param('id') idQueue: string, @Body() queueReq: RequestDto, @Request() req): RequestDto {
+	editRequestByQueueId(
+		@Param('id') idQueue: string,
+		@Body() queueReq: RequestDto,
+		@Request() req,
+	): RequestDto {
 		return this.request.changeSigned(req.user.id, +idQueue);
 	}
 
