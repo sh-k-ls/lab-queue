@@ -1,6 +1,26 @@
-<p>info-queue works!</p>
+
 <!-- {{queue.}} -->
 
-<br>{{queue.name}}
-<br>{{queue.description}}
-<br>{{queue.nameTeacher}}
+<div class="info-queue-container">
+  <mat-card>
+    <div class="info-queue">
+      <div class="queue-name">
+        <div class="mat-h1">{{queue.name}}</div>
+        <div class="mat-h1">{{queue.nameTeacher}}</div>
+      </div>
+      <div class="queue-detail-info">
+        <div class="mat-h4">Дата создания очереди: {{queue.dateCreate}}</div>
+        <div class="mat-h4">Создатель: {{queue.creatorName}}</div>
+      </div>
+      <div>Описание: {{queue.description}}</div>
+      <div class="queue-button">
+        <button mat-raised-button [color]="isSigned ? 'warn' : 'primary'" (click)="toSignUp()">
+          <p *ngIf="isSigned">Выйти из очереди</p>
+          <p *ngIf="!isSigned">Записаться в очередь</p>
+        </button>
+      </div>
+    </div>
+  </mat-card>
+</div>
+
+
