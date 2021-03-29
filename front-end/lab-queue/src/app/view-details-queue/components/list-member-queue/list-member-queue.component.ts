@@ -1,5 +1,4 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ApiService} from '../../../api-service/api.service';
 import {ProfileInterface} from '../../../../shared/interfaces/profile.interface';
 
 @Component({
@@ -15,16 +14,12 @@ export class ListMemberQueueComponent implements OnInit {
   @Input()
   id: number;
 
-  constructor(private readonly api: ApiService) {
+  constructor() {
   }
 
-
-
   ngOnInit(): void {
-    this.api.getQueueById('1').subscribe(queue => console.log(queue));
   }
 
   Passed(): void {
-    console.log('hi');
   }
 }
