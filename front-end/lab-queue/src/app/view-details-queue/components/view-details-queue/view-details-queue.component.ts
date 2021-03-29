@@ -15,6 +15,7 @@ export class ViewDetailsQueueComponent implements OnInit {
 
   public memberList: ProfileInterface[] = [];
   id: number;
+  isSigned = false;
 
   queue: QueueInterface = {
     id: 0,
@@ -32,13 +33,17 @@ export class ViewDetailsQueueComponent implements OnInit {
     this.route.paramMap.pipe(
       switchMap(params => params.getAll('idQueue'))
     )
-      .subscribe(data => this.id = +data);
-    this.api.getQueueById(String(this.id)).subscribe(queue => this.queue = queue);
+      .subscribe(idQueue => this.id = +idQueue);
+    this.api.getQueueById(String(this.id)).subscribe(queue => {
+      this.queue = queue;
+    });
     this.updateMembers();
   }
 
-  public updateMembers(): void{
-    this.api.getQueueRequestsProfiles(String(this.id)).subscribe(requests => this.memberList = requests);
+  public updateMembers(): void {
+    this.api.getQueueRequestsProfiles(String(this.id)).subscribe(requests => {
+      this.memberList = requests;
+    });
   }
 
   toSignup(): void {

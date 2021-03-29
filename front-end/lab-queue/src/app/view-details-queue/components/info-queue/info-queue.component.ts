@@ -21,6 +21,7 @@ export class InfoQueueComponent implements OnInit {
   @Output()
   public newItemEvent = new EventEmitter<boolean>();
 
+  @Input()
   public isSigned = false;
 
   constructor(private readonly api: ApiService) { }
