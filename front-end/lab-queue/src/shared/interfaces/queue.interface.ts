@@ -1,8 +1,10 @@
 export interface QueueInterface {
   id: number;
-  name: string;
-  nameTeacher: string;
-  dateCreate?: string;
-  creatorName?: string;
+  nameSubject: string;
+  nameTeacher: string[];
+  dateCreate: string;
+  timeCreate: string;
+  groups: string[];
+  creatorId: number;
   description: string;
 }

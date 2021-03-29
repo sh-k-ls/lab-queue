@@ -77,13 +77,13 @@
     </div>
     <mat-form-field class="part-width">
       <mat-label>Дата</mat-label>
-      <input matInput [min]="minDate" [max]="maxDate" [matDatepickerFilter]="dateFilter" [matDatepicker]="myDatepicker">
+      <input #dateInput matInput [min]="minDate" [max]="maxDate" [matDatepickerFilter]="dateFilter" [matDatepicker]="myDatepicker">
       <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
       <mat-datepicker #myDatepicker></mat-datepicker>
     </mat-form-field>
     <div>
       <mat-form-field class="part-width">
-        <input
+        <input #timeInput
           matInput
           [ngxTimepicker]="fulltime"
           [format]="24"
@@ -100,7 +100,9 @@
       <textarea #descriptionInput matInput></textarea>
     </mat-form-field>
     <div class="create-queue">
-      <button mat-raised-button color="primary">Создать очередь</button>
+      <button mat-raised-button color="primary" (click)="addQueueBtnPush(typeParticipant.value, {id: -1, nameSubject: nameSubject.value,
+      nameTeacher: teachers, groups: participants, dateCreate: dateInput.value, timeCreate: timeInput.value,
+      description: descriptionInput.value})">Создать очередь</button>
     </div>
   </mat-card>
 </div>
