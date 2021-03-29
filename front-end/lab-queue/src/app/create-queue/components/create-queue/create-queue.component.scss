@@ -1,0 +1,50 @@
+@import "src/theme";
+
+.create-queue-container {
+  h1 {
+    text-align: center;
+  }
+
+  div {
+    display:flex
+  }
+
+  .full-width {
+    width: 100%;
+  }
+
+  .part-width {
+    flex-grow: 0;
+  }
+
+  .choose-participants {
+    width: 35%;
+  }
+
+  mat-card {
+    margin-top: 10px;
+    border-style: solid;
+    border-width: 1px;
+    }
+}
+
+.participants-container {
+  display: flex;
+}
+
+.group-dep-container {
+  margin: 0 10px;
+  flex-grow: 1;
+}
+
+::ng-deep ngx-material-timepicker-content{
+  --button-color: #009688 !important;
+  --dial-background-color: #009688 !important;
+  --dial-editable-active-color: #009688 !important;
+  --clock-hand-color: #009688 !important;
+}
+
+.create-queue {
+  display: flex;
+  justify-content: flex-end;
+}

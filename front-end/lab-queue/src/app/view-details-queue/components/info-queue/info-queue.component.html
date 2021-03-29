@@ -5,12 +5,13 @@
   <mat-card>
     <div class="info-queue">
       <div class="queue-name">
-        <div class="mat-h1">{{queue.name}}</div>
+        <div class="mat-h1">{{queue.nameSubject}}</div>
         <div class="mat-h1">{{queue.nameTeacher}}</div>
       </div>
       <div class="queue-detail-info">
         <div class="mat-h4">Дата создания очереди: {{queue.dateCreate}}</div>
-        <div class="mat-h4">Создатель: {{queue.creatorName}}</div>
+<!--        TODO change queue.creatorId-->
+        <div class="mat-h4">Создатель: {{queue.creatorId}}</div>
       </div>
       <div>Описание: {{queue.description}}</div>
       <div class="queue-button">

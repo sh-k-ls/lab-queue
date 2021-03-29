@@ -11,30 +11,33 @@ export class QueueService {
 	private queues: QueueDto[] = [
 		{
 			id: 1,
-			name: 'Планирование Эксперимента',
-			nameTeacher: 'Kurov',
+			nameSubject: 'Планирование Эксперимента',
+			nameTeacher: ['Kurov'],
 			dateCreate: '11.02.1873',
-			creatorID: 1,
+			creatorId: 1,
 			description: 'Description1',
-			group: 'iu7',
+			groups: ['iu7'],
+			timeCreate: '14:33',
 		},
 		{
 			id: 2,
-			name: 'Программирование на Си',
-			nameTeacher: 'Lomovskoy',
+			nameSubject: 'Программирование на Си',
+			nameTeacher: ['Lomovskoy'],
 			dateCreate: '11.02.2010',
-			creatorID: 2,
+			creatorId: 2,
 			description: 'Description2',
-			group: 'iu7',
+			groups: ['iu7'],
+			timeCreate: '14:33',
 		},
 		{
 			id: 3,
-			name: 'ТИСД',
-			nameTeacher: 'Silantieva',
+			nameSubject: 'ТИСД',
+			nameTeacher: ['Silantieva'],
 			dateCreate: '11.02.2017',
-			creatorID: 2,
+			creatorId: 2,
 			description: 'Description3',
-			group: 'iu7',
+			groups: ['iu7'],
+			timeCreate: '14:33',
 		},
 	];
 
@@ -44,14 +47,15 @@ export class QueueService {
 
 		return this.queues.filter(
 			(queue) =>
-				queue.group === user.group &&
+				// TODO groups index
+				queue.groups[0] === user.group &&
 				creatorQueues.findIndex((value) => queue.id === value.id) === -1 &&
 				signedQueues.findIndex((value) => queue.id === value.id) === -1,
 		);
 	}
 
 	public getByUserCreatorId(user: UserDto): QueueDto[] {
-		return this.queues.filter((queue) => user.id == queue.creatorID);
+		return this.queues.filter((queue) => user.id == queue.creatorId);
 	}
 
 	public getByUserSignedId(user: UserDto): QueueDto[] {
@@ -69,6 +73,7 @@ export class QueueService {
 	}
 
 	public pushQueue(queue: QueueDto): number {
+		queue.id = this.queues.length;
 		return this.queues.push(queue);
 	}
 }

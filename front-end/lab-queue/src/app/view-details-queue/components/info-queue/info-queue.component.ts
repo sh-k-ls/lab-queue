@@ -11,7 +11,6 @@ import {ApiService} from '../../../api-service/api.service';
 })
 export class InfoQueueComponent implements OnInit {
 
-
   @Input()
   id: number;
 
