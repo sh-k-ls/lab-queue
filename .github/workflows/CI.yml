@@ -53,5 +53,5 @@ jobs:
           cd front-end/lab-queue
           npm install -g @angular/cli
           npm install
-          npm run test
+          npm test -- --configuration=ci
 
