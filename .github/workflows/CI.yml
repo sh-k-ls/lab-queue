@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         node-version: [12.x]
-        os: [ubuntu-latest, windows-latest, macOS-latest]
+        os: [ubuntu-latest, windows-latest] #macOS-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -32,3 +32,33 @@ jobs:
           npm install -g @nestjs/cli
           npm install
           npm run build
+
+  test:
+    needs: build
+    runs-on: ${{matrix.os}}
+    strategy:
+      matrix:
+        node-version: [ 12.x ]
+        os: [ ubuntu-latest, windows-latest ] #macOS-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Test Angular SPA
+        run: |
+          cd front-end/lab-queue
+          npm install -g @angular/cli
+          npm install
+          npm test -- --configuration=ci
+
+      - name: Test NestJS Server
+        run: |
+            cd back-end/lab-queue
+            npm install -g @nestjs/cli
+            npm install
+            npm test
+
