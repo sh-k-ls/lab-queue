@@ -62,3 +62,11 @@ jobs:
             npm install
             npm test
 
+      - name: EditorConfig for Angular SPA
+        run: |
+            cd front-end/lab-queue
+            npm install -g @angular/cli
+            npm install
+            npm run editorconfig
+
+
