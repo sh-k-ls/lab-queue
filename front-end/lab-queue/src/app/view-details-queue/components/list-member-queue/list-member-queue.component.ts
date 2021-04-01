@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ProfileInterface} from '../../../../shared/interfaces/profile.interface';
+import {ProfileDto} from '../../../../shared/front-back-end/profile.dto';
 
 @Component({
   selector: 'app-list-member-queue',
@@ -9,7 +9,7 @@ import {ProfileInterface} from '../../../../shared/interfaces/profile.interface'
 
 export class ListMemberQueueComponent implements OnInit {
   @Input()
-  listMemberQueue: ProfileInterface[] = [];
+  listMemberQueue: ProfileDto[] = [];
 
   @Input()
   id: number;

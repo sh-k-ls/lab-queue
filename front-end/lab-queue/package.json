@@ -3,12 +3,13 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e",
-    "editorconfig": "editorconfig-checker"
+    "start": "npm run prebuild && ng serve",
+    "build": "npm run prebuild && ng build",
+    "test": "npm run prebuild && ng test",
+    "lint": "npm run prebuild && ng lint",
+    "e2e": "npm run prebuild && ng e2e",
+    "editorconfig": "editorconfig-checker",
+    "prebuild": "rm -rf src/shared/front-back-end && node ../../scripts/fill-dist-folder.js"
   },
   "private": true,
   "dependencies": {
@@ -24,6 +25,7 @@
     "@angular/router": "~11.2.5",
     "editorconfig-checker": "^4.0.2",
     "ngx-material-timepicker": "^5.5.3",
+    "recursive-copy": "^2.0.11",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"

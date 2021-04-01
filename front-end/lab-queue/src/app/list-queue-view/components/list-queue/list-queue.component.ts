@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import { QueueInterface } from '../../../../shared/interfaces/queue.interface';
+import { QueueDto } from '../../../../shared/front-back-end/queue.dto';
 import { Router } from '@angular/router';
 
 @Component({
@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class ListQueueComponent implements OnInit {
   @Input()
-  listQueue: QueueInterface[] = [];
+  listQueue: QueueDto[] = [];
 
   @Input()
   enableToSignIn = true;

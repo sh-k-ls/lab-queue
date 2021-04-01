@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { RequestDto } from '../shared/classes/request.dto';
-import { ProfileDto } from '../shared/classes/profile.dto';
+import { RequestDto } from '../shared/front-back-end/request.dto';
+import { ProfileDto } from '../shared/front-back-end/profile.dto';
 import { RequestService } from '../request/request.service';
 
 @Injectable()

@@ -6,8 +6,8 @@ import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatAutocomplete, MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import {MatChipInputEvent} from '@angular/material/chips';
 import {ApiService} from '../../../api-service/api.service';
-import {QueueInterface} from '../../../../shared/interfaces/queue.interface';
-import {Course} from '../../../../shared/interfaces/course.interface';
+import {QueueDto} from '../../../../shared/front-back-end/queue.dto';
+import {Course} from '../../../../shared/front-back-end/course.dto';
 import {Router} from '@angular/router';
 
 @Component({
@@ -217,7 +217,7 @@ export class CreateQueueComponent implements OnInit {
     }
   }
 
-  public addQueueBtnPush(participantType: string, queue: QueueInterface): void {
+  public addQueueBtnPush(participantType: string, queue: QueueDto): void {
     if (participantType === 'course'){
       const allGroups: string[] = [];
       for (const courseName of queue.groups) {
