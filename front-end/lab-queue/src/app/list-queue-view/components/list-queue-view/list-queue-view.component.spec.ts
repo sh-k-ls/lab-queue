@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ListQueueViewComponent } from './list-queue-view.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { AngularMaterialModule } from '../../../angular-material/angular-material.module';
 
 describe('ListQueueView1Component', () => {
   let component: ListQueueViewComponent;
@@ -8,6 +11,11 @@ describe('ListQueueView1Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [
+        HttpClientTestingModule,
+        RouterTestingModule,
+        AngularMaterialModule
+      ],
       declarations: [ ListQueueViewComponent ]
     })
     .compileComponents();
