@@ -37,6 +37,7 @@ jobs:
     needs: build
     runs-on: ${{matrix.os}}
     strategy:
+      fail-fast: false
       matrix:
         node-version: [ 12.x ]
         os: [ ubuntu-latest, windows-latest ] #macOS-latest
@@ -63,10 +64,12 @@ jobs:
             npm test
 
       - name: EditorConfig for Angular SPA
+        continue-on-error: true
         run: |
             cd front-end/lab-queue
             npm install -g @angular/cli
             npm install
             npm run editorconfig
+
 
 
