@@ -36,7 +36,7 @@ export class ListQueueViewComponent implements OnInit {
     this.router.navigate(['/create']);
   }
 
-  typeQueueChange(value): void {
+  typeQueueChange(value: string): void {
     switch (value) {
       case 'enabledQueue':
         this.showList = this.availableQueueList;

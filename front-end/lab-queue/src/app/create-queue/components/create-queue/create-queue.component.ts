@@ -122,7 +122,7 @@ export class CreateQueueComponent implements OnInit {
     return group;
   }
 
-  dateFilter = (date) => {
+  dateFilter = (date: { getDay: () => number; }) => {
     const day = date.getDay();
     return day !== 0;
   }
