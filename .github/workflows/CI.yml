@@ -56,7 +56,7 @@ jobs:
           npm test -- --configuration=ci
 
       - name: Test NestJS Server
-          run: |
+        run: |
             cd back-end/lab-queue
             npm install -g @nestjs/cli
             npm install
