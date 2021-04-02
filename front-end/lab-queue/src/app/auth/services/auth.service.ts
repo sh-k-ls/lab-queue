@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
-import {User} from '../../../shared/interfaces/user.interface';
+import {UserDto} from '../../../shared/front-back-end/user.dto';
 import {Observable, of} from 'rxjs';
 import {catchError, mapTo, tap} from 'rxjs/operators';
 import { ApiService } from '../../api-service/api.service';
@@ -20,7 +20,7 @@ export class AuthService {
     private api: ApiService
   ) { }
 
-  signIn(user: User): Observable<boolean> {
+  signIn(user: UserDto): Observable<boolean> {
     return this.api.signIn(user)
       .pipe(
         tap(
@@ -33,7 +33,7 @@ export class AuthService {
           }
         ),
         mapTo(true),
-        catchError(error => of(false)),
+        catchError(_ => of(false)),
       );
   }
 
