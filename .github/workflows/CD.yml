@@ -55,6 +55,7 @@ jobs:
     steps:
       - name: Prebuild NestJS Server
         run: |
+          ls -la
           cd back-end/lab-queue
           npm install
           npm run prebuild
