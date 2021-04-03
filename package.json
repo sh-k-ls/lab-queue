@@ -1,5 +1,5 @@
 {
   "scripts": {
-  "heroku-postbuild": "npm --prefix back-end/lab-queue run start:prod"
+  "heroku-postbuild": "cd back-end/lab-queue && npm install && npm run start:prod"
   }
 }
