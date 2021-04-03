@@ -1,1 +1,1 @@
-web: npm run heroku-postbuild
+web: cd back-end/lab-queue && npm run start:prod
