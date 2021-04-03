@@ -7,7 +7,7 @@ import {
 	Param,
 	Patch,
 	Post,
-	Request,
+	Req,
 	UseGuards,
 } from '@nestjs/common';
 import { QueueService } from './queue.service';
@@ -17,6 +17,7 @@ import { RequestService } from '../request/request.service';
 import { RequestDto } from '../shared/classes/request.dto';
 import { ProfileDto } from '../shared/classes/profile.dto';
 import { ProfileService } from '../profile/profile.service';
+import { Request } from 'express';
 
 @Controller('api/v1/queue')
 export class QueueController {
@@ -35,19 +36,19 @@ export class QueueController {
 
 	@UseGuards(JwtAuthGuard)
 	@Get('available')
-	getAllQueuesAvailable(@Request() req): QueueDto[] {
+	getAllQueuesAvailable(@Req() req: Request): QueueDto[] {
 		return this.queue.getByUserAvailableId(req.user);
 	}
 
 	@UseGuards(JwtAuthGuard)
 	@Get('creator')
-	getAllQueuesCreator(@Request() req): QueueDto[] {
+	getAllQueuesCreator(@Req() req: Request): QueueDto[] {
 		return this.queue.getByUserCreatorId(req.user);
 	}
 
 	@UseGuards(JwtAuthGuard)
 	@Get('signed')
-	getAllQueuesSigned(@Request() req): QueueDto[] {
+	getAllQueuesSigned(@Req() req: Request): QueueDto[] {
 		return this.queue.getByUserSignedId(req.user);
 	}
 
@@ -69,7 +70,7 @@ export class QueueController {
 	addRequestsByQueueId(
 		@Param('id') idQueue: string,
 		@Body() queueReq: RequestDto,
-		@Request() req,
+		@Req() req: Request,
 	): number {
 		queueReq.userId = req.user.id;
 		return this.request.pushRequest(queueReq);
@@ -86,7 +87,7 @@ export class QueueController {
 	editRequestByQueueId(
 		@Param('id') idQueue: string,
 		@Body() queueReq: RequestDto,
-		@Request() req,
+		@Req() req: Request,
 	): RequestDto {
 		return this.request.changeSigned(req.user.id, +idQueue);
 	}
@@ -99,7 +100,7 @@ export class QueueController {
 
 	@UseGuards(JwtAuthGuard)
 	@Post(':id/signIn')
-	signInQueue(@Param('id') queueId: string, @Request() req): number {
+	signInQueue(@Param('id') queueId: string, @Req() req: Request): number {
 		return this.request.pushRequest({
 			queueId: +queueId,
 			userId: req.user.id,
@@ -109,7 +110,7 @@ export class QueueController {
 
 	@UseGuards(JwtAuthGuard)
 	@Patch(':id/signOut')
-	sighOutQueue(@Param('id') queueId: string, @Request() req): number {
+	sighOutQueue(@Param('id') queueId: string, @Req() req: Request): number {
 		return this.request.delRequest({
 			queueId: +queueId,
 			userId: req.user.id,
