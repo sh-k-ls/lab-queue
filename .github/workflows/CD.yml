@@ -75,4 +75,3 @@ jobs:
           heroku_app_name: "lab-queue-server"
           heroku_email: "akorotkov1234@yandex.ru"
           branch: ${{env.BRANCH_DEPLOY}}
-          appdir: "back-end/lab-queue"
