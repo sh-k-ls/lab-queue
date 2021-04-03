@@ -56,6 +56,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Use Node.js 12
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+
       - name: Prebuild NestJS Server
         run: |
           cd back-end/lab-queue
