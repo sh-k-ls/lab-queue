@@ -1,6 +1,5 @@
 {
   "scripts": {
-    "heroku-postbuild": "cd back-end/lab-queue && npm i -g @nestjs/cli && npm install",
-    "start:prod": "cd back-end/lab-queue && npm run start:prod"
+    "start:prod": "cd back-end/lab-queue && npm i -g @nestjs/cli && npm install && npm run start:prod"
   }
 }
