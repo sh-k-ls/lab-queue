@@ -41,7 +41,7 @@ jobs:
           cd front-end/lab-queue
           npm install -g @angular/cli
           npm install
-          ng build --prod
+          npm run build:prod
           
     - name: Copy Deployment package to S3 bucket
       run : |
@@ -53,6 +53,12 @@ jobs:
     name: Deploy NestJS Server
     runs-on: ubuntu-latest
     steps:
+      - name: Prebuild NestJS Server
+        run: |
+          cd back-end/lab-queue
+          npm install
+          npm run prebuild
+
       - uses: actions/checkout@v2
       - uses: akhileshns/heroku-deploy@v3.12.12
         with:

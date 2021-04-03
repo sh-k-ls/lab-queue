@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "npm run prebuild && ng serve",
     "build": "npm run prebuild && ng build",
+    "build:prod": "npm run prebuild && ng build --prod",
     "test": "npm run prebuild && ng test",
     "lint": "npm run prebuild && ng lint",
     "e2e": "npm run prebuild && ng e2e",
