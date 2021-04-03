@@ -18,6 +18,7 @@ import { RequestDto } from '../shared/classes/request.dto';
 import { ProfileDto } from '../shared/classes/profile.dto';
 import { ProfileService } from '../profile/profile.service';
 import { Request } from 'express';
+import { UserDto } from '../shared/classes/user.dto';
 
 @Controller('api/v1/queue')
 export class QueueController {
@@ -37,19 +38,19 @@ export class QueueController {
 	@UseGuards(JwtAuthGuard)
 	@Get('available')
 	getAllQueuesAvailable(@Req() req: Request): QueueDto[] {
-		return this.queue.getByUserAvailableId(req.user);
+		return this.queue.getByUserAvailableId(<UserDto>req.user);
 	}
 
 	@UseGuards(JwtAuthGuard)
 	@Get('creator')
 	getAllQueuesCreator(@Req() req: Request): QueueDto[] {
-		return this.queue.getByUserCreatorId(req.user);
+		return this.queue.getByUserCreatorId(<UserDto>req.user);
 	}
 
 	@UseGuards(JwtAuthGuard)
 	@Get('signed')
 	getAllQueuesSigned(@Req() req: Request): QueueDto[] {
-		return this.queue.getByUserSignedId(req.user);
+		return this.queue.getByUserSignedId(<UserDto>req.user);
 	}
 
 	@UseGuards(JwtAuthGuard)
@@ -72,7 +73,7 @@ export class QueueController {
 		@Body() queueReq: RequestDto,
 		@Req() req: Request,
 	): number {
-		queueReq.userId = req.user.id;
+		queueReq.userId = (req.user as UserDto).id;
 		return this.request.pushRequest(queueReq);
 	}
 
@@ -89,7 +90,7 @@ export class QueueController {
 		@Body() queueReq: RequestDto,
 		@Req() req: Request,
 	): RequestDto {
-		return this.request.changeSigned(req.user.id, +idQueue);
+		return this.request.changeSigned((req.user as UserDto).id, +idQueue);
 	}
 
 	@UseGuards(JwtAuthGuard)
@@ -103,7 +104,7 @@ export class QueueController {
 	signInQueue(@Param('id') queueId: string, @Req() req: Request): number {
 		return this.request.pushRequest({
 			queueId: +queueId,
-			userId: req.user.id,
+			userId: (req.user as UserDto).id,
 			isSigned: true,
 		});
 	}
@@ -113,7 +114,7 @@ export class QueueController {
 	sighOutQueue(@Param('id') queueId: string, @Req() req: Request): number {
 		return this.request.delRequest({
 			queueId: +queueId,
-			userId: req.user.id,
+			userId: (req.user as UserDto).id,
 			isSigned: true,
 		});
 	}
