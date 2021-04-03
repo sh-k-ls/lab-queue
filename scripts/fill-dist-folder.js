@@ -1,9 +1,10 @@
 "use strict";
 
-const copy = require('./../front-end/lab-queue/node_modules/recursive-copy');
+const curDir = process.cwd() + '/';
+const copy = require(curDir + '/node_modules/recursive-copy');
 
 const srcDir = './../../shared';
-const destDir = 'src/shared/front-back-end';
+const destDir = curDir + 'src/shared/front-back-end';
  
 copy(srcDir, destDir, (err) => {
     if (err) {
