@@ -1,0 +1,11 @@
+{
+  "name": "test",
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5432,
+  "username": "queue",
+  "password": "queue1337",
+  "database": "bmstu_queue",
+  "entities": ["dist/**/*.entity{.ts,.js}"],
+  "synchronize": true
+}
