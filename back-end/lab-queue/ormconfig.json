@@ -1,4 +1,4 @@
-{
+[{
   "name": "test",
   "type": "postgres",
   "host": "localhost",
@@ -11,4 +11,17 @@
   "cli": {
     "migrationsDir": "migration"
   }
-}
+},{
+  "name": "deploy",
+  "type": "postgres",
+  "host": "ec2-108-128-104-50.eu-west-1.compute.amazonaws.com",
+  "port": 5432,
+  "username": "queue",
+  "password": "queue1337",
+  "database": "bmstu_queue",
+  "entities": ["dist/**/*.entity{.ts,.js}"],
+  "migrations": ["migration/*{.ts,.js}"],
+  "cli": {
+    "migrationsDir": "migration"
+  }
+}]
