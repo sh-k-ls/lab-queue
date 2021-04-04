@@ -1,5 +1,5 @@
 [{
-  "name": "test",
+  "name": "default",
   "type": "postgres",
   "host": "localhost",
   "port": 5432,
@@ -10,7 +10,8 @@
   "migrations": ["migration/*{.ts,.js}"],
   "cli": {
     "migrationsDir": "migration"
-  }
+  },
+  "synchronize": false
 },{
   "name": "deploy",
   "type": "postgres",
@@ -23,5 +24,6 @@
   "migrations": ["migration/*{.ts,.js}"],
   "cli": {
     "migrationsDir": "migration"
-  }
+  },
+  "synchronize": false
 }]
