@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { QueueDto } from '../../shared/front-back-end/queue.dto';
-import { UserDto } from '../../shared/front-back-end/user.dto';
-import {RequestDto} from '../../shared/front-back-end/request.dto';
-import {ProfileDto} from '../../shared/front-back-end/profile.dto';
+import {UserDto} from '../../../../../shared/user.dto';
+import {QueueDto} from '../../../../../shared/queue.dto';
+import {RequestDto} from '../../../../../shared/request.dto';
+import {ProfileDto} from '../../../../../shared/profile.dto';
 
 @Injectable({
   providedIn: 'root'
