@@ -7,6 +7,10 @@
   "license": "UNLICENSED",
   "scripts": {
     "db:diagram": "typeorm-uml ormconfig.json",
+    "db:makemigration": "ts-node node_modules/typeorm/cli.js migration:generate -c test -d migration -n",
+    "db:migrationrevert": "ts-node node_modules/typeorm/cli.js migration:revert -c test",
+    "db:migrate": "ts-node node_modules/typeorm/cli.js migration:run -c test",
+    "typeorm": "ts-node node_modules/typeorm/cli.js",
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
