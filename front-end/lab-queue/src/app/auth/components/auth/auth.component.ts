@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from '../../services/auth.service';
-import {UserDto} from '../../../../shared/front-back-end/user.dto';
-import {Router} from '@angular/router';
+import {UserDto} from '../../../../../../../shared/user.dto';
 
 @Component({
   selector: 'app-auth',
