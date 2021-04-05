@@ -2,8 +2,8 @@ import {Component,  OnInit} from '@angular/core';
 import {ApiService} from '../../../api-service/api.service';
 import {  ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
-import {QueueInterface} from '../../../../shared/interfaces/queue.interface';
-import {ProfileInterface} from '../../../../shared/interfaces/profile.interface';
+import {QueueDto} from '../../../../shared/front-back-end/queue.dto';
+import {ProfileDto} from '../../../../shared/front-back-end/profile.dto';
 
 @Component({
   selector: 'app-view-details-queue',
@@ -13,11 +13,11 @@ import {ProfileInterface} from '../../../../shared/interfaces/profile.interface'
 
 export class ViewDetailsQueueComponent implements OnInit {
 
-  public memberList: ProfileInterface[] = [];
+  public memberList: ProfileDto[] = [];
   id: number;
   isSigned = false;
 
-  queue: QueueInterface = {
+  queue: QueueDto = {
     id: 0,
     creatorId: 0,
     dateCreate: 'Загрузка...',

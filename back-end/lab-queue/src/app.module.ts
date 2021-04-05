@@ -7,10 +7,15 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { RequestService } from './request/request.service';
 import { ProfileService } from './profile/profile.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-	imports: [UsersModule, AuthModule],
-	controllers: [AppController, QueueController],
-	providers: [AppService, QueueService, RequestService, ProfileService],
+  imports: [
+      UsersModule,
+      AuthModule,
+      TypeOrmModule.forRoot(),
+  ],
+  controllers: [AppController, QueueController],
+  providers: [AppService, QueueService, RequestService, ProfileService],
 })
 export class AppModule {}

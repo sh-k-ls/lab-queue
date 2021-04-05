@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { QueueDto } from '../shared/classes/queue.dto';
+import { QueueDto } from '../shared/front-back-end/queue.dto';
 import { RequestService } from '../request/request.service';
-import { UserDto } from '../shared/classes/user.dto';
-import { RequestDto } from '../shared/classes/request.dto';
+import { UserDto } from '../shared/front-back-end/user.dto';
+import { RequestDto } from '../shared/front-back-end/request.dto';
 
 @Injectable()
 export class QueueService {

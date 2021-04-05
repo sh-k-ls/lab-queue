@@ -1,4 +1,4 @@
-export interface Course {
+export class Course {
   department: string;
   degree: 'Master'| 'Bachelor'| 'Specialist';
   year: number;

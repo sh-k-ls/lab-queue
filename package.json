@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "build": "cd back-end/lab-queue && npm i -g @nestjs/cli && npm install",
+    "start:prod": "npm --prefix back-end/lab-queue run start:prod"
+  }
+}

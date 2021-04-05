@@ -1,1 +1,1 @@
-web: npm run start:prod
+web: cd back-end/lab-queue && npm run start:prod

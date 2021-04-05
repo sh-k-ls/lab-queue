@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from '../../services/auth.service';
-import {User} from '../../../../shared/interfaces/user.interface';
-import {Router} from '@angular/router';
+import {UserDto} from '../../../../../../../shared/user.dto';
 
 @Component({
   selector: 'app-auth',
@@ -11,14 +10,13 @@ import {Router} from '@angular/router';
 export class AuthComponent implements OnInit {
 
   dataCorrect = true;
-  constructor(private auth: AuthService,
-              private route: Router)
+  constructor(private auth: AuthService)
   { }
 
   ngOnInit(): void {
   }
 
-  login(user: User): void
+  login(user: UserDto): void
   {
     this.auth.signIn(user).subscribe( (res) => {
       this.dataCorrect = res;

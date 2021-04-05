@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../api-service/api.service';
-import { QueueInterface } from '../../../../shared/interfaces/queue.interface';
+import { QueueDto } from '../../../../shared/front-back-end/queue.dto';
 import { Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 
@@ -10,10 +10,10 @@ import { forkJoin } from 'rxjs';
   styleUrls: ['./list-queue-view.component.scss']
 })
 export class ListQueueViewComponent implements OnInit {
-  public showList: QueueInterface[] = [];
-  private availableQueueList: QueueInterface[] = [];
-  private signQueueList: QueueInterface[] = [];
-  private creatorQueueList: QueueInterface[] = [];
+  public showList: QueueDto[] = [];
+  private availableQueueList: QueueDto[] = [];
+  private signQueueList: QueueDto[] = [];
+  private creatorQueueList: QueueDto[] = [];
 
   constructor(private api: ApiService,
               private readonly router: Router)

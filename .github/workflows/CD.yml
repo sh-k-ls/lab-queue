@@ -41,7 +41,7 @@ jobs:
           cd front-end/lab-queue
           npm install -g @angular/cli
           npm install
-          ng build --prod
+          npm run build:prod
           
     - name: Copy Deployment package to S3 bucket
       run : |
@@ -60,4 +60,3 @@ jobs:
           heroku_app_name: "lab-queue-server"
           heroku_email: "akorotkov1234@yandex.ru"
           branch: ${{env.BRANCH_DEPLOY}}
-          appdir: "back-end/lab-queue"

@@ -1,6 +1,6 @@
 import {Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
-import {QueueInterface} from '../../../../shared/interfaces/queue.interface';
-import {RequestInterface} from '../../../../shared/interfaces/request.interface';
+import {QueueDto} from '../../../../shared/front-back-end/queue.dto';
+import {RequestDto} from '../../../../shared/front-back-end/request.dto';
 import {ApiService} from '../../../api-service/api.service';
 
 
@@ -15,7 +15,7 @@ export class InfoQueueComponent implements OnInit {
   id: number;
 
   @Input()
-  queue: QueueInterface;
+  queue: QueueDto;
 
   @Output()
   public newItemEvent = new EventEmitter<boolean>();
@@ -34,7 +34,7 @@ export class InfoQueueComponent implements OnInit {
       this.api.deleteQueueRequest(String(this.id)).subscribe();
     }
     else {
-      const request: RequestInterface = {userId: 1, isSigned: true, queueId: this.id};
+      const request: RequestDto = {userId: 1, isSigned: true, queueId: this.id};
       this.api.createQueueRequests(String(this.id), request).subscribe();
     }
     this.isSigned = !this.isSigned;
