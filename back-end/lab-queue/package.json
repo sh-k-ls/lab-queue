@@ -7,9 +7,9 @@
   "license": "UNLICENSED",
   "scripts": {
     "db:diagram": "typeorm-uml ormconfig.json",
-    "db:makemigration": "ts-node node_modules/typeorm/cli.js migration:generate -c test -d migration -n",
-    "db:migrationrevert": "ts-node node_modules/typeorm/cli.js migration:revert -c test",
-    "db:migrate": "ts-node node_modules/typeorm/cli.js migration:run -c test",
+    "db:makemigration": "ts-node node_modules/typeorm/cli.js migration:generate -d migration -n",
+    "db:migrationrevert": "ts-node node_modules/typeorm/cli.js migration:revert ",
+    "db:migrate": "ts-node node_modules/typeorm/cli.js migration:run ",
     "db:makemigration:deploy": "ts-node node_modules/typeorm/cli.js migration:generate -d migration -с deploy -n ",
     "db:migrationrevert:deploy": "ts-node node_modules/typeorm/cli.js migration:revert -с deploy",
     "db:migrate:deploy": "ts-node node_modules/typeorm/cli.js migration:run -с deploy",
