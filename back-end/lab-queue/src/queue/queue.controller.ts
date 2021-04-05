@@ -18,7 +18,7 @@ import { RequestDto } from '../shared/front-back-end/request.dto';
 import { ProfileDto } from '../shared/front-back-end/profile.dto';
 import { ProfileService } from '../profile/profile.service';
 import { Request } from 'express';
-import { UserDto } from '../shared/classes/user.dto';
+import { UserDto } from '../shared/front-back-end/user.dto';
 
 @Controller('api/v1/queue')
 export class QueueController {
