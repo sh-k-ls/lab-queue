@@ -9,7 +9,6 @@ import { RequestService } from './request/request.service';
 import { ProfileService } from './profile/profile.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-
 @Module({
   imports: [
       UsersModule,
