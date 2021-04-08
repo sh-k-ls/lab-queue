@@ -20,7 +20,7 @@
     "start:dev": "npm run prebuild && nest start --watch",
     "postinstall": "npm run prebuild && npm run build",
     "start:debug": "npm run prebuild && nest start --debug --watch",
-    "start:prod": "npm install express && npm run prebuild && node dist/main",
+    "start:prod": "npm install && npm i @types/express && npm install pa && npm run prebuild && node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "npm run prebuild && jest",
     "test:watch": "npm run prebuild && jest --watch",
