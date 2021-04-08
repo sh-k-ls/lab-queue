@@ -6,7 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "db:diagram": "typeorm-uml ormconfig.json",
+    "db:diagram": "typeorm-uml src/ormconfig.ts",
     "db:makemigration": "ts-node node_modules/typeorm/cli.js migration:generate -d migration -n",
     "db:migrationrevert": "ts-node node_modules/typeorm/cli.js migration:revert ",
     "db:migrate": "ts-node node_modules/typeorm/cli.js migration:run ",
