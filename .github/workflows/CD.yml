@@ -19,7 +19,7 @@ jobs:
     strategy:
       matrix:
         node-version: [12.x]
-        
+
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -30,19 +30,19 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ env.AWS_REGION_NAME }}
-        
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    
+
     - name: Build Angular Production
       run: |
           cd front-end/lab-queue
           npm install -g @angular/cli
           npm install
           npm run build:prod
-          
+
     - name: Copy Deployment package to S3 bucket
       run : |
             cd front-end/lab-queue/dist
