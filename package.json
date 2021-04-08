@@ -1,6 +1,6 @@
 {
   "scripts": {
     "build": "cd back-end/lab-queue && npm i -g @nestjs/cli && npm install && npm i @types/passport && npm i @types/express && npm i @types/passport-jwt && npm i @types/passport-local",
-    "start:prod": "cd back-end/lab-queue && npm install && npm run start"
+    "start:prod": "cd back-end/lab-queue && npm run start"
   }
 }
