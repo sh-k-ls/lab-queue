@@ -18,7 +18,7 @@ const typeOrmConfig: 'default' | 'deploy' =
   imports: [
     UsersModule,
     AuthModule,
-    // TypeOrmModule.forRoot(ormConfig[typeOrmConfig]),
+    TypeOrmModule.forRoot(ormConfig[typeOrmConfig]),
   ],
   controllers: [AppController, QueueController],
   providers: [AppService, QueueService, RequestService, ProfileService],
