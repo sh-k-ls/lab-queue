@@ -4,6 +4,7 @@ import {  ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import {QueueDto} from '../../../../shared/front-back-end/queue.dto';
 import {ProfileDto} from '../../../../shared/front-back-end/profile.dto';
+import {AuthService} from '../../../auth/services/auth.service';
 
 @Component({
   selector: 'app-view-details-queue',
@@ -31,7 +32,8 @@ export class ViewDetailsQueueComponent implements OnInit {
   constructor(
     private readonly api: ApiService,
     private route: ActivatedRoute,
-  ) { }
+    private readonly auth: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.route.paramMap.pipe(
@@ -44,9 +46,15 @@ export class ViewDetailsQueueComponent implements OnInit {
     this.updateMembers();
   }
 
-  public updateMembers(): void {
+  updateMembers(): void {
     this.api.getQueueRequestsProfiles(String(this.id)).subscribe(requests => {
       this.memberList = requests;
+      const userId = this.auth.getUserId();
+      for (const member of this.memberList){
+        if (member.userId === userId){
+          this.isSigned = true;
+        }
+      }
     });
   }
 
