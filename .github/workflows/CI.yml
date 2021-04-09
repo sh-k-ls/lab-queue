@@ -25,7 +25,7 @@ jobs:
            npm install -g @angular/cli
            npm install
            npm run build
-           
+
     - name: Build NestJS Server
       run: |
           cd back-end/lab-queue
@@ -48,6 +48,13 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+
+      - uses: huaxk/postgis-action@v1
+        with:
+          postgresql version: 'latest'
+          postgresql password: '123'   # This environment variable sets the superuser password for PostgreSQL, maybe string or secrets, the default superuser is defined by the input environment variable: postgresql user.
+          postgresql user: 'test'  # This optional environment variable is used in conjunction with postgresql password to set a user and its password. This variable will create the specified user with superuser power and a database with the same name. If it is not specified, then the default user of 'postgres' will be used.
+          postgresql db: 'bmstu_queue'
 
       - name: Test Angular SPA
         run: |
