@@ -11,7 +11,7 @@
     "e2e": "npm run prebuild && ng e2e",
     "editorconfig": "editorconfig-checker",
     "prebuild": "rm -rf src/shared/front-back-end && node ../../scripts/fill-dist-folder.js",
-    "compodoc": "npx compodoc -p tsconfig.json src"
+    "compodoc": "npx compodoc -p tsconfig.json src -s"
   },
   "private": true,
   "dependencies": {

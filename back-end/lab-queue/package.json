@@ -28,7 +28,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "prebuild": "rm -rf src/shared/front-back-end && node ../../scripts/fill-dist-folder.js",
-    "compodoc": "npx compodoc -p tsconfig.json src"
+    "compodoc": "npx compodoc -p tsconfig.json src -s"
   },
   "dependencies": {
     "@nestjs/common": "^7.6.13",
