@@ -3,38 +3,38 @@ name: CI
 on: [push]
 
 jobs:
-  build:
-
-    runs-on: ${{matrix.os}}
-
-    strategy:
-      matrix:
-        node-version: [12.x]
-        os: [ubuntu-latest, windows-latest] #macOS-latest
-
-    steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-
-    - name: Build Angular SPA
-      run: |
-           cd front-end/lab-queue
-           npm install -g @angular/cli
-           npm install
-           npm run build
-
-    - name: Build NestJS Server
-      run: |
-          cd back-end/lab-queue
-          npm install -g @nestjs/cli
-          npm install
-          npm run build
+#  build:
+#
+#    runs-on: ${{matrix.os}}
+#
+#    strategy:
+#      matrix:
+#        node-version: [12.x]
+#        os: [ubuntu-latest, windows-latest] #macOS-latest
+#
+#    steps:
+#    - uses: actions/checkout@v2
+#    - name: Use Node.js ${{ matrix.node-version }}
+#      uses: actions/setup-node@v1
+#      with:
+#        node-version: ${{ matrix.node-version }}
+#
+#    - name: Build Angular SPA
+#      run: |
+#           cd front-end/lab-queue
+#           npm install -g @angular/cli
+#           npm install
+#           npm run build
+#
+#    - name: Build NestJS Server
+#      run: |
+#          cd back-end/lab-queue
+#          npm install -g @nestjs/cli
+#          npm install
+#          npm run build
 
   test:
-    needs: build
+#    needs: build
     runs-on: ${{matrix.os}}
     strategy:
       fail-fast: false
@@ -52,8 +52,8 @@ jobs:
       - uses: huaxk/postgis-action@v1
         with:
           postgresql version: 'latest'
-          postgresql password: '123'   # This environment variable sets the superuser password for PostgreSQL, maybe string or secrets, the default superuser is defined by the input environment variable: postgresql user.
-          postgresql user: 'test'  # This optional environment variable is used in conjunction with postgresql password to set a user and its password. This variable will create the specified user with superuser power and a database with the same name. If it is not specified, then the default user of 'postgres' will be used.
+          postgresql password: 'queue1337'   # This environment variable sets the superuser password for PostgreSQL, maybe string or secrets, the default superuser is defined by the input environment variable: postgresql user.
+          postgresql user: 'queue'  # This optional environment variable is used in conjunction with postgresql password to set a user and its password. This variable will create the specified user with superuser power and a database with the same name. If it is not specified, then the default user of 'postgres' will be used.
           postgresql db: 'bmstu_queue'
 
       - name: Test Angular SPA
