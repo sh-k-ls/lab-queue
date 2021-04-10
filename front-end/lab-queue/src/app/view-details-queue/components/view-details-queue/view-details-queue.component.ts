@@ -58,15 +58,19 @@ export class ViewDetailsQueueComponent implements OnInit {
     this.updateMembers();
   }
 
+  checkSigned(userId: number): void{
+    for (const member of this.memberList){
+      if (member.userId === userId){
+        this.isSigned = true;
+      }
+    }
+  }
+
   updateMembers(): void {
     this.api.getQueueRequestsProfiles(String(this.id)).subscribe(requests => {
       this.memberList = requests;
       const userId = this.auth.getUserId();
-      for (const member of this.memberList){
-        if (member.userId === userId){
-          this.isSigned = true;
-        }
-      }
+      this.checkSigned(userId);
     });
   }
 
