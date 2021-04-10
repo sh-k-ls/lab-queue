@@ -2,5 +2,12 @@
   "scripts": {
     "build": "cd back-end/lab-queue && npm i -g @nestjs/cli && npm install",
     "start:prod": "npm --prefix back-end/lab-queue run start:prod"
+  },
+  "dependencies": {
+    "-": "0.0.1",
+    "@nestjs/typeorm": "^7.1.5",
+    "pg": "^8.5.1",
+    "save": "^2.4.0",
+    "typeorm": "^0.2.32"
   }
 }
