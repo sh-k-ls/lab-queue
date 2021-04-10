@@ -17,9 +17,13 @@
         display: flex;
         justify-content: space-between;
       }
-      .queue-button {
+      .button-list {
         display: flex;
         justify-content: flex-end;
+        .queue-button {
+          display: flex;
+          margin-left: 5px;
+        }
       }
       .queue-detail-info {
 

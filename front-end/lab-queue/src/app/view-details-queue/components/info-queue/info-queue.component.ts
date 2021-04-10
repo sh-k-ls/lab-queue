@@ -2,6 +2,7 @@ import {Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
 import {QueueDto} from '../../../../shared/front-back-end/queue.dto';
 import {RequestDto} from '../../../../shared/front-back-end/request.dto';
 import {ApiService} from '../../../api-service/api.service';
+import {ProfileDto} from '../../../../shared/front-back-end/profile.dto';
 
 
 @Component({
@@ -17,6 +18,12 @@ export class InfoQueueComponent implements OnInit {
   @Input()
   queue: QueueDto;
 
+  @Input()
+  creator: ProfileDto;
+
+  @Input()
+  isCreator = false;
+
   @Output()
   public newItemEvent = new EventEmitter<boolean>();
 
@@ -28,7 +35,6 @@ export class InfoQueueComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  // TODO userId
   toSignUp(): void {
     if (this.isSigned) {
       this.api.deleteQueueRequest(String(this.id)).subscribe();
@@ -39,5 +45,8 @@ export class InfoQueueComponent implements OnInit {
     }
     this.isSigned = !this.isSigned;
     this.newItemEvent.emit(this.isSigned);
+  }
+
+  changeQueue(): void {
   }
 }

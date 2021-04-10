@@ -4,6 +4,7 @@ import {  ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import {QueueDto} from '../../../../shared/front-back-end/queue.dto';
 import {ProfileDto} from '../../../../shared/front-back-end/profile.dto';
+import {AuthService} from '../../../auth/services/auth.service';
 
 @Component({
   selector: 'app-view-details-queue',
@@ -16,7 +17,15 @@ export class ViewDetailsQueueComponent implements OnInit {
   public memberList: ProfileDto[] = [];
   id: number;
   isSigned = false;
-
+  isCreator = false;
+  creator: ProfileDto = {
+    id: 0,
+    userId: 0,
+    name: 'Загрузка',
+    surname: 'Загрузка',
+    group: 'Загрузка',
+    course: 'Загрузка',
+  };
   queue: QueueDto = {
     id: 0,
     creatorId: 0,
@@ -31,7 +40,8 @@ export class ViewDetailsQueueComponent implements OnInit {
   constructor(
     private readonly api: ApiService,
     private route: ActivatedRoute,
-  ) { }
+    private readonly auth: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.route.paramMap.pipe(
@@ -40,13 +50,27 @@ export class ViewDetailsQueueComponent implements OnInit {
       .subscribe(idQueue => this.id = +idQueue);
     this.api.getQueueById(String(this.id)).subscribe(queue => {
       this.queue = queue;
+      this.isCreator = this.auth.getUserId() === this.queue.creatorId;
+      this.api.getProfileByUserId(String(this.queue.creatorId)).subscribe(profile => {
+        this.creator = profile;
+      });
     });
     this.updateMembers();
   }
 
-  public updateMembers(): void {
+  checkSigned(userId: number): void{
+    for (const member of this.memberList){
+      if (member.userId === userId){
+        this.isSigned = true;
+      }
+    }
+  }
+
+  updateMembers(): void {
     this.api.getQueueRequestsProfiles(String(this.id)).subscribe(requests => {
       this.memberList = requests;
+      const userId = this.auth.getUserId();
+      this.checkSigned(userId);
     });
   }
 

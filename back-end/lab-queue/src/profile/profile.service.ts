@@ -15,13 +15,21 @@ export class ProfileService {
 			group: 'IU7-85B',
 			id: 1,
 		},
+    {
+      name: 'Olga',
+      surname: 'Ko',
+      course: '4',
+      userId: 2,
+      group: 'IU7-85B',
+      id: 2,
+    }
 	];
 
-	public getProfileByUserId(userId: number) {
+	public getProfileByUserId(userId: number): ProfileDto {
 		return this.profiles.find((profile) => profile.id === userId);
 	}
 
-	public getProfilesByQueueId(queueId: number) {
+	public getProfilesByQueueId(queueId: number): ProfileDto[] {
 		const requests: RequestDto[] = this.request.getByQueueId(queueId);
 		const profiles: ProfileDto[] = [];
 		for (const request of requests) {
