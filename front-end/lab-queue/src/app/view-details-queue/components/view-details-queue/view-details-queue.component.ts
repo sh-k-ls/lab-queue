@@ -17,6 +17,7 @@ export class ViewDetailsQueueComponent implements OnInit {
   public memberList: ProfileDto[] = [];
   id: number;
   isSigned = false;
+  isCreator = false;
   creator: ProfileDto = {
     id: 0,
     userId: 0,
@@ -49,6 +50,8 @@ export class ViewDetailsQueueComponent implements OnInit {
       .subscribe(idQueue => this.id = +idQueue);
     this.api.getQueueById(String(this.id)).subscribe(queue => {
       this.queue = queue;
+      this.isCreator = this.auth.getUserId() === this.queue.creatorId;
+      console.log(this.auth.getUserId(), this.queue, this.auth.getUserId() === this.queue.creatorId);
       this.api.getProfileByUserId(String(this.queue.creatorId)).subscribe(profile => {
         this.creator = profile;
       });
