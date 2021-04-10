@@ -2,6 +2,7 @@ import {Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
 import {QueueDto} from '../../../../shared/front-back-end/queue.dto';
 import {RequestDto} from '../../../../shared/front-back-end/request.dto';
 import {ApiService} from '../../../api-service/api.service';
+import {ProfileDto} from '../../../../shared/front-back-end/profile.dto';
 
 
 @Component({
@@ -16,6 +17,12 @@ export class InfoQueueComponent implements OnInit {
 
   @Input()
   queue: QueueDto;
+
+  @Input()
+  creator: ProfileDto;
+
+  @Input()
+  isCreator = false;
 
   @Output()
   public newItemEvent = new EventEmitter<boolean>();
