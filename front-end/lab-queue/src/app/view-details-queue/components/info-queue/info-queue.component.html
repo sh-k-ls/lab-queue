@@ -21,10 +21,10 @@
         </button>
        </div>
         <div class="queue-button">
-          <button mat-raised-button *ngIf="isSigned" [color]="isSigned ? 'warn' : 'primary'" (click)="toSignUp()">
+          <button mat-raised-button *ngIf="isSigned" color="warn" (click)="toSignUp()">
            Выйти из очереди
           </button>
-         <button mat-raised-button *ngIf="!isSigned" [color]="isSigned ? 'warn' : 'primary'" (click)="toSignUp()">
+         <button mat-raised-button *ngIf="!isSigned" color="primary" (click)="toSignUp()">
           Записаться в очередь
          </button>
         </div>
