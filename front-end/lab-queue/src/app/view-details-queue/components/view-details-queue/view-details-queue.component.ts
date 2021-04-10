@@ -17,7 +17,14 @@ export class ViewDetailsQueueComponent implements OnInit {
   public memberList: ProfileDto[] = [];
   id: number;
   isSigned = false;
-
+  creator: ProfileDto = {
+    id: 0,
+    userId: 0,
+    name: 'Загрузка',
+    surname: 'Загрузка',
+    group: 'Загрузка',
+    course: 'Загрузка',
+  };
   queue: QueueDto = {
     id: 0,
     creatorId: 0,
@@ -42,6 +49,9 @@ export class ViewDetailsQueueComponent implements OnInit {
       .subscribe(idQueue => this.id = +idQueue);
     this.api.getQueueById(String(this.id)).subscribe(queue => {
       this.queue = queue;
+      this.api.getProfileByUserId(String(this.queue.creatorId)).subscribe(profile => {
+        this.creator = profile;
+      });
     });
     this.updateMembers();
   }
