@@ -14,12 +14,21 @@
         <div class="mat-h4">Создатель: {{creator.name}} {{creator.surname}}</div>
       </div>
       <div>Описание: {{queue.description}}</div>
-      <div class="queue-button">
-        <button mat-raised-button [color]="isSigned ? 'warn' : 'primary'" (click)="toSignUp()">
-          <p *ngIf="isSigned">Выйти из очереди</p>
-          <p *ngIf="!isSigned">Записаться в очередь</p>
+      <div class="button-list">
+       <div *ngIf="isCreator" class="queue-button">
+        <button mat-stroked-button color="primary" (click)="changeQueue()">
+         Изменить очередь
         </button>
-      </div>
+       </div>
+        <div class="queue-button">
+          <button mat-raised-button *ngIf="isSigned" [color]="isSigned ? 'warn' : 'primary'" (click)="toSignUp()">
+           Выйти из очереди
+          </button>
+         <button mat-raised-button *ngIf="!isSigned" [color]="isSigned ? 'warn' : 'primary'" (click)="toSignUp()">
+          Записаться в очередь
+         </button>
+        </div>
+       </div>
     </div>
   </mat-card>
 </div>

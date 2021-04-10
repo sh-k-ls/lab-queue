@@ -28,7 +28,6 @@ export class InfoQueueComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  // TODO userId
   toSignUp(): void {
     if (this.isSigned) {
       this.api.deleteQueueRequest(String(this.id)).subscribe();
@@ -39,5 +38,8 @@ export class InfoQueueComponent implements OnInit {
     }
     this.isSigned = !this.isSigned;
     this.newItemEvent.emit(this.isSigned);
+  }
+
+  changeQueue(): void {
   }
 }
