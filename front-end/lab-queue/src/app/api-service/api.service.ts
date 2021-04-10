@@ -35,6 +35,13 @@ export class ApiService {
     return this.http.get<QueueDto[]>(url);
   }
 
+  // GET /api/v1/user/:id/profile
+  public getProfileByUserId(idUser: string): Observable<ProfileDto> {
+    const url = `/api/v1/user/${idUser}/profile`;
+    this.http.get<ProfileDto>(url).subscribe(profile => console.log(profile));
+    return this.http.get<ProfileDto>(url);
+  }
+
   // GET /api/v1/queue/signed
   public getQueueSigned(): Observable<QueueDto[]> {
     const url = '/api/v1/queue/signed';
