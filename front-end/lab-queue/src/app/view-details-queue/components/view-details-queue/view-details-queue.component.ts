@@ -59,7 +59,9 @@ export class ViewDetailsQueueComponent implements OnInit {
   }
 
   checkSigned(userId: number): void{
+    this.isSigned = false;
     for (const member of this.memberList){
+      // console.log(member);
       if (member.userId === userId){
         this.isSigned = true;
       }
@@ -76,5 +78,12 @@ export class ViewDetailsQueueComponent implements OnInit {
 
   toSignup(): void {
     this.updateMembers();
+  }
+
+  toPass(userId: number): void {
+    this.api.setPassed(String(this.queue.id), String(userId)).subscribe(request => {
+      this.updateMembers();
+      this.checkSigned(this.auth.getUserId());
+    });
   }
 }
