@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ProfileDto} from '../../../../shared/front-back-end/profile.dto';
 
 @Component({
@@ -13,6 +13,9 @@ export class ListMemberQueueComponent implements OnInit {
 
   @Input()
   id: number;
+
+  @Output()
+  public newItemEvent = new EventEmitter<number>();
 
   constructor() {
   }
