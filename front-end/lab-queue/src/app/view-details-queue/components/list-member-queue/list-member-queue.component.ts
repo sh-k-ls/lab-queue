@@ -20,6 +20,8 @@ export class ListMemberQueueComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  Passed(): void {
+  Passed(event: Event): void {
+    const button = event.target as Element;
+    this.newItemEvent.emit(+(button.id));
   }
 }

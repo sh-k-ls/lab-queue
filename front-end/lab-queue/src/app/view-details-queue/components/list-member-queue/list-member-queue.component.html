@@ -4,8 +4,8 @@
       <div>
         Имя: {{item.name}} Фамилия: {{item.surname}} Группа: {{item.group}}
       </div>
-      <button mat-raised-button [color]="'primary'" (click)="Passed()">
-        Сдал(а)
+      <button mat-raised-button color="primary" id="{{item.userId}}" (click)="Passed($event)" >
+       <span id="{{item.userId}}">Сдал(а)</span>
       </button>
     </div>
   </mat-card>
