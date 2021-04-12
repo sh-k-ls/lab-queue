@@ -49,9 +49,12 @@ export class QueueController {
 
   @UseGuards(JwtAuthGuard)
   @Patch(':idQueue/request/:idUser')
-  public setPassed(@Param('idQueue') idQueue: string, @Param('idUser') idUser: string): RequestDto {
+  public setPassed(@Param('idQueue') idQueue: string, @Param('idUser') idUser: string, @Req() req: Request): RequestDto {
     // console.log(+idUser, +idQueue);
-    return this.request.changeSigned(+idUser, +idQueue);
+    if (this.request.isSigned(+idUser)){
+      return this.request.changeSigned(+idUser, +idQueue);
+    }
+    return this.request.getByUserIdQueueId(+idUser, +idQueue);
   }
 
   @UseGuards(JwtAuthGuard)
