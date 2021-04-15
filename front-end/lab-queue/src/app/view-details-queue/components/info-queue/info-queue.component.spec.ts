@@ -34,6 +34,14 @@ describe('InfoQueueComponent', () => {
       timeCreate: 'Test...',
       groups: ['Test...'],
     };
+    component.creator = {
+      id: 0,
+      userId: 0,
+      name: 'Test',
+      surname: 'Test',
+      group: 'Test',
+      course: 'Test',
+    };
     fixture.detectChanges();
   });
 

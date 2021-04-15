@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         node-version: [12.x]
-        os: [ubuntu-latest, windows-latest] #macOS-latest
+        os: [ ubuntu-latest ] # windows-latest #macOS-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -25,7 +25,7 @@ jobs:
            npm install -g @angular/cli
            npm install
            npm run build
-           
+
     - name: Build NestJS Server
       run: |
           cd back-end/lab-queue
@@ -40,7 +40,7 @@ jobs:
       fail-fast: false
       matrix:
         node-version: [ 12.x ]
-        os: [ ubuntu-latest, windows-latest ] #macOS-latest
+        os: [ ubuntu-latest ] # windows-latest #macOS-latest
 
     steps:
       - uses: actions/checkout@v2
@@ -48,6 +48,13 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+
+      - uses: huaxk/postgis-action@v1
+        with:
+          postgresql version: 'latest'
+          postgresql password: 'queue1337'
+          postgresql user: 'queue'
+          postgresql db: 'bmstu_queue'
 
       - name: Test Angular SPA
         run: |

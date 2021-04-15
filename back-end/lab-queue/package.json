@@ -6,7 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "db:diagram": "typeorm-uml ormconfig.json",
+    "db:diagram": "typeorm-uml src/ormconfig.ts",
     "db:makemigration": "ts-node node_modules/typeorm/cli.js migration:generate -d migration -n",
     "db:migrationrevert": "ts-node node_modules/typeorm/cli.js migration:revert ",
     "db:migrate": "ts-node node_modules/typeorm/cli.js migration:run ",
@@ -18,9 +18,9 @@
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "npm run prebuild && nest start",
     "start:dev": "npm run prebuild && nest start --watch",
-    "postinstall": "npm run prebuild && npm run build",
+    "postinstall": "",
     "start:debug": "npm run prebuild && nest start --debug --watch",
-    "start:prod": "npm run prebuild && node dist/main",
+    "start:prod": "node dist/main.js",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "npm run prebuild && jest",
     "test:watch": "npm run prebuild && jest --watch",
@@ -28,7 +28,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "prebuild": "rm -rf src/shared/front-back-end && node ../../scripts/fill-dist-folder.js",
-    "compodoc": "npx compodoc -p tsconfig.json src"
+    "compodoc": "npx compodoc -p tsconfig.json src -s"
   },
   "dependencies": {
     "@nestjs/common": "^7.6.13",
@@ -37,6 +37,7 @@
     "@nestjs/passport": "^7.1.5",
     "@nestjs/platform-express": "^7.6.13",
     "@nestjs/typeorm": "^7.1.5",
+    "core-util-is": "^1.0.2",
     "cors": "^2.8.5",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
@@ -46,7 +47,8 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^6.6.6",
-    "typeorm": "^0.2.32"
+    "typeorm": "^0.2.32",
+    "webpack-dev-server": "^3.11.2"
   },
   "devDependencies": {
     "@nestjs/cli": "^7.5.6",
