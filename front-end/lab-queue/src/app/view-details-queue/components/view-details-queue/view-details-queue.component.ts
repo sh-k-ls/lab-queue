@@ -5,6 +5,7 @@ import { switchMap } from 'rxjs/operators';
 import {QueueDto} from '../../../../shared/front-back-end/queue.dto';
 import {ProfileDto} from '../../../../shared/front-back-end/profile.dto';
 import {AuthService} from '../../../auth/services/auth.service';
+import {RequestDto} from '../../../../shared/front-back-end/request.dto';
 
 @Component({
   selector: 'app-view-details-queue',
@@ -58,12 +59,14 @@ export class ViewDetailsQueueComponent implements OnInit {
     this.updateMembers();
   }
 
-  checkSigned(userId: number): void{
-    for (const member of this.memberList){
-      if (member.userId === userId){
-        this.isSigned = true;
-      }
+  checkSigned(userId: number): void {
+    if (this.memberList) {
+      this.isSigned = !!(this.memberList.find(member => member.userId === userId));
     }
+    else {
+      this.isSigned = false;
+    }
+    // console.log('HI'!,!this.isSigned);
   }
 
   updateMembers(): void {
@@ -71,10 +74,22 @@ export class ViewDetailsQueueComponent implements OnInit {
       this.memberList = requests;
       const userId = this.auth.getUserId();
       this.checkSigned(userId);
+      // console.log('upd');
     });
   }
 
   toSignup(): void {
-    this.updateMembers();
+    if (this.isSigned) {
+      this.api.deleteQueueRequest(String(this.id)).subscribe( () => this.updateMembers());
+    }
+    else {
+      const request: RequestDto = {userId: 1, isSigned: true, queueId: this.id};
+      this.api.createQueueRequests(String(this.id), request).subscribe(() => this.updateMembers());
+    }
+    this.isSigned = !this.isSigned;
+  }
+
+  toPass(userId: number): void {
+    this.api.setPassed(String(this.queue.id), String(userId)).subscribe(() => this.updateMembers());
   }
 }

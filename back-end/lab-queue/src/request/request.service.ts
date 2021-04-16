@@ -30,6 +30,17 @@ export class RequestService {
 		return this.requests.push(request);
 	}
 
+	public isSigned(userId: number): boolean {
+    return !!(this.requests.find(elem => elem.userId === userId));
+  }
+
+  public getByUserIdQueueId(userId: number, queueId: number): RequestDto {
+    return this.requests.find(req =>
+      req.userId === userId &&
+      req.queueId === queueId &&
+      req.isSigned === true);
+  }
+
 	public changeSigned(userId: number, queueId: number): RequestDto {
 		let resRequest: RequestDto;
 		for (const request of this.requests) {
