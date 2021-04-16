@@ -5,6 +5,7 @@ import { switchMap } from 'rxjs/operators';
 import {QueueDto} from '../../../../shared/front-back-end/queue.dto';
 import {ProfileDto} from '../../../../shared/front-back-end/profile.dto';
 import {AuthService} from '../../../auth/services/auth.service';
+import {RequestDto} from '../../../../shared/front-back-end/request.dto';
 
 @Component({
   selector: 'app-view-details-queue',
@@ -58,14 +59,14 @@ export class ViewDetailsQueueComponent implements OnInit {
     this.updateMembers();
   }
 
-  checkSigned(userId: number): void{
-    this.isSigned = false;
-    for (const member of this.memberList){
-      // console.log(member);
-      if (member.userId === userId){
-        this.isSigned = true;
-      }
+  checkSigned(userId: number): void {
+    if (this.memberList) {
+      this.isSigned = !!(this.memberList.find(member => member.userId === userId));
     }
+    else {
+      this.isSigned = false;
+    }
+    // console.log('HI'!,!this.isSigned);
   }
 
   updateMembers(): void {
