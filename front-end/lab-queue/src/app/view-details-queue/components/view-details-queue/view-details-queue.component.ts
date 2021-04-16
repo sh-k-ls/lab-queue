@@ -80,27 +80,16 @@ export class ViewDetailsQueueComponent implements OnInit {
 
   toSignup(): void {
     if (this.isSigned) {
-      this.api.deleteQueueRequest(String(this.id)).subscribe( () =>
-      {
-        this.updateMembers();
-      });
+      this.api.deleteQueueRequest(String(this.id)).subscribe( () => this.updateMembers());
     }
     else {
       const request: RequestDto = {userId: 1, isSigned: true, queueId: this.id};
-      this.api.createQueueRequests(String(this.id), request).subscribe(() =>
-      {
-        {
-          this.updateMembers();
-        }
-      });
+      this.api.createQueueRequests(String(this.id), request).subscribe(() => this.updateMembers());
     }
     this.isSigned = !this.isSigned;
   }
 
   toPass(userId: number): void {
-    this.api.setPassed(String(this.queue.id), String(userId)).subscribe(() => {
-      // console.log('pass');
-      this.updateMembers();
-    });
+    this.api.setPassed(String(this.queue.id), String(userId)).subscribe(() => this.updateMembers());
   }
 }
