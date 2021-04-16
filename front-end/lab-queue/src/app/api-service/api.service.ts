@@ -98,12 +98,9 @@ export class ApiService {
     return this.http.post<QueueDto>(url, {});
   }
 
-  // PATCH /api/v1/queue/:idQueue/request/idUser
+  // PATCH /api/v1/queue/:idQueue/request/:idUser
   public setPassed(idQueue: string, idUser: string): Observable<RequestDto> {
     const url = `/api/v1/queue/${idQueue}/request/${idUser}`;
-    // console.log(idQueue, idUser);
-    // console.log(url);
-    this.http.get<ProfileDto[]>(`/api/v1/queue/${idQueue}/request/profile`);
     return this.http.patch<RequestDto>(url, {});
   }
 
