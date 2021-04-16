@@ -1,7 +1,5 @@
 import {Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
 import {QueueDto} from '../../../../shared/front-back-end/queue.dto';
-import {RequestDto} from '../../../../shared/front-back-end/request.dto';
-import {ApiService} from '../../../api-service/api.service';
 import {ProfileDto} from '../../../../shared/front-back-end/profile.dto';
 
 
@@ -30,21 +28,18 @@ export class InfoQueueComponent implements OnInit {
   @Input()
   public isSigned = false;
 
-  constructor(private readonly api: ApiService) { }
+  constructor() { }
 
   ngOnInit(): void {
   }
 
-  toSignUp(): void {
-    if (this.isSigned) {
-      this.api.deleteQueueRequest(String(this.id)).subscribe();
-    }
-    else {
-      const request: RequestDto = {userId: 1, isSigned: true, queueId: this.id};
-      this.api.createQueueRequests(String(this.id), request).subscribe();
-    }
-    this.isSigned = !this.isSigned;
+  emitSignedEvent(): void {
     this.newItemEvent.emit(this.isSigned);
+  }
+
+  toSignUp(): void {
+    console.log(this.isSigned);
+    this.emitSignedEvent();
   }
 
   changeQueue(): void {

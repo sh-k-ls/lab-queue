@@ -74,17 +74,33 @@ export class ViewDetailsQueueComponent implements OnInit {
       this.memberList = requests;
       const userId = this.auth.getUserId();
       this.checkSigned(userId);
+      // console.log('upd');
     });
   }
 
   toSignup(): void {
-    this.updateMembers();
+    if (this.isSigned) {
+      this.api.deleteQueueRequest(String(this.id)).subscribe( () =>
+      {
+        this.updateMembers();
+      });
+    }
+    else {
+      const request: RequestDto = {userId: 1, isSigned: true, queueId: this.id};
+      this.api.createQueueRequests(String(this.id), request).subscribe(() =>
+      {
+        {
+          this.updateMembers();
+        }
+      });
+    }
+    this.isSigned = !this.isSigned;
   }
 
   toPass(userId: number): void {
-    this.api.setPassed(String(this.queue.id), String(userId)).subscribe(request => {
+    this.api.setPassed(String(this.queue.id), String(userId)).subscribe(() => {
+      // console.log('pass');
       this.updateMembers();
-      this.checkSigned(this.auth.getUserId());
     });
   }
 }
