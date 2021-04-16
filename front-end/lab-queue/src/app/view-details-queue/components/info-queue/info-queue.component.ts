@@ -38,7 +38,6 @@ export class InfoQueueComponent implements OnInit {
   }
 
   toSignUp(): void {
-    console.log(this.isSigned);
     this.emitSignedEvent();
   }
 
