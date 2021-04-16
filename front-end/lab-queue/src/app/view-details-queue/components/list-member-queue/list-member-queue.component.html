@@ -4,8 +4,8 @@
       <div>
         Имя: {{item.name}} Фамилия: {{item.surname}} Группа: {{item.group}}
       </div>
-      <button mat-raised-button *ngIf="isSigned" color="primary" id="{{item.userId}}" (click)="Passed($event)" >
-       <span id="{{item.userId}}">Сдал(а)</span>
+      <button mat-raised-button *ngIf="isSigned" color="primary"  (click)="passed(item.userId)" >
+       <span>Сдал(а)</span>
       </button>
     </div>
   </mat-card>
