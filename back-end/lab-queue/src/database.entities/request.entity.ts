@@ -1,6 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { UserEntity } from './user.entity';
 import { QueueEntity } from './queue.entity';
+import { RequestDto } from '../shared/front-back-end/request.dto';
 
 @Entity()
 export class RequestEntity {
@@ -10,9 +11,21 @@ export class RequestEntity {
   @Column({ default: true })
   isActive: boolean;
 
-  @ManyToOne(() => UserEntity, (user) => user.requests)
+  @ManyToOne(() => UserEntity, (user) => user.requests, {
+    eager: true,
+  })
   user: UserEntity;
 
-  @ManyToOne(() => QueueEntity, (queue) => queue.requests)
+  @ManyToOne(() => QueueEntity, (queue) => queue.requests, {
+    eager: true,
+  })
   queue: QueueEntity;
+
+  public getDTO(): RequestDto {
+    return {
+      queueId: this.queue.id,
+      userId: this.user.id,
+      isSigned: this.isActive,
+    };
+  }
 }

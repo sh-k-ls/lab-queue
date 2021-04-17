@@ -4,21 +4,10 @@
     "start:prod": "cd back-end/lab-queue && npm run start:prod"
   },
   "dependencies": {
-    "@nestjs/common": "^7.6.13",
-    "@nestjs/core": "^7.6.13",
-    "@nestjs/jwt": "^7.2.0",
-    "@nestjs/passport": "^7.1.5",
-    "@nestjs/platform-express": "^7.6.13",
+    "-": "0.0.1",
     "@nestjs/typeorm": "^7.1.5",
-    "cors": "^2.8.5",
-    "passport": "^0.4.1",
-    "passport-jwt": "^4.0.0",
-    "passport-local": "^1.0.0",
     "pg": "^8.5.1",
-    "recursive-copy": "^2.0.11",
-    "reflect-metadata": "^0.1.13",
-    "rimraf": "^3.0.2",
-    "rxjs": "^6.6.6",
+    "save": "^2.4.0",
     "typeorm": "^0.2.32"
   },
   "devDependencies": {
@@ -61,15 +50,8 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
     "build": "cd back-end/lab-queue && npm i -g @nestjs/cli && npm install",
     "start:prod": "npm --prefix back-end/lab-queue run start:prod"
-  },
-  "dependencies": {
-    "-": "0.0.1",
-    "@nestjs/typeorm": "^7.1.5",
-    "pg": "^8.5.1",
-    "save": "^2.4.0",
-    "typeorm": "^0.2.32"
   }
 }

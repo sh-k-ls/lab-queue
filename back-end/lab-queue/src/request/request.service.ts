@@ -1,8 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { RequestDto } from '../shared/front-back-end/request.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { RequestEntity } from '../database.entities/request.entity';
+import { UserEntity } from '../database.entities/user.entity';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class RequestService {
+  constructor(
+    private readonly user: UsersService,
+    @InjectRepository(RequestEntity)
+    private requestRepository: Repository<RequestEntity>,
+  ) {}
+
   private requests: RequestDto[] = [
     {
       queueId: 1,
@@ -16,18 +27,28 @@ export class RequestService {
     },
   ];
 
-  public getByQueueId(queueId: number): RequestDto[] {
-    return this.requests.filter(
-      (request) => request.queueId === queueId && request.isSigned === true,
-    );
+  async getByQueueId(id: string): Promise<RequestDto[]> {
+    const requestEntities = await this.requestRepository
+      .find({ where: { queue: id, isActive: true } })
+      .then();
+    return requestEntities.map((request) => request.getDTO());
   }
 
-  public getByUserId(userId: number): RequestDto[] {
-    return this.requests.filter((request) => request.userId === userId);
+  async getByUserId(userId: number): Promise<RequestDto[]> {
+    const requestEntities = await this.requestRepository
+      .find({ where: { user: userId, isActive: true } })
+      .then();
+    return requestEntities.map((request) => request.getDTO());
   }
 
-  public pushRequest(request: RequestDto): number {
-    return this.requests.push(request);
+  async pushRequest(request: RequestDto): Promise<RequestEntity> {
+    const userEntity = await this.user.findOne(String(request.userId));
+    //TODO: add queue entity to condition
+    const req = new RequestEntity();
+    req.user = userEntity;
+    req.isActive = request.isSigned;
+
+    return this.requestRepository.save(req);
   }
 
   public changeSigned(userId: number, queueId: number): RequestDto {
@@ -45,11 +66,9 @@ export class RequestService {
     return resRequest;
   }
 
-  public delRequest(request: RequestDto): number {
-    const index = this.requests.indexOf(request, 0);
-    if (index > -1) {
-      this.requests.splice(index, 1);
-    }
-    return index;
+  async delRequest(request: RequestDto): Promise<void> {
+    const userEntity = await this.user.findOne(String(request.userId));
+    //TODO: add queue entity to condition
+    await this.requestRepository.delete({ user: userEntity });
   }
 }

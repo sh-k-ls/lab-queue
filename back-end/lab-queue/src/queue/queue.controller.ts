@@ -19,6 +19,7 @@ import { ProfileDto } from '../shared/front-back-end/profile.dto';
 import { ProfileService } from '../profile/profile.service';
 import { Request } from 'express';
 import { UserDto } from '../shared/front-back-end/user.dto';
+import { RequestEntity } from '../database.entities/request.entity';
 
 @Controller('api/v1/queue')
 export class QueueController {
@@ -37,8 +38,8 @@ export class QueueController {
 
   @UseGuards(JwtAuthGuard)
   @Get('available')
-  getAllQueuesAvailable(@Req() req: Request): QueueDto[] {
-    return this.queue.getByUserAvailableId(<UserDto>req.user);
+  async getAllQueuesAvailable(@Req() req: Request): Promise<QueueDto[]> {
+    return await this.queue.getByUserAvailableId(<UserDto>req.user);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -49,8 +50,8 @@ export class QueueController {
 
   @UseGuards(JwtAuthGuard)
   @Get('signed')
-  getAllQueuesSigned(@Req() req: Request): QueueDto[] {
-    return this.queue.getByUserSignedId(<UserDto>req.user);
+  async getAllQueuesSigned(@Req() req: Request): Promise<QueueDto[]> {
+    return await this.queue.getByUserSignedId(<UserDto>req.user);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -61,8 +62,8 @@ export class QueueController {
 
   @UseGuards(JwtAuthGuard)
   @Get(':id/request')
-  getRequestsByQueueId(@Param('id') idQueue: string): RequestDto[] {
-    return this.request.getByQueueId(+idQueue);
+  getRequestsByQueueId(@Param('id') idQueue: string): Promise<RequestDto[]> {
+    return this.request.getByQueueId(idQueue);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -72,15 +73,17 @@ export class QueueController {
     @Param('id') idQueue: string,
     @Body() queueReq: RequestDto,
     @Req() req: Request,
-  ): number {
+  ): Promise<RequestEntity> {
     queueReq.userId = (req.user as UserDto).id;
     return this.request.pushRequest(queueReq);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get(':id/request/profile')
-  getProfilesByQueueId(@Param('id') idQueue: string): ProfileDto[] {
-    return this.profile.getProfilesByQueueId(+idQueue);
+  async getProfilesByQueueId(
+    @Param('id') idQueue: string,
+  ): Promise<ProfileDto[]> {
+    return await this.profile.getProfilesByQueueId(idQueue);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -101,7 +104,10 @@ export class QueueController {
 
   @UseGuards(JwtAuthGuard)
   @Post(':id/signIn')
-  signInQueue(@Param('id') queueId: string, @Req() req: Request): number {
+  signInQueue(
+    @Param('id') queueId: string,
+    @Req() req: Request,
+  ): Promise<RequestEntity> {
     return this.request.pushRequest({
       queueId: +queueId,
       userId: (req.user as UserDto).id,
@@ -111,7 +117,10 @@ export class QueueController {
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id/signOut')
-  sighOutQueue(@Param('id') queueId: string, @Req() req: Request): number {
+  sighOutQueue(
+    @Param('id') queueId: string,
+    @Req() req: Request,
+  ): Promise<void> {
     return this.request.delRequest({
       queueId: +queueId,
       userId: (req.user as UserDto).id,
