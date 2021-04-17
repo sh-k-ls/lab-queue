@@ -27,6 +27,10 @@ export class RequestService {
     },
   ];
 
+  findAll(): Promise<RequestEntity[]> {
+    return this.requestRepository.find();
+  }
+
   async getByQueueId(id: string): Promise<RequestDto[]> {
     const requestEntities = await this.requestRepository
       .find({ where: { queue: id, isActive: true } })
@@ -51,16 +55,21 @@ export class RequestService {
     return this.requestRepository.save(req);
   }
 
-  public changeSigned(userId: number, queueId: number): RequestDto {
+  public async changeSigned(
+    userId: number,
+    queueId: number,
+  ): Promise<RequestDto> {
     let resRequest: RequestDto;
-    for (const request of this.requests) {
+    const userEntity = await this.user.findOne(String(userId));
+    //TODO: add queue entity to condition
+    for (const request of await this.findAll()) {
       if (
-        request.userId === userId &&
-        request.queueId === queueId &&
-        request.isSigned === true
+        request.user === userEntity &&
+        //request.queueId === queueEntity &&
+        request.isActive === true
       ) {
-        request.isSigned = !request.isSigned;
-        resRequest = request;
+        request.isActive = !request.isActive;
+        resRequest = request.getDTO();
       }
     }
     return resRequest;

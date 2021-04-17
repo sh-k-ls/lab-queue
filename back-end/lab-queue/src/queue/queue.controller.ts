@@ -88,12 +88,12 @@ export class QueueController {
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id/request')
-  editRequestByQueueId(
+  async editRequestByQueueId(
     @Param('id') idQueue: string,
     @Body() queueReq: RequestDto,
     @Req() req: Request,
-  ): RequestDto {
-    return this.request.changeSigned((req.user as UserDto).id, +idQueue);
+  ): Promise<RequestDto> {
+    return await this.request.changeSigned((req.user as UserDto).id, +idQueue);
   }
 
   @UseGuards(JwtAuthGuard)

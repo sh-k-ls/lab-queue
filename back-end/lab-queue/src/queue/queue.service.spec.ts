@@ -3,17 +3,17 @@ import { QueueService } from './queue.service';
 import { RequestService } from '../request/request.service';
 
 describe('QueueService', () => {
-	let service: QueueService;
+  let service: QueueService;
 
-	beforeEach(async () => {
-		const module: TestingModule = await Test.createTestingModule({
-			providers: [QueueService, RequestService],
-		}).compile();
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [QueueService, RequestService],
+    }).compile();
 
-		service = module.get<QueueService>(QueueService);
-	});
+    service = module.get<QueueService>(QueueService);
+  });
 
-	it('should be defined', () => {
-		expect(service).toBeDefined();
-	});
+  it('should be defined', () => {
+    expect(service).toBeDefined();
+  });
 });
