@@ -1,6 +1,6 @@
 import {Component,  OnInit} from '@angular/core';
 import {ApiService} from '../../../api-service/api.service';
-import {  ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import {QueueDto} from '../../../../shared/front-back-end/queue.dto';
 import {ProfileDto} from '../../../../shared/front-back-end/profile.dto';
@@ -41,7 +41,8 @@ export class ViewDetailsQueueComponent implements OnInit {
   constructor(
     private readonly api: ApiService,
     private route: ActivatedRoute,
-    private readonly auth: AuthService
+    private readonly auth: AuthService,
+    private readonly router: Router
   ) {}
 
   ngOnInit(): void {
@@ -62,11 +63,9 @@ export class ViewDetailsQueueComponent implements OnInit {
   checkSigned(userId: number): void {
     if (this.memberList) {
       this.isSigned = !!(this.memberList.find(member => member.userId === userId));
-    }
-    else {
+    } else {
       this.isSigned = false;
     }
-    // console.log('HI'!,!this.isSigned);
   }
 
   updateMembers(): void {
@@ -74,7 +73,6 @@ export class ViewDetailsQueueComponent implements OnInit {
       this.memberList = requests;
       const userId = this.auth.getUserId();
       this.checkSigned(userId);
-      // console.log('upd');
     });
   }
 
@@ -91,5 +89,9 @@ export class ViewDetailsQueueComponent implements OnInit {
 
   toPass(userId: number): void {
     this.api.setPassed(String(this.queue.id), String(userId)).subscribe(() => this.updateMembers());
+  }
+
+  toEditQueue(): void {
+    this.router.navigate(['/edit/', this.queue.id]);
   }
 }
