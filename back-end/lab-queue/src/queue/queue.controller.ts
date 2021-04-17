@@ -32,6 +32,7 @@ export class QueueController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   createQueue(@Body() queue: QueueDto): number {
+    // TODO добавить creatorID
     return this.queue.pushQueue(queue);
   }
 

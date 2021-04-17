@@ -1,5 +1,6 @@
 <div class="create-queue-container">
-  <h1>Создать очередь</h1>
+  <h1 *ngIf="!idQueueEdit">Создать очередь</h1>
+  <h1 *ngIf="idQueueEdit">Изменить очередь</h1>
   <mat-card>
     <mat-form-field class="full-width">
       <mat-label>Название предмета</mat-label>
@@ -60,7 +61,7 @@
             {{participant}}
             <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
           </mat-chip>
-          <input placeholder="Добавить" [disabled]="!typeParticipant.value"
+          <input placeholder="Участники" [disabled]="!typeParticipant.value"
                  #participantInput
                  [formControl]="myControlParticipant"
                  [matAutocomplete]="autoParticipant"
@@ -100,9 +101,12 @@
       <textarea #descriptionInput matInput></textarea>
     </mat-form-field>
     <div class="create-queue">
-      <button mat-raised-button color="primary" (click)="addQueueBtnPush(typeParticipant.value, {id: -1, nameSubject: nameSubject.value,
-      nameTeacher: teachers, groups: participants, dateCreate: dateInput.value, timeCreate: timeInput.value,
-      description: descriptionInput.value})">Создать очередь</button>
+      <button mat-raised-button color="primary"
+              (click)="addQueueBtnPush(typeParticipant.value, {creatorId: 0, id: -1, nameSubject: nameSubject.value, nameTeacher: teachers, groups: participants, dateCreate: dateInput.value, timeCreate: timeInput.value, description: descriptionInput.value})"
+      >
+       <div *ngIf="!idQueueEdit">Создать очередь</div>
+       <div *ngIf="idQueueEdit">Изменить очередь</div>
+      </button>
     </div>
   </mat-card>
 </div>
