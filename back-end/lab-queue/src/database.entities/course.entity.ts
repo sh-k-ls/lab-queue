@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { GroupEntity } from './group.entity';
+import { Course } from '../shared/front-back-end/course.dto';
 
 export type DegreeType = 'Master' | 'Bachelor' | 'Specialist';
 
@@ -23,4 +24,13 @@ export class CourseEntity {
 
   @OneToMany(() => GroupEntity, (group) => group.course)
   groups: GroupEntity[];
+
+  public getDTO(): Course {
+    return {
+      department: this.department,
+      degree: this.degree,
+      year: this.year,
+      groups: this.groups.length,
+    };
+  }
 }
