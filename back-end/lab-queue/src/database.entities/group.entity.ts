@@ -16,9 +16,13 @@ export class GroupEntity {
   @Column()
   number: number;
 
-  @ManyToOne(() => CourseEntity, (course) => course.groups)
+  @ManyToOne(() => CourseEntity, (course) => course.groups, {
+    eager: true,
+  })
   course: CourseEntity;
 
-  @OneToMany(() => UserEntity, (user) => user.group)
+  @OneToMany(() => UserEntity, (user) => user.group, {
+    eager: true,
+  })
   students: UserEntity[];
 }
