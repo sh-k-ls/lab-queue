@@ -45,6 +45,31 @@ export class RequestService {
     return requestEntities.map((request) => request.getDTO());
   }
 
+	public isSigned(userId: number): boolean {
+    return !!(this.requests.find(elem => elem.userId === userId));
+  }
+
+  public getByUserIdQueueId(userId: number, queueId: number): RequestDto {
+    return this.requests.find(req =>
+      req.userId === userId &&
+      req.queueId === queueId &&
+      req.isSigned === true);
+  }
+
+	public changeSigned(userId: number, queueId: number): RequestDto {
+		let resRequest: RequestDto;
+		for (const request of this.requests) {
+			if (
+				request.userId === userId &&
+				request.queueId === queueId &&
+				request.isSigned === true
+			) {
+				request.isSigned = !request.isSigned;
+				resRequest = request;
+			}
+		}
+		return resRequest;
+	}
   async pushRequest(request: RequestDto): Promise<RequestEntity> {
     const userEntity = await this.user.findOne(String(request.userId));
     //TODO: add queue entity to condition
