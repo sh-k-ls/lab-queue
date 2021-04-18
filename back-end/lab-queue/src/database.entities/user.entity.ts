@@ -11,7 +11,6 @@ import { ProfileEntity } from './profile.entity';
 import { RequestEntity } from './request.entity';
 import { QueueEntity } from './queue.entity';
 import { GroupEntity } from './group.entity';
-import { UserDto } from '../../../../shared/user.dto';
 import { ProfileDto } from '../../../../shared/profile.dto';
 
 @Entity()
@@ -62,6 +61,7 @@ export class UserEntity {
     if (today.getMonth() < 9) {
       numCourse -= 1;
     }
+
     const groupName = `${this.group.course.department}-${currSemester}${this.group.number}${degreeLiteral}`;
     const courseName = `${this.group.course.department} ${this.group.course.degree} ${numCourse} курс`;
     return {
