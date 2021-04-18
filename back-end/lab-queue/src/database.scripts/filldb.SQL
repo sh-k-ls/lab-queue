@@ -13,8 +13,8 @@ INSERT INTO group_entity ("number", "courseId") VALUES
     (5, 1),
     (6, 1);
 
-INSERT INTO profile_entity ("name", "surname") VALUES
-    ('Kolya', 'Ko');
+INSERT INTO profile_entity ("name", "surname", "patronymic") VALUES
+    ('Kolya', 'Ko', 'KK');
 
 INSERT INTO user_entity ("username", "password", "profileId", "groupId") VALUES
     ('john', 'changeme', 1, 5);
