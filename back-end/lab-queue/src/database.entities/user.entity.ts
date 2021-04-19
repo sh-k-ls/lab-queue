@@ -11,7 +11,8 @@ import { ProfileEntity } from './profile.entity';
 import { RequestEntity } from './request.entity';
 import { QueueEntity } from './queue.entity';
 import { GroupEntity } from './group.entity';
-import { ProfileDto } from '../../../../shared/profile.dto';
+import { ProfileDto } from '../shared/front-back-end/profile.dto';
+import { UserDto } from '../shared/front-back-end/user.dto';
 
 @Entity()
 export class UserEntity {
@@ -40,6 +41,15 @@ export class UserEntity {
     eager: true,
   })
   group: GroupEntity;
+
+  public getDTO(): UserDto {
+    return {
+      group: this.group.groupName,
+      id: this.id,
+      username: this.username,
+      password: this.password,
+    };
+  }
 
   public getProfileDTO(): ProfileDto {
     const today = new Date();

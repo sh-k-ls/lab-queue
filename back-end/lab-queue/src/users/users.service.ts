@@ -24,14 +24,22 @@ export class UsersService {
       password: 'guess',
       group: 'iu7',
     },
+    {
+      id: 3,
+      username: 'johny',
+      password: 'changehim',
+      group: 'iu7',
+    },
   ];
 
   findAll(): Promise<UserEntity[]> {
     return this.usersRepository.find();
   }
 
-  findOne(id: string): Promise<UserEntity> {
-    return this.usersRepository.findOne(id);
+  async findOne(username: string): Promise<UserDto> {
+    return (
+      await this.usersRepository.findOne({ where: { username: username } })
+    ).getDTO();
   }
 
   async remove(id: string): Promise<void> {
