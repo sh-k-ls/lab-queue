@@ -244,7 +244,8 @@ export class CreateQueueComponent implements OnInit {
   }
 
   public addQueueBtnPush(participantType: string, queue: QueueDto): void {
-    if (participantType === 'course'){
+    // TODO в интерфейсе можно добавить и поток и группу, поэтому эта штука не будет работать
+    if (participantType === 'course') {
       const allGroups: string[] = [];
       for (const courseName of queue.groups) {
         queue.groups = [];
@@ -269,7 +270,12 @@ export class CreateQueueComponent implements OnInit {
       queue.groups = allGroups;
     }
 
-    this.api.createQueue(queue).subscribe();
+    if (!this.idQueueEdit) {
+      this.api.createQueue(queue).subscribe();
+    } else {
+      this.api.editQueueById(queue).subscribe();
+    }
+
     this.router.navigate(['/queue']);
     // TODO сообщение об успешной отправке
   }
