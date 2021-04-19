@@ -107,8 +107,8 @@ export class QueueController {
 
   @UseGuards(JwtAuthGuard)
   @Put()
-  editQueue(@Body() queue: QueueDto): QueueDto {
-    return queue;
+  editQueue(@Body() queue: QueueDto): number {
+    return this.queue.replaceQueue(queue);
   }
 
   @UseGuards(JwtAuthGuard)

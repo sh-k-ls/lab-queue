@@ -272,11 +272,13 @@ export class CreateQueueComponent implements OnInit {
 
     if (!this.idQueueEdit) {
       this.api.createQueue(queue).subscribe();
+      this.router.navigate(['/queue']);
     } else {
+      queue.id =  this.queue.id;
+      queue.creatorId = this.queue.creatorId;
       this.api.editQueueById(queue).subscribe();
+      this.router.navigate(['/details/' + this.idQueueEdit]);
     }
-
-    this.router.navigate(['/queue']);
     // TODO сообщение об успешной отправке
   }
 }

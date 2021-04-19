@@ -87,9 +87,9 @@ export class ApiService {
   }
 
   // PUT /api/v1/queue/:id
-  public editQueueById(queue: QueueDto): Observable<QueueDto> {
+  public editQueueById(queue: QueueDto): Observable<number> {
     const url = `/api/v1/queue`;
-    return this.http.put<QueueDto>(url, queue);
+    return this.http.put<number>(url, queue);
   }
 
   // POST /api/v1/queue/:id/signIn
