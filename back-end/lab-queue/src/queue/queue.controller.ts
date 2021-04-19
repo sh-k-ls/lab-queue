@@ -53,15 +53,15 @@ export class QueueController {
 
   @UseGuards(JwtAuthGuard)
   @Patch(':idQueue/request/:idUser')
-  public setPassed(
+  public async setPassed(
     @Param('idQueue') idQueue: string,
     @Param('idUser') idUser: string,
     @Req() req: Request,
-  ): RequestDto {
-    if (this.request.isSigned(+idUser)) {
-      return this.request.changeSigned(+idUser, +idQueue);
+  ): Promise<RequestDto> {
+    if (await this.request.isSigned(+idUser)) {
+      return await this.request.changeSigned(+idUser, +idQueue);
     }
-    return this.request.getByUserIdQueueId(+idUser, +idQueue);
+    return await this.request.getByUserIdQueueId(+idUser, +idQueue);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -132,16 +132,16 @@ export class QueueController {
     });
   }
 
-  // @UseGuards(JwtAuthGuard)
-  // @Patch(':id/signOut')
-  // sighOutQueue(
-  //   @Param('id') queueId: string,
-  //   @Req() req: Request,
-  // ): Promise<void> {
-  //   return this.request.delRequest({
-  //     queueId: +queueId,
-  //     userId: (req.user as UserDto).id,
-  //     isSigned: true,
-  //   });
-  // }
+  @UseGuards(JwtAuthGuard)
+  @Patch(':id/signOut')
+  sighOutQueue(
+    @Param('id') queueId: string,
+    @Req() req: Request,
+  ): Promise<void> {
+    return this.request.delRequest({
+      queueId: +queueId,
+      userId: (req.user as UserDto).id,
+      isSigned: true,
+    });
+  }
 }

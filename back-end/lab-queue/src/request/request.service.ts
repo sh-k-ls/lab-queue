@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { RequestEntity } from '../database.entities/request.entity';
 import { UserEntity } from '../database.entities/user.entity';
 import { UsersService } from '../users/users.service';
+import { QueueEntity } from '../database.entities/queue.entity';
 
 @Injectable()
 export class RequestService {
@@ -12,20 +13,11 @@ export class RequestService {
     private readonly user: UsersService,
     @InjectRepository(RequestEntity)
     private requestRepository: Repository<RequestEntity>,
+    @InjectRepository(UserEntity)
+    private userRepository: Repository<UserEntity>,
+    @InjectRepository(QueueEntity)
+    private queueRepository: Repository<QueueEntity>,
   ) {}
-
-  private requests: RequestDto[] = [
-    {
-      queueId: 1,
-      userId: 2,
-      isSigned: true,
-    },
-    {
-      queueId: 2,
-      userId: 1,
-      isSigned: true,
-    },
-  ];
 
   findAll(): Promise<RequestEntity[]> {
     return this.requestRepository.find();
@@ -45,36 +37,44 @@ export class RequestService {
     return requestEntities.map((request) => request.getDTO());
   }
 
-	public isSigned(userId: number): boolean {
-    return !!(this.requests.find(elem => elem.userId === userId));
+  public async isSigned(userId: number): Promise<RequestDto> {
+    const userEntity = this.userRepository.findOne({
+      where: { id: userId },
+    });
+    const requestEntity = await this.requestRepository
+      .findOne({ where: { user: userEntity } })
+      .then();
+    return Promise.resolve(requestEntity.getDTO());
   }
 
-  public getByUserIdQueueId(userId: number, queueId: number): RequestDto {
-    return this.requests.find(req =>
-      req.userId === userId &&
-      req.queueId === queueId &&
-      req.isSigned === true);
+  public async getByUserIdQueueId(
+    userId: number,
+    queueId: number,
+  ): Promise<RequestDto> {
+    const allRequests = await this.requestRepository.find().then();
+
+    const allRequestsDto = await Promise.all(
+      allRequests.map((queueEntity) => queueEntity.getDTO()),
+    );
+
+    return allRequestsDto.filter(
+      (req) =>
+        req.userId === userId &&
+        req.queueId === queueId &&
+        req.isSigned === true,
+    )[0];
   }
 
-	public changeSigned(userId: number, queueId: number): RequestDto {
-		let resRequest: RequestDto;
-		for (const request of this.requests) {
-			if (
-				request.userId === userId &&
-				request.queueId === queueId &&
-				request.isSigned === true
-			) {
-				request.isSigned = !request.isSigned;
-				resRequest = request;
-			}
-		}
-		return resRequest;
-	}
   async pushRequest(request: RequestDto): Promise<RequestEntity> {
-    const userEntity = await this.user.findOne(String(request.userId));
-    //TODO: add queue entity to condition
+    const userEntity = await this.userRepository.findOne({
+      where: { id: request.userId },
+    });
+    const queueEntity = await this.queueRepository.findOne({
+      where: { id: request.queueId },
+    });
     const req = new RequestEntity();
     req.user = userEntity;
+    req.queue = queueEntity;
     req.isActive = request.isSigned;
 
     return this.requestRepository.save(req);
@@ -85,12 +85,16 @@ export class RequestService {
     queueId: number,
   ): Promise<RequestDto> {
     let resRequest: RequestDto;
-    const userEntity = await this.user.findOne(String(userId));
-    //TODO: add queue entity to condition
+    const userEntity = await this.userRepository.findOne({
+      where: { id: userId },
+    });
+    const queueEntity = await this.queueRepository.findOne({
+      where: { id: queueId },
+    });
     for (const request of await this.findAll()) {
       if (
         request.user === userEntity &&
-        //request.queueId === queueEntity &&
+        request.queue === queueEntity &&
         request.isActive === true
       ) {
         request.isActive = !request.isActive;
@@ -101,8 +105,15 @@ export class RequestService {
   }
 
   async delRequest(request: RequestDto): Promise<void> {
-    const userEntity = await this.user.findOne(String(request.userId));
-    //TODO: add queue entity to condition
-    await this.requestRepository.delete({ user: userEntity });
+    const userEntity = await this.userRepository.findOne({
+      where: { id: request.userId },
+    });
+    const queueEntity = await this.queueRepository.findOne({
+      where: { id: request.queueId },
+    });
+    await this.requestRepository.delete({
+      user: userEntity,
+      queue: queueEntity,
+    });
   }
 }
