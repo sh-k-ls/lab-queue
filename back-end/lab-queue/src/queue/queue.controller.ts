@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  Put,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -31,7 +32,9 @@ export class QueueController {
   @UseGuards(JwtAuthGuard)
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  createQueue(@Body() queue: QueueDto): number {
+  createQueue(@Req() req: Request, @Body() queue: QueueDto): number {
+    queue.creatorId = (req.user as UserDto).id;
+    console.log(queue);
     return this.queue.pushQueue(queue);
   }
 
@@ -104,9 +107,9 @@ export class QueueController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Patch(':id')
-  editQueueById(@Param('id') id: string, @Body() queue: QueueDto): QueueDto {
-    return queue;
+  @Put()
+  editQueue(@Body() queue: QueueDto): number {
+    return this.queue.replaceQueue(queue);
   }
 
   @UseGuards(JwtAuthGuard)

@@ -1,14 +1,14 @@
 import {Component, ElementRef, ViewChild, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
+import { map, startWith, switchMap } from 'rxjs/operators';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatAutocomplete, MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import {MatChipInputEvent} from '@angular/material/chips';
 import {ApiService} from '../../../api-service/api.service';
 import {QueueDto} from '../../../../shared/front-back-end/queue.dto';
 import {Course} from '../../../../shared/front-back-end/course.dto';
-import {Router} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-queue',
@@ -17,11 +17,6 @@ import {Router} from '@angular/router';
 })
 
 export class CreateQueueComponent implements OnInit {
-
-  constructor(
-    private readonly api: ApiService,
-    private readonly router: Router
-  ) { }
   selectable = true;
   removable = true;
   separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -63,12 +58,25 @@ export class CreateQueueComponent implements OnInit {
   participants: string[] = [];
   allParticipants: string[] = [];
 
+  @ViewChild('nameSubject') nameSubject: ElementRef<HTMLInputElement>;
+  @ViewChild('dateInput') dateInput: ElementRef<HTMLInputElement>;
+  @ViewChild('timeInput') timeInput: ElementRef<HTMLInputElement>;
   @ViewChild('teacherInput') teacherInput: ElementRef<HTMLInputElement>;
   @ViewChild('participantInput') participantInput: ElementRef<HTMLInputElement>;
+  @ViewChild('descriptionInput') descriptionInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
   minDate = new Date();
   maxDate = new Date(this.minDate.getFullYear(), this.minDate.getMonth() + 1, 31);
+
+  idQueueEdit?: number;
+  queue?: QueueDto;
+
+  constructor(
+    private readonly api: ApiService,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
+  ) { }
 
   ngOnInit(): void {
     this.parserCourse(this.courseList);
@@ -86,6 +94,24 @@ export class CreateQueueComponent implements OnInit {
       );
 
     this.updateParticipants();
+
+    this.route.paramMap
+      .pipe(
+      switchMap(params => params.getAll('idQueue'))
+      )
+      .subscribe(idQueue => {
+        this.idQueueEdit = +idQueue;
+        this.api.getQueueById(String(this.idQueueEdit)).subscribe(
+          queue => {
+            this.queue = queue;
+            this.nameSubject.nativeElement.value = this.queue.nameSubject;
+            this.teachers = this.queue.nameTeacher;
+            this.participants = this.queue.groups;
+            this.dateInput.nativeElement.value = this.queue.dateCreate;
+            this.timeInput.nativeElement.value = this.queue.timeCreate;
+            this.descriptionInput.nativeElement.value = this.queue.description;
+          });
+      });
   }
 
   private updateParticipants(): void {
@@ -218,7 +244,8 @@ export class CreateQueueComponent implements OnInit {
   }
 
   public addQueueBtnPush(participantType: string, queue: QueueDto): void {
-    if (participantType === 'course'){
+    // TODO в интерфейсе можно добавить и поток и группу, поэтому эта штука не будет работать
+    if (participantType === 'course') {
       const allGroups: string[] = [];
       for (const courseName of queue.groups) {
         queue.groups = [];
@@ -243,8 +270,15 @@ export class CreateQueueComponent implements OnInit {
       queue.groups = allGroups;
     }
 
-    this.api.createQueue(queue).subscribe();
-    this.router.navigate(['/queue']);
+    if (!this.idQueueEdit) {
+      this.api.createQueue(queue).subscribe();
+      this.router.navigate(['/queue']);
+    } else {
+      queue.id =  this.queue.id;
+      queue.creatorId = this.queue.creatorId;
+      this.api.editQueueById(queue).subscribe();
+      this.router.navigate(['/details/' + this.idQueueEdit]);
+    }
     // TODO сообщение об успешной отправке
   }
 }

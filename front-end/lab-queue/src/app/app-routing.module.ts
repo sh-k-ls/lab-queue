@@ -24,6 +24,11 @@ const routes: Routes = [
     loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
   },
   {
+    path: 'edit/:idQueue',
+    loadChildren: () => import('./create-queue/create-queue.module').then(m => m.CreateQueueModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: '**',
     redirectTo: 'queue'
   },
