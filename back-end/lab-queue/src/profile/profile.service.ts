@@ -15,6 +15,7 @@ export class ProfileService {
     private readonly user: UsersService,
     @InjectRepository(ProfileEntity)
     private profileRepository: Repository<ProfileEntity>,
+    @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
   ) {}
 
