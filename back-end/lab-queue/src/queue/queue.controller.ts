@@ -20,6 +20,7 @@ import { ProfileService } from '../profile/profile.service';
 import { Request } from 'express';
 import { UserDto } from '../shared/front-back-end/user.dto';
 import { RequestEntity } from '../database.entities/request.entity';
+import { QueueEntity } from '../database.entities/queue.entity';
 
 @Controller('api/v1/queue')
 export class QueueController {
@@ -32,7 +33,7 @@ export class QueueController {
   @UseGuards(JwtAuthGuard)
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  createQueue(@Body() queue: QueueDto): number {
+  createQueue(@Body() queue: QueueDto): Promise<QueueEntity> {
     return this.queue.pushQueue(queue);
   }
 
@@ -44,15 +45,20 @@ export class QueueController {
 
   @UseGuards(JwtAuthGuard)
   @Get('creator')
-  getAllQueuesCreator(@Req() req: Request): QueueDto[] {
-    return this.queue.getByUserCreatorId(<UserDto>req.user);
+  async getAllQueuesCreator(@Req() req: Request): Promise<QueueDto[]> {
+    return await this.queue.getByUserCreatorId(
+      String((req.user as UserDto).id),
+    );
   }
 
   @UseGuards(JwtAuthGuard)
   @Patch(':idQueue/request/:idUser')
-  public setPassed(@Param('idQueue') idQueue: string, @Param('idUser') idUser: string, @Req() req: Request): RequestDto {
-    // console.log(+idUser, +idQueue);
-    if (this.request.isSigned(+idUser)){
+  public setPassed(
+    @Param('idQueue') idQueue: string,
+    @Param('idUser') idUser: string,
+    @Req() req: Request,
+  ): RequestDto {
+    if (this.request.isSigned(+idUser)) {
       return this.request.changeSigned(+idUser, +idQueue);
     }
     return this.request.getByUserIdQueueId(+idUser, +idQueue);
@@ -66,8 +72,9 @@ export class QueueController {
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
-  getQueueById(@Param('id') idQueue: string): QueueDto {
-    return this.queue.getByQueueId(+idQueue);
+  getQueueById(@Param('id') idQueue: string): Promise<QueueDto> {
+    console.log(1);
+    return this.queue.getByQueueId(idQueue);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -103,7 +110,7 @@ export class QueueController {
     @Body() queueReq: RequestDto,
     @Req() req: Request,
   ): Promise<RequestDto> {
-    return await this.request.changeSigned((req.user as UserDto).id, +idQueue);
+    return this.request.changeSigned((req.user as UserDto).id, +idQueue);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -125,16 +132,16 @@ export class QueueController {
     });
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Patch(':id/signOut')
-  sighOutQueue(
-    @Param('id') queueId: string,
-    @Req() req: Request,
-  ): Promise<void> {
-    return this.request.delRequest({
-      queueId: +queueId,
-      userId: (req.user as UserDto).id,
-      isSigned: true,
-    });
-  }
+  // @UseGuards(JwtAuthGuard)
+  // @Patch(':id/signOut')
+  // sighOutQueue(
+  //   @Param('id') queueId: string,
+  //   @Req() req: Request,
+  // ): Promise<void> {
+  //   return this.request.delRequest({
+  //     queueId: +queueId,
+  //     userId: (req.user as UserDto).id,
+  //     isSigned: true,
+  //   });
+  // }
 }
