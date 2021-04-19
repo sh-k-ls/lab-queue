@@ -86,7 +86,7 @@ export class QueueService {
   }
 
   public pushQueue(queue: QueueDto): number {
-    queue.id = this.queues.length;
+    queue.id = this.queues.length + 1;
     return this.queues.push(queue);
   }
 }

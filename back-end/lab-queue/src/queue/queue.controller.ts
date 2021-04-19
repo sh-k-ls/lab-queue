@@ -32,8 +32,9 @@ export class QueueController {
   @UseGuards(JwtAuthGuard)
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  createQueue(@Body() queue: QueueDto): number {
-    // TODO добавить creatorID
+  createQueue(@Req() req: Request, @Body() queue: QueueDto): number {
+    queue.creatorId = (req.user as UserDto).id;
+    console.log(queue);
     return this.queue.pushQueue(queue);
   }
 
