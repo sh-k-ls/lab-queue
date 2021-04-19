@@ -21,8 +21,6 @@ export class GroupEntity {
   })
   course: CourseEntity;
 
-  @OneToMany(() => UserEntity, (user) => user.group, {
-    eager: true,
-  })
-  students: UserEntity[];
+  @OneToMany(() => UserEntity, (user) => user.group)
+  students: Promise<UserEntity[]>;
 }

@@ -24,15 +24,11 @@ export class UserEntity {
   @Column()
   password: string;
 
-  @OneToMany(() => RequestEntity, (request) => request.user, {
-    eager: true,
-  })
-  requests: RequestEntity[];
+  @OneToMany(() => RequestEntity, (request) => request.user)
+  requests: Promise<RequestEntity[]>;
 
-  @OneToMany(() => QueueEntity, (queue) => queue.creator, {
-    eager: true,
-  })
-  queues: QueueEntity[];
+  @OneToMany(() => QueueEntity, (queue) => queue.creator)
+  queues: Promise<QueueEntity[]>;
 
   @OneToOne(() => ProfileEntity, {
     eager: true,

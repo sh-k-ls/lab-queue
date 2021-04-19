@@ -1,11 +1,11 @@
 import {
-  Entity,
   Column,
-  PrimaryGeneratedColumn,
+  Entity,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   OneToMany,
-  ManyToMany,
-  JoinTable,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 import { UserEntity } from './user.entity';
 import { RequestEntity } from './request.entity';
@@ -37,16 +37,12 @@ export class QueueEntity {
   })
   creator: UserEntity;
 
-  @OneToMany(() => RequestEntity, (request) => request.queue, {
-    eager: true,
-  })
-  requests: RequestEntity[];
+  @OneToMany(() => RequestEntity, (request) => request.queue)
+  requests: Promise<RequestEntity[]>;
 
-  @ManyToMany(() => GroupEntity, {
-    eager: true,
-  })
+  @ManyToMany(() => GroupEntity)
   @JoinTable()
-  groups: GroupEntity[];
+  groups: Promise<GroupEntity[]>;
 
   public parseGroup(
     groupIndex: number,
@@ -56,13 +52,14 @@ export class QueueEntity {
   ): string {
     const degreeLiteral =
       groupDegree === 'Bachelor' ? 'Б' : groupDegree === 'Master' ? 'М' : '';
-    const group = `${groupDepartment}-${groupSemester}${groupIndex}${degreeLiteral}`;
-    return group;
+    return `${groupDepartment}-${groupSemester}${groupIndex}${degreeLiteral}`;
   }
 
-  public getDTO(): QueueDto {
+  public async getDTO(): Promise<QueueDto> {
     const today = new Date();
-    let numCourse = today.getFullYear() - this.groups[0].course.year + 1;
+    const allGroups = await Promise.resolve(this.groups);
+    const year = allGroups[0].course.year;
+    let numCourse = today.getFullYear() - year + 1;
     if (today.getMonth() < 9) {
       numCourse -= 1;
     }
@@ -71,7 +68,7 @@ export class QueueEntity {
         ? numCourse * 2
         : numCourse * 2 - 1;
     const groupsListStr: string[] = [];
-    for (const groupEntity of this.groups) {
+    for (const groupEntity of allGroups) {
       const groupName = this.parseGroup(
         groupEntity.number,
         groupEntity.course.department,
