@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {UserDto} from '../../../../../shared/user.dto';
-import {QueueDto} from '../../../../../shared/queue.dto';
-import {RequestDto} from '../../../../../shared/request.dto';
-import {ProfileDto} from '../../../../../shared/profile.dto';
+import { UserDto } from '../../../../../shared/user.dto';
+import { QueueDto } from '../../../../../shared/queue.dto';
+import { RequestDto } from '../../../../../shared/request.dto';
+import { ProfileDto } from '../../../../../shared/profile.dto';
+import { QueueEntity } from '../../../../../back-end/lab-queue/dist/database.entities/queue.entity';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApiService {
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
-
-  public signIn(user: UserDto): Observable<{token: string}> {
+  public signIn(user: UserDto): Observable<{ token: string }> {
     return this.http.post<{ token: string }>(`/api/auth/login`, user);
   }
 
@@ -74,22 +74,25 @@ export class ApiService {
 
   // POST /api/v1/queue/:id/request
   // TODO описать на бэкенде
-  public createQueueRequests(idQueue: string, request: RequestDto): Observable<RequestDto>{
+  public createQueueRequests(
+    idQueue: string,
+    request: RequestDto
+  ): Observable<RequestDto> {
     const url = `/api/v1/queue/${idQueue}/request`;
     return this.http.post<RequestDto>(url, request);
   }
 
   // PATCH /api/v1/queue/:id/request
   // TODO controller для request на бэке
-  public deleteQueueRequest(idQueue: string): Observable<RequestDto>{
+  public deleteQueueRequest(idQueue: string): Observable<RequestDto> {
     const url = `/api/v1/queue/${idQueue}/request`;
     return this.http.patch<RequestDto>(url, {});
   }
 
   // PUT /api/v1/queue/:id
-  public editQueueById(queue: QueueDto): Observable<number> {
+  public editQueueById(queue: QueueDto): Observable<QueueEntity> {
     const url = `/api/v1/queue`;
-    return this.http.put<number>(url, queue);
+    return this.http.put<QueueEntity>(url, queue);
   }
 
   // POST /api/v1/queue/:id/signIn
