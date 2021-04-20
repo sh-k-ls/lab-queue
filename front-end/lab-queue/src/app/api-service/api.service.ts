@@ -5,7 +5,6 @@ import { UserDto } from '../../../../../shared/user.dto';
 import { QueueDto } from '../../../../../shared/queue.dto';
 import { RequestDto } from '../../../../../shared/request.dto';
 import { ProfileDto } from '../../../../../shared/profile.dto';
-import { QueueEntity } from '../../../../../back-end/lab-queue/dist/database.entities/queue.entity';
 
 @Injectable({
   providedIn: 'root',
@@ -90,9 +89,9 @@ export class ApiService {
   }
 
   // PUT /api/v1/queue/:id
-  public editQueueById(queue: QueueDto): Observable<QueueEntity> {
+  public editQueueById(queue: QueueDto): Observable<QueueDto> {
     const url = `/api/v1/queue`;
-    return this.http.put<QueueEntity>(url, queue);
+    return this.http.put<QueueDto>(url, queue);
   }
 
   // POST /api/v1/queue/:id/signIn

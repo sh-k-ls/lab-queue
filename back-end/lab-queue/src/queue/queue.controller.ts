@@ -119,7 +119,7 @@ export class QueueController {
 
   @UseGuards(JwtAuthGuard)
   @Put()
-  editQueue(@Body() queue: QueueDto): Promise<QueueEntity> {
+  editQueue(@Body() queue: QueueDto): Promise<QueueDto> {
     return this.queue.replaceQueue(queue);
   }
 

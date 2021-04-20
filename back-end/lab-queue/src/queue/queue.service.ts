@@ -159,7 +159,7 @@ export class QueueService {
     return this.queueRepository.save(req);
   }
 
-  public async replaceQueue(queue: QueueDto): Promise<QueueEntity> {
+  public async replaceQueue(queue: QueueDto): Promise<QueueDto> {
     const queueToReplace = await this.queueRepository
       .findOne({ where: { id: queue.id }, relations: ['groups'] })
       .then();
@@ -179,6 +179,8 @@ export class QueueService {
     queueToReplace.description = queue.description;
     queueToReplace.groups = groups;
 
-    return this.queueRepository.save(queueToReplace);
+    this.queueRepository.save(queueToReplace);
+
+    return this.getDTO(queueToReplace);
   }
 }
