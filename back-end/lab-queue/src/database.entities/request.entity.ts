@@ -20,12 +20,4 @@ export class RequestEntity {
     eager: true,
   })
   queue: QueueEntity;
-
-  public getDTO(): RequestDto {
-    return {
-      queueId: this.queue.id,
-      userId: this.user.id,
-      isSigned: this.isActive,
-    };
-  }
 }

@@ -19,6 +19,14 @@ export class RequestService {
     private queueRepository: Repository<QueueEntity>,
   ) {}
 
+  public getDTO(requestEntity: RequestEntity): RequestDto {
+    return {
+      queueId: requestEntity.queue.id,
+      userId: requestEntity.user.id,
+      isSigned: requestEntity.isActive,
+    };
+  }
+
   findAll(): Promise<RequestEntity[]> {
     return this.requestRepository.find();
   }
@@ -27,14 +35,14 @@ export class RequestService {
     const requestEntities = await this.requestRepository
       .find({ where: { queue: id, isActive: true } })
       .then();
-    return requestEntities.map((request) => request.getDTO());
+    return requestEntities.map((request) => this.getDTO(request));
   }
 
   async getByUserId(userId: number): Promise<RequestDto[]> {
     const requestEntities = await this.requestRepository
       .find({ where: { user: userId, isActive: true } })
       .then();
-    return requestEntities.map((request) => request.getDTO());
+    return requestEntities.map((request) => this.getDTO(request));
   }
 
   public async isSigned(userId: number): Promise<RequestDto> {
@@ -44,7 +52,7 @@ export class RequestService {
     const requestEntity = await this.requestRepository
       .findOne({ where: { user: userEntity } })
       .then();
-    return Promise.resolve(requestEntity.getDTO());
+    return Promise.resolve(this.getDTO(requestEntity));
   }
 
   public async getByUserIdQueueId(
@@ -54,7 +62,7 @@ export class RequestService {
     const allRequests = await this.requestRepository.find().then();
 
     const allRequestsDto = await Promise.all(
-      allRequests.map((queueEntity) => queueEntity.getDTO()),
+      allRequests.map((queueEntity) => this.getDTO(queueEntity)),
     );
 
     return allRequestsDto.filter(
@@ -98,7 +106,7 @@ export class RequestService {
         request.isActive === true
       ) {
         request.isActive = !request.isActive;
-        resRequest = request.getDTO();
+        resRequest = this.getDTO(request);
       }
     }
     return resRequest;
