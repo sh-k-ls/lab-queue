@@ -25,6 +25,9 @@ export class InfoQueueComponent implements OnInit {
   @Output()
   public newItemEvent = new EventEmitter<boolean>();
 
+  @Output()
+  public editQueueClicked = new EventEmitter<void>();
+
   @Input()
   public isSigned = false;
 
@@ -41,6 +44,7 @@ export class InfoQueueComponent implements OnInit {
     this.emitSignedEvent();
   }
 
-  changeQueue(): void {
+  editQueue(): void {
+    this.editQueueClicked.emit();
   }
 }

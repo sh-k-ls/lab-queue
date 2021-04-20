@@ -159,4 +159,17 @@ export class QueueService {
 
     return this.queueRepository.save(req);
   }
+
+  public replaceQueue(queue: QueueDto): number {
+    const indexElemToReplace = this.queues.findIndex(
+      (queueReplace) =>
+        queueReplace.id === queue.id &&
+        queueReplace.creatorId === queue.creatorId,
+    );
+    if (indexElemToReplace !== -1) {
+      this.queues[indexElemToReplace] = queue;
+    }
+
+    return indexElemToReplace;
+  }
 }

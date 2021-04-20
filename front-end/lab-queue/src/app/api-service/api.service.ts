@@ -86,10 +86,10 @@ export class ApiService {
     return this.http.patch<RequestDto>(url, {});
   }
 
-  // PATCH /api/v1/queue/:id
-  public editQueueById(idQueue: string, queue: QueueDto): Observable<QueueDto> {
-    const url = `/api/v1/queue/${idQueue}`;
-    return this.http.patch<QueueDto>(url, queue);
+  // PUT /api/v1/queue/:id
+  public editQueueById(queue: QueueDto): Observable<number> {
+    const url = `/api/v1/queue`;
+    return this.http.put<number>(url, queue);
   }
 
   // POST /api/v1/queue/:id/signIn

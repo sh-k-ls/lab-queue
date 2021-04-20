@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  Put,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -118,9 +119,9 @@ export class QueueController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Patch(':id')
-  editQueueById(@Param('id') id: string, @Body() queue: QueueDto): QueueDto {
-    return queue;
+  @Put()
+  editQueue(@Body() queue: QueueDto): number {
+    return this.queue.replaceQueue(queue);
   }
 
   @UseGuards(JwtAuthGuard)
