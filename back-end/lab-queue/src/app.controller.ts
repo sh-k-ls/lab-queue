@@ -35,7 +35,7 @@ export class AppController {
 
   @UseGuards(JwtAuthGuard)
   @Get('api/v1/user/:id/profile')
-  getProfileByUserId(@Param('id') idUser: string): Promise<ProfileDto[]> {
+  getProfileByUserId(@Param('id') idUser: string): Promise<ProfileDto> {
     return this.profile.getProfileByUserId(+idUser);
   }
 }
