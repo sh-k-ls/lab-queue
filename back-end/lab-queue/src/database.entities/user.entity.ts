@@ -41,42 +41,4 @@ export class UserEntity {
     eager: true,
   })
   group: GroupEntity;
-
-  public getDTO(): UserDto {
-    return {
-      group: this.group.groupName,
-      id: this.id,
-      username: this.username,
-      password: this.password,
-    };
-  }
-
-  public getProfileDTO(): ProfileDto {
-    const today = new Date();
-    const currSemester =
-      today.getMonth() < 9 && today.getMonth() > 1
-        ? this.group.course.year * 2
-        : this.group.course.year * 2 - 1;
-    const degreeLiteral =
-      this.group.course.degree === 'Bachelor'
-        ? 'Б'
-        : this.group.course.degree === 'Master'
-        ? 'М'
-        : '';
-    let numCourse = today.getFullYear() - this.group.course.year + 1;
-    if (today.getMonth() < 9) {
-      numCourse -= 1;
-    }
-
-    const groupName = `${this.group.course.department}-${currSemester}${this.group.number}${degreeLiteral}`;
-    const courseName = `${this.group.course.department} ${this.group.course.degree} ${numCourse} курс`;
-    return {
-      id: this.id,
-      userId: this.id,
-      name: this.profile.name,
-      surname: this.profile.surname,
-      group: groupName,
-      course: courseName,
-    };
-  }
 }

@@ -19,11 +19,40 @@ export class ProfileService {
     private userRepository: Repository<UserEntity>,
   ) {}
 
+  public getProfileDTO(userEntity: UserEntity): ProfileDto {
+    const today = new Date();
+    const currSemester =
+      today.getMonth() < 9 && today.getMonth() > 1
+        ? userEntity.group.course.year * 2
+        : userEntity.group.course.year * 2 - 1;
+    const degreeLiteral =
+      userEntity.group.course.degree === 'Bachelor'
+        ? 'Б'
+        : userEntity.group.course.degree === 'Master'
+        ? 'М'
+        : '';
+    let numCourse = today.getFullYear() - userEntity.group.course.year + 1;
+    if (today.getMonth() < 9) {
+      numCourse -= 1;
+    }
+
+    const groupName = `${userEntity.group.course.department}-${currSemester}${userEntity.group.number}${degreeLiteral}`;
+    const courseName = `${userEntity.group.course.department} ${userEntity.group.course.degree} ${numCourse} курс`;
+    return {
+      id: userEntity.id,
+      userId: userEntity.id,
+      name: userEntity.profile.name,
+      surname: userEntity.profile.surname,
+      group: groupName,
+      course: courseName,
+    };
+  }
+
   async getProfileByUserId(userId: number): Promise<ProfileDto[]> {
     const userEntities = await this.userRepository
       .find({ where: { id: userId } })
       .then();
-    return userEntities.map((request) => request.getProfileDTO());
+    return userEntities.map((request) => this.getProfileDTO(request));
   }
 
   public async getProfilesByQueueId(queueId: string): Promise<ProfileDto[]> {

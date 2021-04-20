@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserDto } from '../shared/front-back-end/user.dto';
 import { UserEntity } from '../database.entities/user.entity';
+import { ProfileDto } from '../shared/front-back-end/profile.dto';
 
 @Injectable()
 export class UsersService {
@@ -11,35 +12,23 @@ export class UsersService {
     private usersRepository: Repository<UserEntity>,
   ) {}
 
-  private readonly users: UserDto[] = [
-    {
-      id: 1,
-      username: 'john',
-      password: 'changeme',
-      group: 'iu7',
-    },
-    {
-      id: 2,
-      username: 'maria',
-      password: 'guess',
-      group: 'iu7',
-    },
-    {
-      id: 3,
-      username: 'johny',
-      password: 'changehim',
-      group: 'iu7',
-    },
-  ];
+  public getDTO(userEntity: UserEntity): UserDto {
+    return {
+      group: userEntity.group.groupName,
+      id: userEntity.id,
+      username: userEntity.username,
+      password: userEntity.password,
+    };
+  }
 
   findAll(): Promise<UserEntity[]> {
     return this.usersRepository.find();
   }
 
   async findOne(username: string): Promise<UserDto> {
-    return (
-      await this.usersRepository.findOne({ where: { username: username } })
-    ).getDTO();
+    return this.getDTO(
+      await this.usersRepository.findOne({ where: { username: username } }),
+    );
   }
 
   async remove(id: string): Promise<void> {
