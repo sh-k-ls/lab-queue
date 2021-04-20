@@ -77,9 +77,6 @@ export class QueueService {
   }
 
   public async getByUserAvailableId(user: UserDto): Promise<QueueDto[]> {
-    const userEntity = await this.userRepository.findOne({
-      where: { id: user.id },
-    });
     const creatorQueues: QueueDto[] = await this.getByUserCreatorId(
       String(user.id),
     );
@@ -92,6 +89,7 @@ export class QueueService {
       .find({ relations: ['groups'] })
       .then();
 
+    console.log(allQueues);
     const allQueuesDto = await Promise.all(
       allQueues.map((queueEntity) => this.getDTO(queueEntity)),
     );

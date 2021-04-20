@@ -33,7 +33,11 @@ export class QueueController {
   @UseGuards(JwtAuthGuard)
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  createQueue(@Body() queue: QueueDto): Promise<QueueEntity> {
+  createQueue(
+    @Body() queue: QueueDto,
+    @Req() req: Request,
+  ): Promise<QueueEntity> {
+    queue.creatorId = (req.user as UserDto).id;
     return this.queue.pushQueue(queue);
   }
 
