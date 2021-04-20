@@ -78,7 +78,6 @@ export class QueueController {
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   getQueueById(@Param('id') idQueue: string): Promise<QueueDto> {
-    console.log(1);
     return this.queue.getByQueueId(idQueue);
   }
 
@@ -120,7 +119,7 @@ export class QueueController {
 
   @UseGuards(JwtAuthGuard)
   @Put()
-  editQueue(@Body() queue: QueueDto): number {
+  editQueue(@Body() queue: QueueDto): Promise<QueueEntity> {
     return this.queue.replaceQueue(queue);
   }
 

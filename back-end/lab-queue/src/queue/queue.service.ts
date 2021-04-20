@@ -89,7 +89,6 @@ export class QueueService {
       .find({ relations: ['groups'] })
       .then();
 
-    console.log(allQueues);
     const allQueuesDto = await Promise.all(
       allQueues.map((queueEntity) => this.getDTO(queueEntity)),
     );
@@ -160,16 +159,26 @@ export class QueueService {
     return this.queueRepository.save(req);
   }
 
-  public replaceQueue(queue: QueueDto): number {
-    const indexElemToReplace = this.queues.findIndex(
-      (queueReplace) =>
-        queueReplace.id === queue.id &&
-        queueReplace.creatorId === queue.creatorId,
-    );
-    if (indexElemToReplace !== -1) {
-      this.queues[indexElemToReplace] = queue;
+  public async replaceQueue(queue: QueueDto): Promise<QueueEntity> {
+    const queueToReplace = await this.queueRepository
+      .findOne({ where: { id: queue.id }, relations: ['groups'] })
+      .then();
+    const allGroups = queue.groups;
+    const groups: GroupEntity[] = [];
+    for (const currGroup of allGroups) {
+      const groupEntity = this.groupRepository.findOne({
+        where: { groupName: currGroup },
+      });
+      groups.push(await groupEntity);
     }
 
-    return indexElemToReplace;
+    queueToReplace.nameSubject = queue.nameSubject;
+    queueToReplace.nameTeacher = queue.nameTeacher;
+    queueToReplace.dateCreate = queue.dateCreate;
+    queueToReplace.timeCreate = queue.timeCreate;
+    queueToReplace.description = queue.description;
+    queueToReplace.groups = groups;
+
+    return this.queueRepository.save(queueToReplace);
   }
 }
