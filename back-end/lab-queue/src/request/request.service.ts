@@ -28,7 +28,7 @@ export class RequestService {
   }
 
   findAll(): Promise<RequestEntity[]> {
-    return this.requestRepository.find();
+    return this.requestRepository.find({ relations: ['user', 'queue'] });
   }
 
   async getByQueueId(id: string): Promise<RequestDto[]> {
@@ -45,12 +45,15 @@ export class RequestService {
     return requestEntities.map((request) => this.getDTO(request));
   }
 
-  public async isSigned(userId: number): Promise<RequestDto> {
-    const userEntity = this.userRepository.findOne({
+  public async isSigned(userId: number, queueId: number): Promise<RequestDto> {
+    const userEntity = await this.userRepository.findOne({
       where: { id: userId },
     });
+    const queueEntity = await this.queueRepository.findOne({
+      where: { id: queueId },
+    });
     const requestEntity = await this.requestRepository
-      .findOne({ where: { user: userEntity } })
+      .findOne({ where: { user: userEntity, queue: queueEntity } })
       .then();
     return Promise.resolve(this.getDTO(requestEntity));
   }
@@ -101,11 +104,12 @@ export class RequestService {
     });
     for (const request of await this.findAll()) {
       if (
-        request.user === userEntity &&
-        request.queue === queueEntity &&
+        request.user.id === userEntity.id &&
+        request.queue.id === queueEntity.id &&
         request.isActive === true
       ) {
         request.isActive = !request.isActive;
+        await this.requestRepository.save(request);
         resRequest = this.getDTO(request);
       }
     }

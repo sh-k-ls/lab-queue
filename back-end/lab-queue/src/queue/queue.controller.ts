@@ -62,7 +62,7 @@ export class QueueController {
     @Param('idUser') idUser: string,
     @Req() req: Request,
   ): Promise<RequestDto> {
-    if (await this.request.isSigned(+idUser)) {
+    if (await this.request.isSigned(+idUser, +idQueue)) {
       return await this.request.changeSigned(+idUser, +idQueue);
     }
     return await this.request.getByUserIdQueueId(+idUser, +idQueue);
