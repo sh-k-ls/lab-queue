@@ -24,13 +24,4 @@ export class CourseEntity {
 
   @OneToMany(() => GroupEntity, (group) => group.course)
   groups: GroupEntity[];
-
-  public getDTO(): Course {
-    return {
-      department: this.department,
-      degree: this.degree,
-      year: this.year,
-      groups: this.groups.length,
-    };
-  }
 }
