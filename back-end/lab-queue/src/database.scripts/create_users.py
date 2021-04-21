@@ -26,10 +26,10 @@ def create_if_not_exists(query_select: str, query_insert: str, args: tuple, conn
     cursor.close()
     return res
 
-def create_group(number: int, course_id: int, conn) -> int:
-    query_select = 'SELECT id FROM group_entity WHERE number = %s AND "courseId" = %s;'
-    query_insert = 'INSERT INTO group_entity ("number", "courseId") VALUES\n(%s,%s)\n RETURNING id;'
-    return create_if_not_exists(query_select, query_insert, (number, str(course_id)), conn)
+def create_group(number: int, course_id: int, group_name: str, conn) -> int:
+    query_select = 'SELECT id FROM group_entity WHERE number = %s AND "courseId" = %s AND "groupName" = %s;'
+    query_insert = 'INSERT INTO group_entity ("number", "courseId", "groupName") VALUES\n(%s,%s,%s)\n RETURNING id;'
+    return create_if_not_exists(query_select, query_insert, (number, str(course_id), group_name), conn)
 
 def create_course(year: int, department: str, degree: str, conn) -> int:
     query_select = 'SELECT id FROM course_entity WHERE department = %s AND degree = %s AND year = %s;'
@@ -60,7 +60,8 @@ def connect(to_deploy: bool):
     if to_deploy:
         conn = psy.connect(database=db_deploy.database, user=db_deploy.user, password=db_deploy.password, host=db_deploy.host, port=db_deploy.port)
     else:
-        conn = psy.connect(database=db.database, user=db.user, password=db.password, host=db.host, port=db.port)   
+        conn = psy.connect(database=db.database, user=db.user, password=db.password, host=db.host, port=db.port)
+    conn.autocommit = True
     return conn
 
 def current_year():
@@ -73,7 +74,7 @@ def parse_groupname(group: str) -> list:
     degree = degrees[res[1][-1]]
     sem_num = group_code // 10
     group_num = group_code % 10
-    print([res[0], sem_num, group_num, degree])
+    #print([res[0], sem_num, group_num, degree])
     return [res[0], sem_num, group_num, degree]
 
 def get_entrance_year(sem_num: int) -> int:
@@ -81,16 +82,7 @@ def get_entrance_year(sem_num: int) -> int:
     year = int(cur_year - int(sem_num) / 2)
     return year
 
-def main(fname: str, to_deploy: bool):
-    wb = load_workbook(filename = fname)
-    ws = wb.active
-    group = ws.cell(1,1).value
-    gname = parse_groupname(group)
-    ent_year = get_entrance_year(gname[1])
-    conn = connect(to_deploy)
-    conn.autocommit = True
-    course_id = create_course(ent_year, gname[0], gname[3], conn)
-    group_id = create_group(gname[2], course_id, conn)
+def run_people_arr(group_id: int, ws, conn) -> None:
     for i in range(1, ws.max_row + 1):
         surname = ws.cell(i,4).value
         name = ws.cell(i,2).value
@@ -101,13 +93,21 @@ def main(fname: str, to_deploy: bool):
         password = ws.cell(i,7).value
         profile_id = create_profile(name, surname, patronymic, conn)
         user_id = create_user(nickname, password, profile_id, group_id, conn)
-        print(user_id, name, surname, patronymic, code, group)
-        #print(gen_password(length))
-        #print(gen_nick(name, surname, patronymic, code))
-    
+
+def main(fname: str, to_deploy: bool):
+    wb = load_workbook(filename = fname)
+    ws = wb.active
+    group = ws.cell(1,1).value
+    gname = parse_groupname(group)
+    ent_year = get_entrance_year(gname[1])
+    conn = connect(to_deploy)
+    course_id = create_course(ent_year, gname[0], gname[3], conn)
+    group_id = create_group(gname[2], course_id, group, conn)
+    run_people_arr(group_id, ws, conn)
     conn.close()
 
 if __name__ == '__main__':
     fname = input('Введите имя файла со списком группы(со сгенерированными паролями): ')
-    to_deploy = bool(input('Внести в production/локальную бд? 1/0: '))
+    to_deploy = True if input('Внести в production/локальную бд? 1/0: ') == '1' else False
+    #print(to_deploy)
     main(fname, to_deploy)

@@ -37,16 +37,7 @@ def get_new_fname(fname:str) -> str:
     ind = parse_fname(fname)
     return fname[:ind] + '_with_passwords' + fname[ind:]
 
-def main(fname: str):
-    wb = load_workbook(filename = fname)
-    ws = wb.active
-
-    fname_write = get_new_fname(fname)
-    print(fname_write)
-    wb_write = Workbook()
-    # grab the active worksheet
-    wb_write_a = wb_write.active
-
+def run_people_arr(ws, wb):
     for i in range(2, ws.max_row + 1):
         surname = ws.cell(i,2).value
         name = ws.cell(i,3).value
@@ -59,8 +50,20 @@ def main(fname: str):
         #print(gen_password(length))
         #print(gen_nick(name, surname, patronymic, code))
         row = [group, name, patronymic, surname, code, nickname, password]
-        wb_write_a.append(row)
-    
+        wb.append(row)
+
+def main(fname: str):
+    wb = load_workbook(filename = fname)
+    ws = wb.active
+
+    fname_write = get_new_fname(fname)
+    #print(fname_write)
+    wb_write = Workbook()
+    # grab the active worksheet
+    wb_write_a = wb_write.active
+
+    run_people_arr(ws, wb_write_a)
+
     wb_write.save(fname_write)
 
 if __name__ == '__main__':
