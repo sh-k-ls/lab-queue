@@ -49,8 +49,12 @@ export class AppController {
    * GET-запрос для получения информации об авторизованном пользователе
    *
    *  @param {Request} req Запрос
-   *  @returns {string} JSONWebToken
-   *  @example {jwt: ukwysx726x2uyxuj2xzywjuxyey}
+   *  @returns {string} id, имя пользователя, группа
+   *  @example {
+    id: 2,
+    username: john,
+    group: ИУ7-81Б
+}
    */
   @UseGuards(JwtAuthGuard)
   @Get('api/v1/profile')
@@ -58,6 +62,20 @@ export class AppController {
     return req.user;
   }
 
+  /**
+   * GET-запрос для получения информации о пользователе по id юзера
+   *
+   *  @param {string} idUser id пользователя
+   *  @returns {ProfileDto} id, id соответствующей сущности юзера, имя, фамилия, курс, группа
+   *  @example {
+    name: Джон,
+    surname: Чейнджми,
+    course: 4,
+    userId: 1,
+    group: ИУ7-85Б,
+    id: 1
+    }
+   */
   @UseGuards(JwtAuthGuard)
   @Get('api/v1/user/:id/profile')
   getProfileByUserId(@Param('id') idUser: string): ProfileDto {
