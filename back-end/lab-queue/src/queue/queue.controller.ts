@@ -22,6 +22,7 @@ import { Request } from 'express';
 import { UserDto } from '../shared/front-back-end/user.dto';
 import { RequestEntity } from '../database.entities/request.entity';
 import { QueueEntity } from '../database.entities/queue.entity';
+import { GroupService } from '../group/group.service';
 
 @Controller('api/v1/queue')
 export class QueueController {
@@ -29,6 +30,7 @@ export class QueueController {
     private readonly queue: QueueService,
     private readonly request: RequestService,
     private readonly profile: ProfileService,
+    private readonly group: GroupService,
   ) {}
 
   @UseGuards(JwtAuthGuard)
@@ -73,6 +75,12 @@ export class QueueController {
   @Get('signed')
   async getAllQueuesSigned(@Req() req: Request): Promise<QueueDto[]> {
     return await this.queue.getByUserSignedId(<UserDto>req.user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('groups')
+  getAllGroups(@Req() req: Request): Promise<string[]> {
+    return this.group.findAll();
   }
 
   @UseGuards(JwtAuthGuard)
