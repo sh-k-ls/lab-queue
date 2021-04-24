@@ -13,12 +13,21 @@ export class UsersService {
   ) {}
 
   public getDTO(userEntity: UserEntity): UserDto {
-    return {
-      group: userEntity.group.groupName,
-      id: userEntity.id,
-      username: userEntity.username,
-      password: userEntity.password,
-    };
+    if (userEntity) {
+      return {
+        group: userEntity.group.groupName,
+        id: userEntity.id,
+        username: userEntity.username,
+        password: userEntity.password,
+      };
+    } else {
+      return {
+        group: 'Error',
+        id: -1,
+        username: 'Error',
+        password: 'Error',
+      };
+    }
   }
 
   findAll(): Promise<UserEntity[]> {
@@ -26,9 +35,10 @@ export class UsersService {
   }
 
   async findOne(username: string): Promise<UserDto> {
-    return this.getDTO(
-      await this.usersRepository.findOne({ where: { username: username } }),
-    );
+    const user = await this.usersRepository.findOne({
+      where: { username: username },
+    });
+    return this.getDTO(user);
   }
 
   async remove(id: string): Promise<void> {
