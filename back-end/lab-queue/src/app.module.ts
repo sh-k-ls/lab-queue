@@ -9,6 +9,12 @@ import { RequestService } from './request/request.service';
 import { ProfileService } from './profile/profile.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ormConfig } from './ormconfig';
+import { RequestEntity } from './database.entities/request.entity';
+import { QueueEntity } from './database.entities/queue.entity';
+import { ProfileEntity } from './database.entities/profile.entity';
+import { UserEntity } from './database.entities/user.entity';
+import { CourseEntity } from './database.entities/course.entity';
+import { GroupEntity } from './database.entities/group.entity';
 
 // @ts-ignore
 const typeOrmConfig: 'default' | 'deploy' =
@@ -18,6 +24,13 @@ const typeOrmConfig: 'default' | 'deploy' =
   imports: [
     UsersModule,
     AuthModule,
+    TypeOrmModule.forFeature([
+      RequestEntity,
+      QueueEntity,
+      ProfileEntity,
+      CourseEntity,
+      GroupEntity,
+    ]),
     TypeOrmModule.forRoot(ormConfig[typeOrmConfig]),
   ],
   controllers: [AppController, QueueController],

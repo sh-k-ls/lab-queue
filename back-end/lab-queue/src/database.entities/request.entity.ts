@@ -1,20 +1,23 @@
-import {Entity, Column, PrimaryGeneratedColumn, ManyToOne} from 'typeorm';
-import {UserEntity} from './user.entity';
-import {QueueEntity} from './queue.entity';
-
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { UserEntity } from './user.entity';
+import { QueueEntity } from './queue.entity';
+import { RequestDto } from '../shared/front-back-end/request.dto';
 
 @Entity()
 export class RequestEntity {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column({default: true})
-    isActive: boolean;
+  @Column({ default: true })
+  isActive: boolean;
 
-    @ManyToOne(() => UserEntity, user => user.requests)
-    user: UserEntity;
+  @ManyToOne(() => UserEntity, (user) => user.requests, {
+    eager: true,
+  })
+  user: UserEntity;
 
-    @ManyToOne(() => QueueEntity, queue => queue.requests)
-    queue: QueueEntity;
+  @ManyToOne(() => QueueEntity, (queue) => queue.requests, {
+    eager: true,
+  })
+  queue: QueueEntity;
 }
-

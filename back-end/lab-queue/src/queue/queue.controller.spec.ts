@@ -5,18 +5,18 @@ import { RequestService } from '../request/request.service';
 import { ProfileService } from '../profile/profile.service';
 
 describe('QueueController', () => {
-	let controller: QueueController;
+  let controller: QueueController;
 
-	beforeEach(async () => {
-		const module: TestingModule = await Test.createTestingModule({
-			controllers: [QueueController],
-			providers: [QueueService, RequestService, ProfileService],
-		}).compile();
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      controllers: [QueueController],
+      providers: [QueueService, RequestService, ProfileService],
+    }).compile();
 
-		controller = module.get<QueueController>(QueueController);
-	});
+    controller = module.get<QueueController>(QueueController);
+  });
 
-	it('should be defined', () => {
-		expect(controller).toBeDefined();
-	});
+  it('should be defined', () => {
+    expect(controller).toBeDefined();
+  });
 });
