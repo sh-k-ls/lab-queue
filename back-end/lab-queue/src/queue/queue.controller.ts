@@ -23,6 +23,8 @@ import { UserDto } from '../shared/front-back-end/user.dto';
 import { RequestEntity } from '../database.entities/request.entity';
 import { QueueEntity } from '../database.entities/queue.entity';
 import { GroupService } from '../group/group.service';
+import { CourseService } from '../course/course.service';
+import { Course } from '../shared/front-back-end/course.dto';
 
 @Controller('api/v1/queue')
 export class QueueController {
@@ -31,6 +33,7 @@ export class QueueController {
     private readonly request: RequestService,
     private readonly profile: ProfileService,
     private readonly group: GroupService,
+    private readonly course: CourseService,
   ) {}
 
   @UseGuards(JwtAuthGuard)
@@ -77,10 +80,16 @@ export class QueueController {
     return await this.queue.getByUserSignedId(<UserDto>req.user);
   }
 
+  // @UseGuards(JwtAuthGuard)
+  // @Get('groups')
+  // getAllGroups(@Req() req: Request): Promise<string[]> {
+  //   return this.group.findAll();
+  // }
+
   @UseGuards(JwtAuthGuard)
-  @Get('groups')
-  getAllGroups(@Req() req: Request): Promise<string[]> {
-    return this.group.findAll();
+  @Get('courses')
+  getAllCourses(@Req() req: Request): Promise<Course[]> {
+    return this.course.findAll();
   }
 
   @UseGuards(JwtAuthGuard)

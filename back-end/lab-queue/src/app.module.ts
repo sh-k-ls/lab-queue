@@ -15,6 +15,7 @@ import { ProfileEntity } from './database.entities/profile.entity';
 import { CourseEntity } from './database.entities/course.entity';
 import { GroupEntity } from './database.entities/group.entity';
 import { GroupService } from './group/group.service';
+import { CourseService } from './course/course.service';
 
 // @ts-ignore
 const typeOrmConfig: 'default' | 'deploy' =
@@ -40,6 +41,7 @@ const typeOrmConfig: 'default' | 'deploy' =
     RequestService,
     ProfileService,
     GroupService,
+    CourseService,
   ],
 })
 export class AppModule {}

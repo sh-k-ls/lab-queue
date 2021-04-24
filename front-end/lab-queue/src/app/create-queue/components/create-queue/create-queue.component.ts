@@ -25,26 +25,6 @@ export class CreateQueueComponent implements OnInit {
   myControlCourse = new FormControl();
   myControlTeacher = new FormControl();
   myControlParticipant = new FormControl();
-  courseList: Course[] = [
-    {
-      department: 'ИУ7',
-      degree: 'Bachelor',
-      year: 2017,
-      groups: 6,
-    },
-    {
-      department: 'ИУ6',
-      degree: 'Master',
-      year: 2020,
-      groups: 5,
-    },
-    {
-      department: 'ИУ8',
-      degree: 'Specialist',
-      year: 2016,
-      groups: 3,
-    },
-  ];
 
   courseListStr: string[] = [];
   groupListStr: string[] = [];
@@ -89,7 +69,12 @@ export class CreateQueueComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.parserCourse(this.courseList);
+    this.api.getAllCourses().subscribe((courses) => {
+      this.courseListStr = courses.map((courseDto) => courseDto.course);
+      this.groupListStr =
+        (courses.map((courseDto) => courseDto.groups))
+        .reduce((accumulator, curVal) => [...accumulator, ...curVal]);
+    });
 
     this.filteredCourses = this.myControlCourse.valueChanges.pipe(
       startWith(''),
@@ -132,39 +117,6 @@ export class CreateQueueComponent implements OnInit {
     );
   }
 
-  public parserCourse(courses: Course[]): void {
-    const today = new Date();
-    for (const course of courses) {
-      let numCourse = today.getFullYear() - course.year + 1;
-      if (today.getMonth() < 9) {
-        numCourse -= 1;
-      }
-
-      const degree =
-        course.degree === 'Bachelor'
-          ? 'Бакалавры'
-          : course.degree === 'Master'
-          ? 'Магистры'
-          : 'Специалисты';
-      this.courseListStr.push(
-        `${course.department} ${degree} ${numCourse} курс`
-      );
-      const currSemester =
-        today.getMonth() < 9 && today.getMonth() > 1
-          ? numCourse * 2
-          : numCourse * 2 - 1;
-      for (let i = 1; i <= course.groups; i++) {
-        const groupName = this.parseGroup(
-          i,
-          course.department,
-          currSemester,
-          course.degree
-        );
-        this.groupListStr.push(groupName);
-      }
-    }
-  }
-
   public parseGroup(
     groupIndex: number,
     groupDepartment: string,
@@ -180,7 +132,7 @@ export class CreateQueueComponent implements OnInit {
   dateFilter = (date: { getDay: () => number }) => {
     const day = date.getDay();
     return day !== 0;
-  };
+  }
 
   addTeacher(event: MatChipInputEvent): void {
     const input = event.input;
@@ -280,60 +232,60 @@ export class CreateQueueComponent implements OnInit {
 
   public addQueueBtnPush(participantType: string, queue: QueueDto): void {
     // TODO в интерфейсе можно добавить и поток и группу, поэтому эта штука не будет работать
-    if (participantType === 'course') {
-      const allGroups: string[] = [];
-      for (const courseName of queue.groups) {
-        queue.groups = [];
-        const splitted = courseName.split(' ', 3);
-        const degree =
-          splitted[1] === 'Бакалавры'
-            ? 'Bachelor'
-            : splitted[1] === 'Магистры'
-            ? 'Master'
-            : 'Specialist';
-        const today = new Date();
-        let admissionYear = today.getFullYear() - +splitted[2];
-        if (today.getMonth() >= 9) {
-          admissionYear += 1;
-        }
-        const currSemester =
-          today.getMonth() < 9 && today.getMonth() > 1
-            ? +splitted[2] * 2
-            : +splitted[2] * 2 - 1;
-        for (const course of this.courseList) {
-          if (
-            course.department === splitted[0] &&
-            course.degree === degree &&
-            course.year === admissionYear
-          ) {
-            for (let i = 1; i <= course.groups; i++) {
-              const groupName = this.parseGroup(
-                i,
-                course.department,
-                currSemester,
-                course.degree
-              );
-              allGroups.push(groupName);
-            }
-          }
-        }
-      }
-      queue.groups = allGroups;
-    }
-
-    if (!this.idQueueEdit) {
-      this.api.createQueue(queue).subscribe();
-      this.router.navigate(['/queue']);
-    } else {
-      queue.id = this.queue.id;
-      queue.creatorId = this.queue.creatorId;
-      this.api
-        .editQueueById(queue)
-        .subscribe((res) =>
-          this.router.navigate(['/details/' + this.idQueueEdit])
-        );
-      // this.router.navigate(['/details/' + this.idQueueEdit]);
-    }
+    // if (participantType === 'course') {
+    //   const allGroups: string[] = [];
+    //   for (const courseName of queue.groups) {
+    //     queue.groups = [];
+    //     const splitted = courseName.split(' ', 3);
+    //     const degree =
+    //       splitted[1] === 'Бакалавры'
+    //         ? 'Bachelor'
+    //         : splitted[1] === 'Магистры'
+    //         ? 'Master'
+    //         : 'Specialist';
+    //     const today = new Date();
+    //     let admissionYear = today.getFullYear() - +splitted[2];
+    //     if (today.getMonth() >= 9) {
+    //       admissionYear += 1;
+    //     }
+    //     const currSemester =
+    //       today.getMonth() < 9 && today.getMonth() > 1
+    //         ? +splitted[2] * 2
+    //         : +splitted[2] * 2 - 1;
+    //     for (const course of this.courseList) {
+    //       if (
+    //         course.department === splitted[0] &&
+    //         course.degree === degree &&
+    //         course.year === admissionYear
+    //       ) {
+    //         for (let i = 1; i <= course.groups; i++) {
+    //           const groupName = this.parseGroup(
+    //             i,
+    //             course.department,
+    //             currSemester,
+    //             course.degree
+    //           );
+    //           allGroups.push(groupName);
+    //         }
+    //       }
+    //     }
+    //   }
+    //   queue.groups = allGroups;
+    // }
+    //
+    // if (!this.idQueueEdit) {
+    //   this.api.createQueue(queue).subscribe();
+    //   this.router.navigate(['/queue']);
+    // } else {
+    //   queue.id = this.queue.id;
+    //   queue.creatorId = this.queue.creatorId;
+    //   this.api
+    //     .editQueueById(queue)
+    //     .subscribe((res) =>
+    //       this.router.navigate(['/details/' + this.idQueueEdit])
+    //     );
+    //   // this.router.navigate(['/details/' + this.idQueueEdit]);
+    // }
     // TODO сообщение об успешной отправке
   }
 }

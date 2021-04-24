@@ -8,9 +8,9 @@ export class ProfileEntity {
   @Column()
   name: string;
 
-    @Column()
-    surname: string;
+  @Column()
+  surname: string;
 
-    @Column({ nullable: true})
-    patronymic: string;
+  @Column({ nullable: true })
+  patronymic: string;
 }

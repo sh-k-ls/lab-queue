@@ -5,6 +5,7 @@ import { UserDto } from '../../../../../shared/user.dto';
 import { QueueDto } from '../../../../../shared/queue.dto';
 import { RequestDto } from '../../../../../shared/request.dto';
 import { ProfileDto } from '../../../../../shared/profile.dto';
+import { Course } from '../../shared/front-back-end/course.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -69,6 +70,18 @@ export class ApiService {
   public getQueueRequestsProfiles(idQueue: string): Observable<ProfileDto[]> {
     const url = `/api/v1/queue/${idQueue}/request/profile`;
     return this.http.get<ProfileDto[]>(url);
+  }
+
+  // GET /api/v1/queue/groups
+  // public getAllGroups(): Observable<string[]> {
+  //   const url = `/api/v1/queue/groups`;
+  //   return this.http.get<string[]>(url);
+  // }
+
+  // GET /api/v1/queue/courses
+  public getAllCourses(): Observable<Course[]> {
+    const url = `/api/v1/queue/courses`;
+    return this.http.get<Course[]>(url);
   }
 
   // POST /api/v1/queue/:id/request
