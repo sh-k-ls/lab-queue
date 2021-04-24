@@ -70,8 +70,8 @@ def current_year():
 
 def parse_groupname(group: str) -> list:
     res = list(group.split('-'))
-    group_code = int(res[1][:-1])
-    degree = degrees[res[1][-1]]
+    group_code = int(res[1][:-1]) if (res[1][-1] == 'Б' or res[1][-1] == 'М') else int(res[1])
+    degree = degrees[res[1][-1]] if (res[1][-1] == 'Б' or res[1][-1] == 'М') else degrees['С']
     sem_num = group_code // 10
     group_num = group_code % 10
     #print([res[0], sem_num, group_num, degree])
