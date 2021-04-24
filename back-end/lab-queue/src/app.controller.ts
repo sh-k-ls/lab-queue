@@ -66,7 +66,7 @@ export class AppController {
    * GET-запрос для получения информации о пользователе по id юзера
    *
    *  @param {string} idUser id пользователя
-   *  @returns {ProfileDto} id, id соответствующей сущности юзера, имя, фамилия, курс, группа
+   *  @returns {Promise<ProfileDto>} id, id соответствующей сущности юзера, имя, фамилия, курс, группа
    *  @example {
     name: Джон,
     surname: Чейнджми,
