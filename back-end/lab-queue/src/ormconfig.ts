@@ -12,7 +12,7 @@ const defaultDB: PostgresConnectionOptions = {
   cli: {
     migrationsDir: 'migration',
   },
-  synchronize: false,
+  synchronize: true,
 };
 
 const deployDB: PostgresConnectionOptions = {
