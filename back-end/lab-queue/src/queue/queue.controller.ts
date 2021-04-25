@@ -162,6 +162,13 @@ export class QueueController {
     return this.request.getByUserIdQueueId(+idUser, +idQueue);
   }
 
+  /**
+   * DELETE-запрос для удаления очереди
+   *
+   *  @param {string} idQueue id очереди
+   *  @param {Request} req Запрос
+   *  @returns {Promise<DeleteResult>} Очередь удалена из базы данных
+   */
   @UseGuards(JwtAuthGuard)
   @Delete(':idQueue/delete')
   public async deleteQueue(
@@ -196,24 +203,42 @@ export class QueueController {
     return this.queue.getByUserSignedId(<UserDto>req.user);
   }
 
-  // @UseGuards(JwtAuthGuard)
-  // @Get('groups')
-  // getAllGroups(@Req() req: Request): Promise<string[]> {
-  //   return this.group.findAll();
-  // }
-
+  /**
+   * GET-запрос для получения всех курсов
+   *
+   *  @param {Request} req Запрос
+   *  @returns {Promise<Course[]>} Массив курсов
+   *  @example  {
+			course: ИУ7 бакалавры 4 курс
+			groups: [ИУ7-81Б, ИУ7-82Б, ИУ7-83Б, ИУ7-84Б, ИУ7-85Б, ИУ7-86Б]
+		},
+   */
   @UseGuards(JwtAuthGuard)
   @Get('courses')
   public getAllCourses(@Req() req: Request): Promise<Course[]> {
     return this.course.findAll();
   }
 
+  /**
+   * GET-запрос для получения всех преподавателей
+   *
+   *  @param {Request} req Запрос
+   *  @returns {Promise<string[]>} Массив преподавателей
+   *  @example [Куров А.В., Рязанова Н.Ю., Толпинская Н.Б.],
+   */
   @UseGuards(JwtAuthGuard)
   @Get('teachers')
   public getAllTeachers(@Req() req: Request): Promise<string[]> {
     return this.queue.findAllTeachers();
   }
 
+  /**
+   * GET-запрос для получения всех предметов
+   *
+   *  @param {Request} req Запрос
+   *  @returns {Promise<string[]>} Массив предметов
+   *  @example [Базы данных, Операционные системы, Математическая статистика],
+   */
   @UseGuards(JwtAuthGuard)
   @Get('subjects')
   public getAllSubjects(@Req() req: Request): Promise<string[]> {
