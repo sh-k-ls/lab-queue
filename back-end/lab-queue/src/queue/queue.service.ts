@@ -27,17 +27,6 @@ export class QueueService {
     private userRepository: Repository<UserEntity>,
   ) {}
 
-  public parseGroup(
-    groupIndex: number,
-    groupDepartment: string,
-    groupSemester: number,
-    groupDegree: string,
-  ): string {
-    const degreeLiteral =
-      groupDegree === 'Bachelor' ? 'Б' : groupDegree === 'Master' ? 'М' : '';
-    return `${groupDepartment}-${groupSemester}${groupIndex}${degreeLiteral}`;
-  }
-
   public async getDTO(queueEntity: QueueEntity): Promise<QueueDto> {
     return {
       id: queueEntity.id,
