@@ -10,4 +10,7 @@ export class ProfileEntity {
 
   @Column()
   surname: string;
+
+  @Column({ nullable: true})
+  patronymic: string;
 }

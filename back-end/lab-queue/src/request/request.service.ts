@@ -68,12 +68,12 @@ export class RequestService {
       allRequests.map((queueEntity) => this.getDTO(queueEntity)),
     );
 
-    return allRequestsDto.filter(
+    return allRequestsDto.find(
       (req) =>
         req.userId === userId &&
         req.queueId === queueId &&
         req.isSigned === true,
-    )[0];
+    );
   }
 
   async pushRequest(request: RequestDto): Promise<RequestEntity> {
@@ -95,25 +95,21 @@ export class RequestService {
     userId: number,
     queueId: number,
   ): Promise<RequestDto> {
-    let resRequest: RequestDto;
     const userEntity = await this.userRepository.findOne({
       where: { id: userId },
     });
     const queueEntity = await this.queueRepository.findOne({
       where: { id: queueId },
     });
-    for (const request of await this.findAll()) {
-      if (
+    const requestToChange = (await this.findAll()).find(
+      (request) =>
         request.user.id === userEntity.id &&
         request.queue.id === queueEntity.id &&
-        request.isActive === true
-      ) {
-        request.isActive = !request.isActive;
-        await this.requestRepository.save(request);
-        resRequest = this.getDTO(request);
-      }
-    }
-    return resRequest;
+        request.isActive === true,
+    );
+    requestToChange.isActive = !requestToChange.isActive;
+    await this.requestRepository.save(requestToChange);
+    return this.getDTO(requestToChange);
   }
 
   async delRequest(request: RequestDto): Promise<void> {

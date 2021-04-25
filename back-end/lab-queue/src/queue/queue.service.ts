@@ -3,7 +3,7 @@ import { QueueDto } from '../shared/front-back-end/queue.dto';
 import { RequestService } from '../request/request.service';
 import { InjectRepository } from '@nestjs/typeorm';
 import { QueueEntity } from '../database.entities/queue.entity';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { UsersService } from '../users/users.service';
 import { RequestEntity } from '../database.entities/request.entity';
 import { CourseEntity } from '../database.entities/course.entity';
@@ -25,52 +25,18 @@ export class QueueService {
     private groupRepository: Repository<GroupEntity>,
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
+    @InjectRepository(RequestEntity)
+    private requestRepository: Repository<RequestEntity>,
   ) {}
 
-  public parseGroup(
-    groupIndex: number,
-    groupDepartment: string,
-    groupSemester: number,
-    groupDegree: string,
-  ): string {
-    const degreeLiteral =
-      groupDegree === 'Bachelor' ? 'Б' : groupDegree === 'Master' ? 'М' : '';
-    return `${groupDepartment}-${groupSemester}${groupIndex}${degreeLiteral}`;
-  }
-
   public async getDTO(queueEntity: QueueEntity): Promise<QueueDto> {
-    const today = new Date();
-    const allGroups = queueEntity.groups;
-    const courseByCourseId = await this.courseRepository
-      .findOne({ id: allGroups[0].courseId })
-      .then();
-    const year = courseByCourseId.year;
-    let numCourse = today.getFullYear() - year + 1;
-    if (today.getMonth() < 9) {
-      numCourse -= 1;
-    }
-    const currSemester =
-      today.getMonth() < 9 && today.getMonth() > 1
-        ? numCourse * 2
-        : numCourse * 2 - 1;
-    const groupsListStr: string[] = [];
-    for (const groupEntity of allGroups) {
-      const groupName = this.parseGroup(
-        groupEntity.number,
-        courseByCourseId.department,
-        currSemester,
-        courseByCourseId.degree,
-      );
-      groupsListStr.push(groupName);
-    }
-
     return {
       id: queueEntity.id,
       nameSubject: queueEntity.nameSubject,
       nameTeacher: queueEntity.nameTeacher,
       dateCreate: queueEntity.dateCreate,
       timeCreate: queueEntity.timeCreate,
-      groups: groupsListStr,
+      groups: queueEntity.groups.map((group) => group.groupName),
       creatorId: queueEntity.creator.id,
       description: queueEntity.description,
     };
@@ -182,5 +148,32 @@ export class QueueService {
     this.queueRepository.save(queueToReplace);
 
     return this.getDTO(queueToReplace);
+  }
+
+  public async findAllSubjects(): Promise<string[]> {
+    const queues = await this.queueRepository.find();
+    const nameSubjects = queues.map((queue) => queue.nameSubject);
+    return nameSubjects.filter(
+      (item, pos) => nameSubjects.indexOf(item) == pos,
+    );
+  }
+
+  public async findAllTeachers(): Promise<string[]> {
+    const queueEntities = await this.queueRepository.find();
+    const teachers = queueEntities.map(
+      (queueEntity) => queueEntity.nameTeacher,
+    );
+    return teachers.reduce((acc, cur) => [...acc, ...cur]);
+  }
+
+  public async deleteQueue(idQueue: string): Promise<DeleteResult> {
+    const requests = await this.requestRepository.find({
+      where: { queue: idQueue },
+    });
+    requests.map(
+      async (request) => await this.requestRepository.delete(request.id),
+    );
+
+    return await this.queueRepository.delete(idQueue);
   }
 }

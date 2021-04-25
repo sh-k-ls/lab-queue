@@ -4,12 +4,12 @@
       <div>
         Имя: {{item.name}} Фамилия: {{item.surname}} Группа: {{item.group}}
       </div>
-      <button mat-raised-button *ngIf="isSigned" color="primary"  (click)="passed(item.userId)" >
+      <button mat-raised-button *ngIf="isSigned || isCreator" color="primary"  (click)="passed(item.userId)" >
        <span>Сдал(а)</span>
       </button>
     </div>
   </mat-card>
-  <div class="empty-mes-container" *ngIf="!listMemberQueue">
+  <div class="empty-mes-container" *ngIf="!listMemberQueue.length">
     <h1> Запишись первым! </h1>
   </div>
 </div>

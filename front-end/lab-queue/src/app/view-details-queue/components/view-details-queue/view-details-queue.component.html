@@ -8,6 +8,7 @@
 ></app-info-queue>
 <app-list-member-queue
  (newItemEvent)="toPass($event)"
+ [isCreator]="isCreator"
  [isSigned]="isSigned"
  [listMemberQueue]="memberList"
  [id]="id"

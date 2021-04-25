@@ -101,6 +101,9 @@
       <textarea #descriptionInput matInput></textarea>
     </mat-form-field>
     <div class="create-queue">
+     <button *ngIf="idQueueEdit" mat-raised-button color="warn" (click)="deleteQueue()">
+      Удалить очередь
+     </button>
       <button mat-raised-button color="primary"
               (click)="addQueueBtnPush(typeParticipant.value, {creatorId: 0, id: -1, nameSubject: nameSubject.value, nameTeacher: teachers, groups: participants, dateCreate: dateInput.value, timeCreate: timeInput.value, description: descriptionInput.value})"
       >

@@ -17,6 +17,9 @@ export class ListMemberQueueComponent implements OnInit {
   @Input()
   isSigned: boolean;
 
+  @Input()
+  isCreator: boolean;
+
   @Output()
   public newItemEvent = new EventEmitter<number>();
 
