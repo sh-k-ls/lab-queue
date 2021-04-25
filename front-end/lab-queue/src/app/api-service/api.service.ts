@@ -5,6 +5,7 @@ import { UserDto } from '../../../../../shared/user.dto';
 import { QueueDto } from '../../../../../shared/queue.dto';
 import { RequestDto } from '../../../../../shared/request.dto';
 import { ProfileDto } from '../../../../../shared/profile.dto';
+import { Course } from '../../shared/front-back-end/course.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -71,6 +72,30 @@ export class ApiService {
     return this.http.get<ProfileDto[]>(url);
   }
 
+  // GET /api/v1/queue/groups
+  // public getAllGroups(): Observable<string[]> {
+  //   const url = `/api/v1/queue/groups`;
+  //   return this.http.get<string[]>(url);
+  // }
+
+  // GET /api/v1/queue/courses
+  public getAllCourses(): Observable<Course[]> {
+    const url = `/api/v1/queue/courses`;
+    return this.http.get<Course[]>(url);
+  }
+
+  // GET /api/v1/queue/teachers
+  public getAllTeachers(): Observable<string[]> {
+    const url = `/api/v1/queue/teachers`;
+    return this.http.get<string[]>(url);
+  }
+
+  // GET /api/v1/queue/subjects
+  public getAllSubjects(): Observable<string[]> {
+    const url = `/api/v1/queue/subjects`;
+    return this.http.get<string[]>(url);
+  }
+
   // POST /api/v1/queue/:id/request
   // TODO описать на бэкенде
   public createQueueRequests(
@@ -110,5 +135,11 @@ export class ApiService {
   public sighOutQueue(idQueue: string): Observable<QueueDto> {
     const url = `/api/v1/queue/${idQueue}/signOut`;
     return this.http.patch<QueueDto>(url, {});
+  }
+
+  // DELETE /api/v1/queue/:idQueue/delete
+  public deleteQueue(idQueue: string): Observable<any> {
+    const url = `/api/v1/queue/${idQueue}/delete`;
+    return this.http.delete(url);
   }
 }

@@ -12,9 +12,10 @@ import { ormConfig } from './ormconfig';
 import { RequestEntity } from './database.entities/request.entity';
 import { QueueEntity } from './database.entities/queue.entity';
 import { ProfileEntity } from './database.entities/profile.entity';
-import { UserEntity } from './database.entities/user.entity';
 import { CourseEntity } from './database.entities/course.entity';
 import { GroupEntity } from './database.entities/group.entity';
+import { GroupService } from './group/group.service';
+import { CourseService } from './course/course.service';
 
 // @ts-ignore
 const typeOrmConfig: 'default' | 'deploy' =
@@ -34,6 +35,13 @@ const typeOrmConfig: 'default' | 'deploy' =
     TypeOrmModule.forRoot(ormConfig[typeOrmConfig]),
   ],
   controllers: [AppController, QueueController],
-  providers: [AppService, QueueService, RequestService, ProfileService],
+  providers: [
+    AppService,
+    QueueService,
+    RequestService,
+    ProfileService,
+    GroupService,
+    CourseService,
+  ],
 })
 export class AppModule {}

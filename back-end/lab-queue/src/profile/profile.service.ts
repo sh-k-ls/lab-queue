@@ -58,11 +58,8 @@ export class ProfileService {
     const requests: RequestDto[] = await this.request.getByQueueId(queueId);
     const profiles: ProfileDto[] = [];
     for (const request of requests) {
-      const promisedProfile = this.getProfileByUserId(request.userId);
-      const getProfile = await Promise.resolve(promisedProfile);
-      profiles.push(getProfile);
+      profiles.push(await this.getProfileByUserId(request.userId));
     }
-    // return null if profiles == [null]
-    return profiles[0] ? profiles : null;
+    return profiles;
   }
 }

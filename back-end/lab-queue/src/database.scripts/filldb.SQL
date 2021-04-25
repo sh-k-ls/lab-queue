@@ -34,5 +34,15 @@ INSERT INTO queue_entity_groups_group_entity ("queueEntityId", "groupEntityId") 
     (1, 2),
     (1, 3),
     (1, 4),
-    (1, 5);
+    (1, 5),
+    (2, 1),
+    (2, 2),
+    (2, 3),
+    (2, 4),
+    (2, 5),
+    (3, 1),
+    (3, 2),
+    (3, 3),
+    (3, 4),
+    (3, 5);
 

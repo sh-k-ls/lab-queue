@@ -96,9 +96,9 @@ export class ViewDetailsQueueComponent implements OnInit {
   }
 
   toPass(userId: number): void {
-    this.api
-      .setPassed(String(this.queue.id), String(userId))
-      .subscribe(() => this.updateMembers());
+    this.api.setPassed(String(this.queue.id), String(userId)).subscribe(
+      () => this.updateMembers()
+    );
   }
 
   toEditQueue(): void {
