@@ -68,12 +68,12 @@ export class RequestService {
       allRequests.map((queueEntity) => this.getDTO(queueEntity)),
     );
 
-    return allRequestsDto.filter(
+    return allRequestsDto.find(
       (req) =>
         req.userId === userId &&
         req.queueId === queueId &&
         req.isSigned === true,
-    )[0];
+    );
   }
 
   async pushRequest(request: RequestDto): Promise<RequestEntity> {

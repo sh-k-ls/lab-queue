@@ -67,9 +67,9 @@ export class QueueController {
     @Req() req: Request,
   ): Promise<RequestDto> {
     if (await this.request.isSigned(+idUser, +idQueue)) {
-      return await this.request.changeSigned(+idUser, +idQueue);
+      return this.request.changeSigned(+idUser, +idQueue);
     }
-    return await this.request.getByUserIdQueueId(+idUser, +idQueue);
+    return this.request.getByUserIdQueueId(+idUser, +idQueue);
   }
 
   @UseGuards(JwtAuthGuard)
