@@ -1,12 +1,9 @@
-import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith, switchMap } from 'rxjs/operators';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import {
-  MatAutocomplete,
-  MatAutocompleteSelectedEvent,
-} from '@angular/material/autocomplete';
+import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ApiService } from '../../../api-service/api.service';
 import { QueueDto } from '../../../../shared/front-back-end/queue.dto';
@@ -222,8 +219,14 @@ export class CreateQueueComponent implements OnInit {
     }
   }
 
+  public deleteQueue(): void {
+    this.api.deleteQueue(String(this.queue.id)).subscribe(
+      () => this.router.navigate(['/queue'])
+    );
+  }
+
   public addQueueBtnPush(participantType: string, queue: QueueDto): void {
-    const groups = queue.groups.map(group => {
+    queue.groups = queue.groups.map(group => {
       const course = this.courses.find((courseObj) => courseObj.course === group);
       if (course) {
         return course.groups;
@@ -231,7 +234,6 @@ export class CreateQueueComponent implements OnInit {
         return [group];
       }
     }).reduce((accumulator, curVal) => [...accumulator, ...curVal]);
-    queue.groups = groups;
 
     if (!this.idQueueEdit) {
       this.api.createQueue(queue).subscribe( () =>
