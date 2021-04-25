@@ -64,8 +64,6 @@ export class QueueService {
       .find({ relations: ['groups'] })
       .then();
 
-    allQueues.map((queue) => console.log(queue.groups));
-
     const allQueuesDto = await Promise.all(
       allQueues.map((queueEntity) => this.getDTO(queueEntity)),
     );

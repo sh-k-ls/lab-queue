@@ -234,7 +234,6 @@ export class CreateQueueComponent implements OnInit {
     queue.groups = groups;
 
     if (!this.idQueueEdit) {
-      console.log(queue);
       this.api.createQueue(queue).subscribe( () =>
         this.router.navigate(['/queue'])
       );
