@@ -62,7 +62,7 @@ export class ViewDetailsQueueComponent implements OnInit {
   checkSigned(userId: number): void {
     if (this.memberList) {
       this.isSigned = !!this.memberList.find(
-        (member) => member.userId === userId || userId === this.queue.creatorId
+        (member) => member.userId === userId
       );
     } else {
       this.isSigned = false;
@@ -96,9 +96,9 @@ export class ViewDetailsQueueComponent implements OnInit {
   }
 
   toPass(userId: number): void {
-    this.api
-      .setPassed(String(this.queue.id), String(userId))
-      .subscribe(() => this.updateMembers());
+    this.api.setPassed(String(this.queue.id), String(userId)).subscribe(
+      () => this.updateMembers()
+    );
   }
 
   toEditQueue(): void {
