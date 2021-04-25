@@ -66,7 +66,6 @@ export class ApiService {
   }
 
   // GET /api/v1/queue/:id/request/profile
-  // TODO описать на бэкенде
   public getQueueRequestsProfiles(idQueue: string): Observable<ProfileDto[]> {
     const url = `/api/v1/queue/${idQueue}/request/profile`;
     return this.http.get<ProfileDto[]>(url);
@@ -97,7 +96,6 @@ export class ApiService {
   }
 
   // POST /api/v1/queue/:id/request
-  // TODO описать на бэкенде
   public createQueueRequests(
     idQueue: string,
     request: RequestDto
@@ -107,7 +105,6 @@ export class ApiService {
   }
 
   // PATCH /api/v1/queue/:id/request
-  // TODO controller для request на бэке
   public deleteQueueRequest(idQueue: string): Observable<RequestDto> {
     const url = `/api/v1/queue/${idQueue}/request`;
     return this.http.patch<RequestDto>(url, {});
