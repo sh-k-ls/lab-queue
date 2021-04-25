@@ -183,4 +183,20 @@ export class QueueService {
 
     return this.getDTO(queueToReplace);
   }
+
+  public async findAllSubjects(): Promise<string[]> {
+    const queues = await this.queueRepository.find();
+    const nameSubjects = queues.map((queue) => queue.nameSubject);
+    return nameSubjects.filter(
+      (item, pos) => nameSubjects.indexOf(item) == pos,
+    );
+  }
+
+  public async findAllTeachers(): Promise<string[]> {
+    const queueEntities = await this.queueRepository.find();
+    const teachers = queueEntities.map(
+      (queueEntity) => queueEntity.nameTeacher,
+    );
+    return teachers.reduce((acc, cur) => [...acc, ...cur]);
+  }
 }

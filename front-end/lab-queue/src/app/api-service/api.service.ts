@@ -84,6 +84,18 @@ export class ApiService {
     return this.http.get<Course[]>(url);
   }
 
+  // GET /api/v1/queue/teachers
+  public getAllTeachers(): Observable<string[]> {
+    const url = `/api/v1/queue/teachers`;
+    return this.http.get<string[]>(url);
+  }
+
+  // GET /api/v1/queue/subjects
+  public getAllSubjects(): Observable<string[]> {
+    const url = `/api/v1/queue/subjects`;
+    return this.http.get<string[]>(url);
+  }
+
   // POST /api/v1/queue/:id/request
   // TODO описать на бэкенде
   public createQueueRequests(

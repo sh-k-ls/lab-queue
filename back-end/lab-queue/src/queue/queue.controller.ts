@@ -93,6 +93,18 @@ export class QueueController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Get('teachers')
+  getAllTeachers(@Req() req: Request): Promise<string[]> {
+    return this.queue.findAllTeachers();
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('subjects')
+  getAllSubjects(@Req() req: Request): Promise<string[]> {
+    return this.queue.findAllSubjects();
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   getQueueById(@Param('id') idQueue: string): Promise<QueueDto> {
     return this.queue.getByQueueId(idQueue);
