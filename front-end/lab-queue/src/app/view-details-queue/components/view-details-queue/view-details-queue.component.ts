@@ -62,7 +62,7 @@ export class ViewDetailsQueueComponent implements OnInit {
   checkSigned(userId: number): void {
     if (this.memberList) {
       this.isSigned = !!this.memberList.find(
-        (member) => member.userId === userId
+        (member) => member.userId === userId || userId === this.queue.creatorId
       );
     } else {
       this.isSigned = false;
