@@ -3,22 +3,22 @@
     <div class="content">
       <p>
         <mat-form-field appearance="legacy">
-          <mat-label>Username</mat-label>
-          <input matInput #username placeholder="john">
+          <mat-label>Имя пользователя</mat-label>
+          <input matInput #username placeholder="">
     <!--      <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>-->
     <!--      <mat-hint>Hint</mat-hint>-->
         </mat-form-field>
       </p>
       <p>
         <mat-form-field appearance="legacy">
-          <mat-label>Password</mat-label>
-          <input matInput #password placeholder="changeme">
+          <mat-label>Пароль</mat-label>
+          <input matInput #password placeholder="">
           <!--      <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>-->
           <!--      <mat-hint>Hint</mat-hint>-->
         </mat-form-field>
       </p>
       <button mat-button (click)="login({username: username.value, password: password.value})">
-        Enter
+        Войти
       </button>
       <div class="error-message" *ngIf="!dataCorrect">Invalid username or password</div>
     </div>
