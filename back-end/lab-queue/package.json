@@ -32,7 +32,7 @@
     "test:db:fill": "sudo -u postgres psql queue_test -f ./test/filltestdb.SQL",
     "test:db:drop": "sudo -u postgres psql -f ./test/droptestdb.SQL",
     "test:db:prepare": "npm run db:migrate:clear && npm run test:db:create && npm run db:makemigration:test && npm run db:migrate:test && npm run test:db:fill",
-    "test:e2e": "npm run prebuild && npm run test:db:prepare &&  npm run test:clearCache && npm run test:run:e2e",
+    "test:e2e": "npm run prebuild && npm run test:db:prepare &&  npm run test:clearCache && npm run test:run:e2e && npm run db:migrate:clear",
     "test:clearCache": "jest --clearCache",
     "prebuild": "rm -rf src/shared/front-back-end && node ../../scripts/fill-dist-folder.js",
     "compodoc": "npx compodoc -p tsconfig.json src -s"
