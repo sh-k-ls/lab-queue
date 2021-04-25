@@ -2,8 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from "../src/app.module";
-import { UsersService } from "../dist/users/users.service";
-import { UsersModule } from "../src/users/users.module";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { RequestEntity } from "../src/database.entities/request.entity";
 import { QueueEntity } from "../src/database.entities/queue.entity";
@@ -11,7 +9,6 @@ import { ProfileEntity } from "../src/database.entities/profile.entity";
 import { CourseEntity } from "../src/database.entities/course.entity";
 import { GroupEntity } from "../src/database.entities/group.entity";
 import { UserEntity } from "../src/database.entities/user.entity";
-import { AuthModule } from "../src/auth/auth.module";
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -26,9 +23,6 @@ describe('AppController (e2e)', () => {
 
   beforeAll(async () => {
     const appTest: TestingModule = await Test.createTestingModule({
-      providers: [
-        UsersService
-      ],
       imports: [
         TypeOrmModule.forFeature([
           RequestEntity,
@@ -52,14 +46,10 @@ describe('AppController (e2e)', () => {
           },
           synchronize: true,
         }),
-        AppModule,
-        AuthModule,
-        UsersModule
+        AppModule
       ],
     }).compile();
     app = await appTest.createNestApplication();
-    // let conn = await app.get(Connection);
-    // let repo = await conn.getRepository(CourseEntity);
     await app.init();
   });
 
