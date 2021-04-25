@@ -39,38 +39,13 @@ export class QueueService {
   }
 
   public async getDTO(queueEntity: QueueEntity): Promise<QueueDto> {
-    const today = new Date();
-    const allGroups = queueEntity.groups;
-    const courseByCourseId = await this.courseRepository
-      .findOne({ id: allGroups[0].courseId })
-      .then();
-    const year = courseByCourseId.year;
-    let numCourse = today.getFullYear() - year + 1;
-    if (today.getMonth() < 9) {
-      numCourse -= 1;
-    }
-    const currSemester =
-      today.getMonth() < 9 && today.getMonth() > 1
-        ? numCourse * 2
-        : numCourse * 2 - 1;
-    const groupsListStr: string[] = [];
-    for (const groupEntity of allGroups) {
-      const groupName = this.parseGroup(
-        groupEntity.number,
-        courseByCourseId.department,
-        currSemester,
-        courseByCourseId.degree,
-      );
-      groupsListStr.push(groupName);
-    }
-
     return {
       id: queueEntity.id,
       nameSubject: queueEntity.nameSubject,
       nameTeacher: queueEntity.nameTeacher,
       dateCreate: queueEntity.dateCreate,
       timeCreate: queueEntity.timeCreate,
-      groups: groupsListStr,
+      groups: queueEntity.groups.map((group) => group.groupName),
       creatorId: queueEntity.creator.id,
       description: queueEntity.description,
     };
@@ -88,6 +63,8 @@ export class QueueService {
     const allQueues = await this.queueRepository
       .find({ relations: ['groups'] })
       .then();
+
+    allQueues.map((queue) => console.log(queue.groups));
 
     const allQueuesDto = await Promise.all(
       allQueues.map((queueEntity) => this.getDTO(queueEntity)),
