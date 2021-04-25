@@ -39,7 +39,7 @@ export class QueueController {
   @UseGuards(JwtAuthGuard)
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  createQueue(
+  public createQueue(
     @Body() queue: QueueDto,
     @Req() req: Request,
   ): Promise<QueueEntity> {
@@ -49,16 +49,14 @@ export class QueueController {
 
   @UseGuards(JwtAuthGuard)
   @Get('available')
-  async getAllQueuesAvailable(@Req() req: Request): Promise<QueueDto[]> {
-    return await this.queue.getByUserAvailableId(<UserDto>req.user);
+  public getAllQueuesAvailable(@Req() req: Request): Promise<QueueDto[]> {
+    return this.queue.getByUserAvailableId(<UserDto>req.user);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('creator')
-  async getAllQueuesCreator(@Req() req: Request): Promise<QueueDto[]> {
-    return await this.queue.getByUserCreatorId(
-      String((req.user as UserDto).id),
-    );
+  public getAllQueuesCreator(@Req() req: Request): Promise<QueueDto[]> {
+    return this.queue.getByUserCreatorId(String((req.user as UserDto).id));
   }
 
   @UseGuards(JwtAuthGuard)
@@ -76,8 +74,8 @@ export class QueueController {
 
   @UseGuards(JwtAuthGuard)
   @Get('signed')
-  async getAllQueuesSigned(@Req() req: Request): Promise<QueueDto[]> {
-    return await this.queue.getByUserSignedId(<UserDto>req.user);
+  public getAllQueuesSigned(@Req() req: Request): Promise<QueueDto[]> {
+    return this.queue.getByUserSignedId(<UserDto>req.user);
   }
 
   // @UseGuards(JwtAuthGuard)
@@ -88,38 +86,40 @@ export class QueueController {
 
   @UseGuards(JwtAuthGuard)
   @Get('courses')
-  getAllCourses(@Req() req: Request): Promise<Course[]> {
+  public getAllCourses(@Req() req: Request): Promise<Course[]> {
     return this.course.findAll();
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('teachers')
-  getAllTeachers(@Req() req: Request): Promise<string[]> {
+  public getAllTeachers(@Req() req: Request): Promise<string[]> {
     return this.queue.findAllTeachers();
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('subjects')
-  getAllSubjects(@Req() req: Request): Promise<string[]> {
+  public getAllSubjects(@Req() req: Request): Promise<string[]> {
     return this.queue.findAllSubjects();
   }
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
-  getQueueById(@Param('id') idQueue: string): Promise<QueueDto> {
+  public getQueueById(@Param('id') idQueue: string): Promise<QueueDto> {
     return this.queue.getByQueueId(idQueue);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get(':id/request')
-  getRequestsByQueueId(@Param('id') idQueue: string): Promise<RequestDto[]> {
+  public getRequestsByQueueId(
+    @Param('id') idQueue: string,
+  ): Promise<RequestDto[]> {
     return this.request.getByQueueId(idQueue);
   }
 
   @UseGuards(JwtAuthGuard)
   @Post(':id/request')
   @HttpCode(HttpStatus.CREATED)
-  addRequestsByQueueId(
+  public addRequestsByQueueId(
     @Param('id') idQueue: string,
     @Body() queueReq: RequestDto,
     @Req() req: Request,
@@ -130,15 +130,15 @@ export class QueueController {
 
   @UseGuards(JwtAuthGuard)
   @Get(':id/request/profile')
-  async getProfilesByQueueId(
+  public getProfilesByQueueId(
     @Param('id') idQueue: string,
   ): Promise<ProfileDto[]> {
-    return await this.profile.getProfilesByQueueId(idQueue);
+    return this.profile.getProfilesByQueueId(idQueue);
   }
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id/request')
-  async editRequestByQueueId(
+  public editRequestByQueueId(
     @Param('id') idQueue: string,
     @Body() queueReq: RequestDto,
     @Req() req: Request,
@@ -148,13 +148,13 @@ export class QueueController {
 
   @UseGuards(JwtAuthGuard)
   @Put()
-  editQueue(@Body() queue: QueueDto): Promise<QueueDto> {
+  public editQueue(@Body() queue: QueueDto): Promise<QueueDto> {
     return this.queue.replaceQueue(queue);
   }
 
   @UseGuards(JwtAuthGuard)
   @Post(':id/signIn')
-  signInQueue(
+  public signInQueue(
     @Param('id') queueId: string,
     @Req() req: Request,
   ): Promise<RequestEntity> {
@@ -167,7 +167,7 @@ export class QueueController {
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id/signOut')
-  sighOutQueue(
+  public sighOutQueue(
     @Param('id') queueId: string,
     @Req() req: Request,
   ): Promise<void> {
