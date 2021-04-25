@@ -35,6 +35,8 @@ export class RequestService {
     const requestEntities = await this.requestRepository
       .find({ where: { queue: id, isActive: true } })
       .then();
+    requestEntities.sort((a, b) => a.id - b.id);
+
     return requestEntities.map((request) => this.getDTO(request));
   }
 

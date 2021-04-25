@@ -57,6 +57,7 @@ export class ProfileService {
   public async getProfilesByQueueId(queueId: string): Promise<ProfileDto[]> {
     const requests: RequestDto[] = await this.request.getByQueueId(queueId);
     const profiles: ProfileDto[] = [];
+
     for (const request of requests) {
       profiles.push(await this.getProfileByUserId(request.userId));
     }
