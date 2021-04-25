@@ -13,6 +13,7 @@ import { UserEntity } from '../database.entities/user.entity';
 import { RequestEntity } from '../database.entities/request.entity';
 import { ProfileEntity } from '../database.entities/profile.entity';
 import { GroupService } from '../group/group.service';
+import { CourseService } from '../course/course.service';
 
 describe('QueueController', () => {
   let controller: QueueController;
@@ -53,6 +54,7 @@ describe('QueueController', () => {
         ProfileService,
         UsersService,
         GroupService,
+        CourseService,
       ],
     }).compile();
 
