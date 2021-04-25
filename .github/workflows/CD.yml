@@ -5,7 +5,10 @@ env:
 
 name: CD
 
-on: [push]
+on:
+  push:
+    branches:
+      - develop
 
 jobs:
   deploy-client:
