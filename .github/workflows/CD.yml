@@ -1,7 +1,7 @@
 env:
   EB_PACKAGE_S3_BUCKET_NAME : "angular-lab-queue-v3"
   AWS_REGION_NAME           : "us-east-2"
-  BRANCH_DEPLOY             : "hotfix/99-deploy-nestjs"
+  BRANCH_DEPLOY             : "develop"
 
 name: CD
 
