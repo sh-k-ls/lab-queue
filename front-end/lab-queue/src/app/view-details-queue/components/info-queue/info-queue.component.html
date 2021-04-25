@@ -1,0 +1,36 @@
+<div class="info-queue-container">
+  <mat-card>
+    <div class="info-queue">
+      <div class="queue-name">
+        <div class="mat-h1">{{queue.nameSubject}}</div>
+        <div>
+          <div *ngFor="let teacher of queue.nameTeacher" class="mat-h1">
+            {{teacher}}
+          </div>
+        </div>
+      </div>
+      <div class="queue-detail-info">
+        <div class="mat-h4">Дата создания очереди: {{queue.dateCreate}}</div>
+        <div class="mat-h4">Создатель: {{creator.name}} {{creator.surname}}</div>
+      </div>
+      <div>Описание: {{queue.description}}</div>
+      <div class="button-list">
+       <div *ngIf="isCreator" class="queue-button">
+        <button mat-stroked-button color="primary" (click)="editQueue()">
+         Изменить очередь
+        </button>
+       </div>
+        <div class="queue-button">
+          <button mat-raised-button *ngIf="isSigned" color="warn" (click)="toSignUp()">
+           Выйти из очереди
+          </button>
+         <button mat-raised-button *ngIf="!isSigned" color="primary" (click)="toSignUp()">
+          Записаться в очередь
+         </button>
+        </div>
+       </div>
+    </div>
+  </mat-card>
+</div>
+
+

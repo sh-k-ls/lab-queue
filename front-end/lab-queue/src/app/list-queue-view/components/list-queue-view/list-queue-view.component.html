@@ -1,0 +1,20 @@
+<div class="main-container">
+  <h1>Список очередей</h1>
+  <div class="button-container">
+    <mat-button-toggle-group
+      #group="matButtonToggleGroup"
+      (change)="typeQueueChange(group.value)"
+      name="fontStyle"
+      aria-label="Font Style"
+      value="enabledQueue"
+    >
+      <mat-button-toggle value="enabledQueue">Доступные очереди</mat-button-toggle>
+      <mat-button-toggle value="signQueue">Уже записан</mat-button-toggle>
+      <mat-button-toggle value="authorQueue">Мои очереди</mat-button-toggle>
+    </mat-button-toggle-group>
+    <button mat-button (click)="addQueueBtnPush()">
+      <mat-icon>add_to_photos</mat-icon>
+    </button>
+  </div>
+  <app-list-queue [listQueue]="showList"></app-list-queue>
+</div>

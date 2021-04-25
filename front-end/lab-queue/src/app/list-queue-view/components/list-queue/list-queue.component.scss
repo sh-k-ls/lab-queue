@@ -1,0 +1,25 @@
+.list-queue-container {
+  text-align: left;
+
+  mat-card {
+    margin-top: 10px;
+    border-style: solid;
+    border-width: 1px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .info-queue {
+
+    }
+  }
+
+  .empty-queue {
+    display: flex;
+    justify-content: center;
+    margin-top: 10em;
+    //border-style: solid;
+  }
+}
+

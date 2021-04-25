@@ -1,6 +1,8 @@
 # compiled output
 /dist
 /node_modules
+/src/shared/front-back-end/
+/documentation
 
 # Logs
 logs

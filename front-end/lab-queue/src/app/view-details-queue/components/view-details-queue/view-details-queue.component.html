@@ -1,0 +1,15 @@
+<app-info-queue (newItemEvent)="toSignup()"
+                (editQueueClicked)="toEditQueue()"
+                [id]="id"
+                [queue]="queue"
+                [creator]="creator"
+                [isCreator]="isCreator"
+                [isSigned]="isSigned"
+></app-info-queue>
+<app-list-member-queue
+ (newItemEvent)="toPass($event)"
+ [isCreator]="isCreator"
+ [isSigned]="isSigned"
+ [listMemberQueue]="memberList"
+ [id]="id"
+></app-list-member-queue>
