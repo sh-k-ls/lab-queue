@@ -21,12 +21,12 @@ export class GroupEntity {
   })
   course: CourseEntity;
 
-    @Column({ nullable: true })
-    courseId: number;
+  @Column({ nullable: true })
+  courseId: number;
 
-    @Column()
-    groupName: string;
+  @Column()
+  groupName: string;
 
-    @OneToMany(() => UserEntity, user => user.group)
-    students: UserEntity[];
+  @OneToMany(() => UserEntity, (user) => user.group)
+  students: Promise<UserEntity[]>;
 }
