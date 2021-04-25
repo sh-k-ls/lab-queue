@@ -4,7 +4,7 @@
     "start:prod": "cd back-end/lab-queue && npm run start:prod"
   },
   "engines": {
-    "node": "14.x"
+    "node": "12.x"
   },
   "dependencies": {
     "-": "0.0.1",
