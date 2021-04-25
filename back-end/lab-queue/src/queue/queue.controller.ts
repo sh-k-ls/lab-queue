@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   HttpCode,
+  HttpException,
   HttpStatus,
   Param,
   Patch,
@@ -119,13 +120,23 @@ export class QueueController {
   @UseGuards(JwtAuthGuard)
   @Post(':id/request')
   @HttpCode(HttpStatus.CREATED)
-  public addRequestsByQueueId(
+  public async addRequestsByQueueId(
     @Param('id') idQueue: string,
-    @Body() queueReq: RequestDto,
+    @Body() request: RequestDto,
     @Req() req: Request,
   ): Promise<RequestEntity> {
-    queueReq.userId = (req.user as UserDto).id;
-    return this.request.pushRequest(queueReq);
+    const queue = await this.queue.getByQueueId(idQueue);
+    const user = req.user as UserDto;
+    const sameGroup = queue.groups.find((group) => group === user.group);
+    if (sameGroup) {
+      request.userId = (req.user as UserDto).id;
+      return this.request.pushRequest(request);
+    } else {
+      throw new HttpException(
+        'User group not equal queue groups',
+        HttpStatus.METHOD_NOT_ALLOWED,
+      );
+    }
   }
 
   @UseGuards(JwtAuthGuard)
@@ -148,8 +159,20 @@ export class QueueController {
 
   @UseGuards(JwtAuthGuard)
   @Put()
-  public editQueue(@Body() queue: QueueDto): Promise<QueueDto> {
-    return this.queue.replaceQueue(queue);
+  public async editQueue(
+    @Body() queue: QueueDto,
+    @Req() req: Request,
+  ): Promise<QueueDto> {
+    const user = req.user as UserDto;
+    const queueOld = await this.queue.getByQueueId(String(queue.id));
+    if (user.id === queueOld.creatorId) {
+      return this.queue.replaceQueue(queue);
+    } else {
+      throw new HttpException(
+        'Old queue creatorID !== userID',
+        HttpStatus.METHOD_NOT_ALLOWED,
+      );
+    }
   }
 
   @UseGuards(JwtAuthGuard)
