@@ -3,7 +3,7 @@ import { QueueDto } from '../shared/front-back-end/queue.dto';
 import { RequestService } from '../request/request.service';
 import { InjectRepository } from '@nestjs/typeorm';
 import { QueueEntity } from '../database.entities/queue.entity';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { UsersService } from '../users/users.service';
 import { RequestEntity } from '../database.entities/request.entity';
 import { CourseEntity } from '../database.entities/course.entity';
@@ -25,6 +25,8 @@ export class QueueService {
     private groupRepository: Repository<GroupEntity>,
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
+    @InjectRepository(RequestEntity)
+    private requestRepository: Repository<RequestEntity>,
   ) {}
 
   public async getDTO(queueEntity: QueueEntity): Promise<QueueDto> {
@@ -162,5 +164,16 @@ export class QueueService {
       (queueEntity) => queueEntity.nameTeacher,
     );
     return teachers.reduce((acc, cur) => [...acc, ...cur]);
+  }
+
+  public async deleteQueue(idQueue: string): Promise<DeleteResult> {
+    const requests = await this.requestRepository.find({
+      where: { queue: idQueue },
+    });
+    requests.map(
+      async (request) => await this.requestRepository.delete(request.id),
+    );
+
+    return await this.queueRepository.delete(idQueue);
   }
 }

@@ -136,4 +136,10 @@ export class ApiService {
     const url = `/api/v1/queue/${idQueue}/signOut`;
     return this.http.patch<QueueDto>(url, {});
   }
+
+  // DELETE /api/v1/queue/:idQueue/delete
+  public deleteQueue(idQueue: string): Observable<any> {
+    const url = `/api/v1/queue/${idQueue}/delete`;
+    return this.http.delete(url);
+  }
 }

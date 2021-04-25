@@ -1,8 +1,10 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
+  HttpException,
   HttpStatus,
   Param,
   Patch,
@@ -25,6 +27,7 @@ import { QueueEntity } from '../database.entities/queue.entity';
 import { GroupService } from '../group/group.service';
 import { CourseService } from '../course/course.service';
 import { Course } from '../shared/front-back-end/course.dto';
+import { DeleteResult } from 'typeorm';
 
 @Controller('api/v1/queue')
 export class QueueController {
@@ -70,6 +73,23 @@ export class QueueController {
       return this.request.changeSigned(+idUser, +idQueue);
     }
     return this.request.getByUserIdQueueId(+idUser, +idQueue);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete(':idQueue/delete')
+  public async deleteQueue(
+    @Param('idQueue') idQueue: string,
+    @Req() req: Request,
+  ): Promise<DeleteResult> {
+    const queue = await this.queue.getByQueueId(idQueue);
+    if (queue.creatorId === (req.user as UserDto).id) {
+      return this.queue.deleteQueue(idQueue);
+    } else {
+      throw new HttpException(
+        'idCreatorQueue not equal userID',
+        HttpStatus.METHOD_NOT_ALLOWED,
+      );
+    }
   }
 
   @UseGuards(JwtAuthGuard)
