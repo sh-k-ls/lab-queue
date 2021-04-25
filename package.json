@@ -3,9 +3,6 @@
     "build": "cd back-end/lab-queue && npm install && npm run build",
     "start:prod": "cd back-end/lab-queue && npm run start:prod"
   },
-  "engines": {
-    "node": "12.x"
-  },
   "dependencies": {
     "-": "0.0.1",
     "@nestjs/typeorm": "^7.1.5",
