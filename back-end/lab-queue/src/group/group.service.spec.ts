@@ -1,13 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { RequestService } from './request.service';
+import { GroupService } from './group.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersService } from '../users/users.service';
-import { RequestEntity } from '../database.entities/request.entity';
-import { UserEntity } from '../database.entities/user.entity';
-import { QueueEntity } from '../database.entities/queue.entity';
+import { GroupEntity } from '../database.entities/group.entity';
 
-describe('RequestService', () => {
-  let service: RequestService;
+describe('GroupService', () => {
+  let service: GroupService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -28,12 +25,12 @@ describe('RequestService', () => {
           },
           synchronize: true,
         }),
-        TypeOrmModule.forFeature([RequestEntity, UserEntity, QueueEntity]),
+        TypeOrmModule.forFeature([GroupEntity]),
       ],
-      providers: [RequestService, UsersService],
+      providers: [GroupService],
     }).compile();
 
-    service = module.get<RequestService>(RequestService);
+    service = module.get<GroupService>(GroupService);
   });
 
   it('should be defined', () => {

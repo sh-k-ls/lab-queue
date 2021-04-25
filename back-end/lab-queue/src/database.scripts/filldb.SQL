@@ -3,15 +3,15 @@ INSERT INTO teacher_entity ("name", "surname", "patronymic") VALUES
     ('Тассов', 'Кирилл', 'Леонидович');
 
 INSERT INTO course_entity ("department", "degree", "year") VALUES
-    ('IU7', 'Bachelor', 2017);
+    ('ИУ7', 'Bachelor', 2017);
 
-INSERT INTO group_entity ("number", "courseId") VALUES
-    (1, 1),
-    (2, 1),
-    (3, 1),
-    (4, 1),
-    (5, 1),
-    (6, 1);
+INSERT INTO group_entity ("number", "courseId", "groupName") VALUES
+    (1, 1, 'ИУ7-81Б'),
+    (2, 1, 'ИУ7-82Б'),
+    (3, 1, 'ИУ7-83Б'),
+    (4, 1, 'ИУ7-84Б'),
+    (5, 1, 'ИУ7-85Б'),
+    (6, 1, 'ИУ7-86Б');
 
 INSERT INTO profile_entity ("name", "surname", "patronymic") VALUES
     ('Kolya', 'Ko', 'KK');
@@ -34,5 +34,15 @@ INSERT INTO queue_entity_groups_group_entity ("queueEntityId", "groupEntityId") 
     (1, 2),
     (1, 3),
     (1, 4),
-    (1, 5);
+    (1, 5),
+    (2, 1),
+    (2, 2),
+    (2, 3),
+    (2, 4),
+    (2, 5),
+    (3, 1),
+    (3, 2),
+    (3, 3),
+    (3, 4),
+    (3, 5);
 

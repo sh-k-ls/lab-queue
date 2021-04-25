@@ -1,66 +1,127 @@
 import { Injectable } from '@nestjs/common';
 import { RequestDto } from '../shared/front-back-end/request.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { RequestEntity } from '../database.entities/request.entity';
+import { UserEntity } from '../database.entities/user.entity';
+import { UsersService } from '../users/users.service';
+import { QueueEntity } from '../database.entities/queue.entity';
 
 @Injectable()
 export class RequestService {
-	private requests: RequestDto[] = [
-		{
-			queueId: 1,
-			userId: 2,
-			isSigned: true,
-		},
-		{
-			queueId: 2,
-			userId: 1,
-			isSigned: true,
-		},
-	];
+  constructor(
+    private readonly user: UsersService,
+    @InjectRepository(RequestEntity)
+    private requestRepository: Repository<RequestEntity>,
+    @InjectRepository(UserEntity)
+    private userRepository: Repository<UserEntity>,
+    @InjectRepository(QueueEntity)
+    private queueRepository: Repository<QueueEntity>,
+  ) {}
 
-	public getByQueueId(queueId: number): RequestDto[] {
-		return this.requests.filter(
-			(request) => request.queueId === queueId && request.isSigned === true,
-		);
-	}
-
-	public getByUserId(userId: number): RequestDto[] {
-		return this.requests.filter((request) => request.userId === userId);
-	}
-
-	public pushRequest(request: RequestDto): number {
-		return this.requests.push(request);
-	}
-
-	public isSigned(userId: number): boolean {
-    return !!(this.requests.find(elem => elem.userId === userId));
+  public getDTO(requestEntity: RequestEntity): RequestDto {
+    return {
+      queueId: requestEntity.queue.id,
+      userId: requestEntity.user.id,
+      isSigned: requestEntity.isActive,
+    };
   }
 
-  public getByUserIdQueueId(userId: number, queueId: number): RequestDto {
-    return this.requests.find(req =>
-      req.userId === userId &&
-      req.queueId === queueId &&
-      req.isSigned === true);
+  findAll(): Promise<RequestEntity[]> {
+    return this.requestRepository.find({ relations: ['user', 'queue'] });
   }
 
-	public changeSigned(userId: number, queueId: number): RequestDto {
-		let resRequest: RequestDto;
-		for (const request of this.requests) {
-			if (
-				request.userId === userId &&
-				request.queueId === queueId &&
-				request.isSigned === true
-			) {
-				request.isSigned = !request.isSigned;
-				resRequest = request;
-			}
-		}
-		return resRequest;
-	}
+  async getByQueueId(id: string): Promise<RequestDto[]> {
+    const requestEntities = await this.requestRepository
+      .find({ where: { queue: id, isActive: true } })
+      .then();
+    return requestEntities.map((request) => this.getDTO(request));
+  }
 
-	public delRequest(request: RequestDto): number {
-		const index = this.requests.indexOf(request, 0);
-		if (index > -1) {
-			this.requests.splice(index, 1);
-		}
-		return index;
-	}
+  async getByUserId(userId: number): Promise<RequestDto[]> {
+    const requestEntities = await this.requestRepository
+      .find({ where: { user: userId, isActive: true } })
+      .then();
+    return requestEntities.map((request) => this.getDTO(request));
+  }
+
+  public async isSigned(userId: number, queueId: number): Promise<RequestDto> {
+    const userEntity = await this.userRepository.findOne({
+      where: { id: userId },
+    });
+    const queueEntity = await this.queueRepository.findOne({
+      where: { id: queueId },
+    });
+    const requestEntity = await this.requestRepository
+      .findOne({ where: { user: userEntity, queue: queueEntity } })
+      .then();
+    return Promise.resolve(this.getDTO(requestEntity));
+  }
+
+  public async getByUserIdQueueId(
+    userId: number,
+    queueId: number,
+  ): Promise<RequestDto> {
+    const allRequests = await this.requestRepository.find().then();
+
+    const allRequestsDto = await Promise.all(
+      allRequests.map((queueEntity) => this.getDTO(queueEntity)),
+    );
+
+    return allRequestsDto.find(
+      (req) =>
+        req.userId === userId &&
+        req.queueId === queueId &&
+        req.isSigned === true,
+    );
+  }
+
+  async pushRequest(request: RequestDto): Promise<RequestEntity> {
+    const userEntity = await this.userRepository.findOne({
+      where: { id: request.userId },
+    });
+    const queueEntity = await this.queueRepository.findOne({
+      where: { id: request.queueId },
+    });
+    const req = new RequestEntity();
+    req.user = userEntity;
+    req.queue = queueEntity;
+    req.isActive = request.isSigned;
+
+    return this.requestRepository.save(req);
+  }
+
+  public async changeSigned(
+    userId: number,
+    queueId: number,
+  ): Promise<RequestDto> {
+    const userEntity = await this.userRepository.findOne({
+      where: { id: userId },
+    });
+    const queueEntity = await this.queueRepository.findOne({
+      where: { id: queueId },
+    });
+    const requestToChange = (await this.findAll()).find(
+      (request) =>
+        request.user.id === userEntity.id &&
+        request.queue.id === queueEntity.id &&
+        request.isActive === true,
+    );
+    requestToChange.isActive = !requestToChange.isActive;
+    await this.requestRepository.save(requestToChange);
+    return this.getDTO(requestToChange);
+  }
+
+  async delRequest(request: RequestDto): Promise<void> {
+    const userEntity = await this.userRepository.findOne({
+      where: { id: request.userId },
+    });
+    const queueEntity = await this.queueRepository.findOne({
+      where: { id: request.queueId },
+    });
+    await this.requestRepository.delete({
+      user: userEntity,
+      queue: queueEntity,
+    });
+  }
 }

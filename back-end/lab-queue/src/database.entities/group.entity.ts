@@ -10,21 +10,23 @@ import { CourseEntity } from './course.entity';
 
 @Entity()
 export class GroupEntity {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    number: number;
+  @Column()
+  number: number;
 
-    @ManyToOne(() => CourseEntity, course => course.groups)
-    course: CourseEntity;
+  @ManyToOne(() => CourseEntity, (course) => course.groups, {
+    eager: true,
+  })
+  course: CourseEntity;
 
-    @Column({ nullable: true })
-    courseId: number;
+  @Column({ nullable: true })
+  courseId: number;
 
-    @Column()
-    groupName: string;
+  @Column()
+  groupName: string;
 
-    @OneToMany(() => UserEntity, user => user.group)
-    students: UserEntity[];
+  @OneToMany(() => UserEntity, (user) => user.group)
+  students: Promise<UserEntity[]>;
 }

@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {UserDto} from '../../../../../shared/user.dto';
-import {QueueDto} from '../../../../../shared/queue.dto';
-import {RequestDto} from '../../../../../shared/request.dto';
-import {ProfileDto} from '../../../../../shared/profile.dto';
+import { UserDto } from '../../../../../shared/user.dto';
+import { QueueDto } from '../../../../../shared/queue.dto';
+import { RequestDto } from '../../../../../shared/request.dto';
+import { ProfileDto } from '../../../../../shared/profile.dto';
+import { Course } from '../../shared/front-back-end/course.dto';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApiService {
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
-
-  public signIn(user: UserDto): Observable<{token: string}> {
+  public signIn(user: UserDto): Observable<{ token: string }> {
     return this.http.post<{ token: string }>(`/api/auth/login`, user);
   }
 
@@ -72,24 +72,51 @@ export class ApiService {
     return this.http.get<ProfileDto[]>(url);
   }
 
+  // GET /api/v1/queue/groups
+  // public getAllGroups(): Observable<string[]> {
+  //   const url = `/api/v1/queue/groups`;
+  //   return this.http.get<string[]>(url);
+  // }
+
+  // GET /api/v1/queue/courses
+  public getAllCourses(): Observable<Course[]> {
+    const url = `/api/v1/queue/courses`;
+    return this.http.get<Course[]>(url);
+  }
+
+  // GET /api/v1/queue/teachers
+  public getAllTeachers(): Observable<string[]> {
+    const url = `/api/v1/queue/teachers`;
+    return this.http.get<string[]>(url);
+  }
+
+  // GET /api/v1/queue/subjects
+  public getAllSubjects(): Observable<string[]> {
+    const url = `/api/v1/queue/subjects`;
+    return this.http.get<string[]>(url);
+  }
+
   // POST /api/v1/queue/:id/request
   // TODO описать на бэкенде
-  public createQueueRequests(idQueue: string, request: RequestDto): Observable<RequestDto>{
+  public createQueueRequests(
+    idQueue: string,
+    request: RequestDto
+  ): Observable<RequestDto> {
     const url = `/api/v1/queue/${idQueue}/request`;
     return this.http.post<RequestDto>(url, request);
   }
 
   // PATCH /api/v1/queue/:id/request
   // TODO controller для request на бэке
-  public deleteQueueRequest(idQueue: string): Observable<RequestDto>{
+  public deleteQueueRequest(idQueue: string): Observable<RequestDto> {
     const url = `/api/v1/queue/${idQueue}/request`;
     return this.http.patch<RequestDto>(url, {});
   }
 
   // PUT /api/v1/queue/:id
-  public editQueueById(queue: QueueDto): Observable<number> {
+  public editQueueById(queue: QueueDto): Observable<QueueDto> {
     const url = `/api/v1/queue`;
-    return this.http.put<number>(url, queue);
+    return this.http.put<QueueDto>(url, queue);
   }
 
   // POST /api/v1/queue/:id/signIn

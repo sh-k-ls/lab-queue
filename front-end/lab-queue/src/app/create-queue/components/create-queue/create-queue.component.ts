@@ -1,21 +1,23 @@
-import {Component, ElementRef, ViewChild, OnInit} from '@angular/core';
-import {FormControl} from '@angular/forms';
-import {Observable} from 'rxjs';
+import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { Observable } from 'rxjs';
 import { map, startWith, switchMap } from 'rxjs/operators';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {MatAutocomplete, MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
-import {MatChipInputEvent} from '@angular/material/chips';
-import {ApiService} from '../../../api-service/api.service';
-import {QueueDto} from '../../../../shared/front-back-end/queue.dto';
-import {Course} from '../../../../shared/front-back-end/course.dto';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import {
+  MatAutocomplete,
+  MatAutocompleteSelectedEvent,
+} from '@angular/material/autocomplete';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { ApiService } from '../../../api-service/api.service';
+import { QueueDto } from '../../../../shared/front-back-end/queue.dto';
+import { Course } from '../../../../shared/front-back-end/course.dto';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-queue',
   templateUrl: './create-queue.component.html',
-  styleUrls: ['./create-queue.component.scss']
+  styleUrls: ['./create-queue.component.scss'],
 })
-
 export class CreateQueueComponent implements OnInit {
   selectable = true;
   removable = true;
@@ -23,36 +25,17 @@ export class CreateQueueComponent implements OnInit {
   myControlCourse = new FormControl();
   myControlTeacher = new FormControl();
   myControlParticipant = new FormControl();
-  courseList: Course[] = [
-    {
-      department: 'ИУ7',
-      degree: 'Bachelor',
-      year: 2017,
-      groups: 6,
-    },
-    {
-      department: 'ИУ6',
-      degree: 'Master',
-      year: 2020,
-      groups: 5,
-    },
-    {
-      department: 'ИУ8',
-      degree: 'Specialist',
-      year: 2016,
-      groups: 3,
-    }
-  ];
 
   courseListStr: string[] = [];
   groupListStr: string[] = [];
+  courses: Course[] = [];
 
-  subjects: string[] = ['Технология командной разработки ПО', 'Цифровая обработка сигналов', 'Экология'];
+  subjects: string[] = [];
   filteredCourses: Observable<string[]>;
 
   filteredTeachers: Observable<string[]>;
   teachers: string[] = [];
-  allTeachers: string[] = ['Иванов И.И.', 'Петров П.П.', 'Сидоров С.С.'];
+  allTeachers: string[] = [];
 
   filteredParticipants: Observable<string[]>;
   participants: string[] = [];
@@ -67,7 +50,11 @@ export class CreateQueueComponent implements OnInit {
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
   minDate = new Date();
-  maxDate = new Date(this.minDate.getFullYear(), this.minDate.getMonth() + 1, 31);
+  maxDate = new Date(
+    this.minDate.getFullYear(),
+    this.minDate.getMonth() + 1,
+    31
+  );
 
   idQueueEdit?: number;
   queue?: QueueDto;
@@ -75,80 +62,66 @@ export class CreateQueueComponent implements OnInit {
   constructor(
     private readonly api: ApiService,
     private readonly router: Router,
-    private readonly route: ActivatedRoute,
-  ) { }
+    private readonly route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
-    this.parserCourse(this.courseList);
+    this.api.getAllCourses().subscribe((courses) => {
+      this.courses = courses;
+      this.courseListStr = courses.map((courseDto) => courseDto.course);
+      this.groupListStr =
+        (courses.map((courseDto) => courseDto.groups))
+        .reduce((accumulator, curVal) => [...accumulator, ...curVal]);
+    });
 
-    this.filteredCourses = this.myControlCourse.valueChanges
-      .pipe(
+    this.api.getAllTeachers().subscribe((teachers) => {
+      this.allTeachers = teachers;
+      this.filteredTeachers = this.myControlTeacher.valueChanges.pipe(
         startWith(''),
-        map(value => this._filterSubjects(value))
+        map((teacher: string | null) =>
+          teacher ? this._filterTeachers(teacher) : this.allTeachers.slice()
+        )
       );
+    });
 
-    this.filteredTeachers = this.myControlTeacher.valueChanges
-      .pipe(
+    this.api.getAllSubjects().subscribe((subjects) => {
+      this.subjects = subjects;
+      this.filteredCourses = this.myControlCourse.valueChanges.pipe(
         startWith(''),
-        map((teacher: string | null) => teacher ? this._filterTeachers(teacher) : this.allTeachers.slice())
+        map((value) => this._filterSubjects(value))
       );
+    });
 
     this.updateParticipants();
 
     this.route.paramMap
-      .pipe(
-      switchMap(params => params.getAll('idQueue'))
-      )
-      .subscribe(idQueue => {
+      .pipe(switchMap((params) => params.getAll('idQueue')))
+      .subscribe((idQueue) => {
         this.idQueueEdit = +idQueue;
-        this.api.getQueueById(String(this.idQueueEdit)).subscribe(
-          queue => {
-            this.queue = queue;
-            this.nameSubject.nativeElement.value = this.queue.nameSubject;
-            this.teachers = this.queue.nameTeacher;
-            this.participants = this.queue.groups;
-            this.dateInput.nativeElement.value = this.queue.dateCreate;
-            this.timeInput.nativeElement.value = this.queue.timeCreate;
-            this.descriptionInput.nativeElement.value = this.queue.description;
-          });
+        this.api.getQueueById(String(this.idQueueEdit)).subscribe((queue) => {
+          this.queue = queue;
+          this.nameSubject.nativeElement.value = this.queue.nameSubject;
+          this.teachers = this.queue.nameTeacher;
+          this.participants = this.queue.groups;
+          this.dateInput.nativeElement.value = this.queue.dateCreate;
+          this.timeInput.nativeElement.value = this.queue.timeCreate;
+          this.descriptionInput.nativeElement.value = this.queue.description;
+        });
       });
   }
 
   private updateParticipants(): void {
-    this.filteredParticipants = this.myControlParticipant.valueChanges
-      .pipe(
-        startWith(''),
-        map((participant: string | null) => participant ? this._filterParticipants(participant) : this.allParticipants.slice())
-      );
+    this.filteredParticipants = this.myControlParticipant.valueChanges.pipe(
+      startWith(''),
+      map((participant: string | null) =>
+        participant
+          ? this._filterParticipants(participant)
+          : this.allParticipants.slice()
+      )
+    );
   }
 
-  public parserCourse(courses: Course[]): void {
-    const today = new Date();
-    for (const course of courses) {
-      let numCourse = today.getFullYear() - course.year + 1;
-      if (today.getMonth() < 9) {
-        numCourse -= 1;
-      }
-
-      const degree = course.degree === 'Bachelor' ? 'Бакалавры'
-        : (course.degree === 'Master' ? 'Магистры' : 'Специалисты');
-      this.courseListStr.push(`${course.department} ${degree} ${numCourse} курс`);
-      const currSemester = (today.getMonth() < 9 && today.getMonth() > 1) ? numCourse * 2 : numCourse * 2 - 1;
-      for (let i = 1; i <= course.groups; i++) {
-        const groupName = this.parseGroup(i, course.department, currSemester, course.degree);
-        this.groupListStr.push(groupName);
-      }
-    }
-  }
-
-  public parseGroup(groupIndex: number, groupDepartment: string, groupSemester: number, groupDegree: string): string {
-    const degreeLiteral = groupDegree === 'Bachelor' ? 'Б'
-      : (groupDegree === 'Master' ? 'М' : '');
-    const group = `${groupDepartment}-${groupSemester}${groupIndex}${degreeLiteral}`;
-    return group;
-  }
-
-  dateFilter = (date: { getDay: () => number; }) => {
+  dateFilter = (date: { getDay: () => number }) => {
     const day = date.getDay();
     return day !== 0;
   }
@@ -218,19 +191,25 @@ export class CreateQueueComponent implements OnInit {
   private _filterSubjects(value: string): string[] {
     const filterValue = value.toLowerCase();
 
-    return this.subjects.filter(course => course.toLowerCase().includes(filterValue));
+    return this.subjects.filter((course) =>
+      course.toLowerCase().includes(filterValue)
+    );
   }
 
   private _filterTeachers(value: string): string[] {
     const filterValue = value.toLowerCase();
 
-    return this.allTeachers.filter(teacher => teacher.toLowerCase().indexOf(filterValue) === 0);
+    return this.allTeachers.filter(
+      (teacher) => teacher.toLowerCase().indexOf(filterValue) === 0
+    );
   }
 
   private _filterParticipants(value: string): string[] {
     const filterValue = value.toLowerCase();
 
-    return this.allParticipants.filter(participant => participant.toLowerCase().indexOf(filterValue) === 0);
+    return this.allParticipants.filter(
+      (participant) => participant.toLowerCase().indexOf(filterValue) === 0
+    );
   }
 
   public chooseParticipants(participantType: string): void {
@@ -244,40 +223,26 @@ export class CreateQueueComponent implements OnInit {
   }
 
   public addQueueBtnPush(participantType: string, queue: QueueDto): void {
-    // TODO в интерфейсе можно добавить и поток и группу, поэтому эта штука не будет работать
-    if (participantType === 'course') {
-      const allGroups: string[] = [];
-      for (const courseName of queue.groups) {
-        queue.groups = [];
-        const splitted = courseName.split(' ', 3);
-        const degree = splitted[1] === 'Бакалавры' ? 'Bachelor'
-          : (splitted[1] === 'Магистры' ? 'Master' : 'Specialist');
-        const today = new Date();
-        let admissionYear = today.getFullYear() - +splitted[2];
-        if (today.getMonth() >= 9) {
-          admissionYear += 1;
-        }
-        const currSemester = (today.getMonth() < 9 && today.getMonth() > 1) ? +splitted[2] * 2 : +splitted[2] * 2 - 1;
-        for (const course of this.courseList) {
-          if (course.department === splitted[0] && course.degree === degree && course.year === admissionYear) {
-            for (let i = 1; i <= course.groups; i++) {
-              const groupName = this.parseGroup(i, course.department, currSemester, course.degree);
-              allGroups.push(groupName);
-            }
-          }
-        }
+    const groups = queue.groups.map(group => {
+      const course = this.courses.find((courseObj) => courseObj.course === group);
+      if (course) {
+        return course.groups;
+      } else {
+        return [group];
       }
-      queue.groups = allGroups;
-    }
+    }).reduce((accumulator, curVal) => [...accumulator, ...curVal]);
+    queue.groups = groups;
 
     if (!this.idQueueEdit) {
-      this.api.createQueue(queue).subscribe();
-      this.router.navigate(['/queue']);
+      this.api.createQueue(queue).subscribe( () =>
+        this.router.navigate(['/queue'])
+      );
     } else {
-      queue.id =  this.queue.id;
+      queue.id = this.queue.id;
       queue.creatorId = this.queue.creatorId;
-      this.api.editQueueById(queue).subscribe();
-      this.router.navigate(['/details/' + this.idQueueEdit]);
+      this.api.editQueueById(queue).subscribe((res) =>
+        this.router.navigate(['/details/' + this.idQueueEdit])
+      );
     }
     // TODO сообщение об успешной отправке
   }

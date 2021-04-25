@@ -1,12 +1,12 @@
-import {Controller, Get, Post, UseGuards, Req, Param} from '@nestjs/common';
+import { Controller, Get, Post, UseGuards, Req, Param } from '@nestjs/common';
 import { AppService } from './app.service';
 import { LocalAuthGuard } from './auth/guard/local-auth.guard';
 import { JwtAuthGuard } from './auth/guard/jwt-auth.guard';
 import { AuthService } from './auth/auth.service';
 import { Request } from 'express';
 import { UserDto } from './shared/front-back-end/user.dto';
-import {ProfileDto} from './shared/front-back-end/profile.dto';
-import {ProfileService} from './profile/profile.service';
+import { ProfileDto } from './shared/front-back-end/profile.dto';
+import { ProfileService } from './profile/profile.service';
 
 @Controller()
 export class AppController {
@@ -35,7 +35,7 @@ export class AppController {
 
   @UseGuards(JwtAuthGuard)
   @Get('api/v1/user/:id/profile')
-  getProfileByUserId(@Param('id') idUser: string): ProfileDto {
+  getProfileByUserId(@Param('id') idUser: string): Promise<ProfileDto> {
     return this.profile.getProfileByUserId(+idUser);
   }
 }
